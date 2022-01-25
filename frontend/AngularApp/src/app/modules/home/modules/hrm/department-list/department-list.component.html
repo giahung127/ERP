@@ -1,0 +1,18 @@
+<div class="main-container">
+    <app-home-table-list
+      [title]="'Department List'"
+      [data]="departmentList"
+      [columnName]="columnName"
+      [columnToProperty]="columnToProperty"
+      [checkbox]="false"
+      [filter]="true"
+      [onViewClick]="onViewClick"
+      [onEditClick]="onEditClick"
+      [onDeleteClick]="onDeleteClick"
+      [key]="'departmentId'"
+      [add]="true"
+      [onAdd]="onAddDepartment"
+    >
+    </app-home-table-list>
+  </div>
+  

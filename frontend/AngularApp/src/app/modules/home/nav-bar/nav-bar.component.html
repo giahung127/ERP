@@ -1,0 +1,13 @@
+<div class="sidebar">
+    <div class="line"></div>
+        <div *ngFor="let i of data" class="content">
+            <div class="title">{{i.title}}</div>
+            <div *ngFor="let j of i.content" class="button-group">
+                <a [routerLink]="j.href" class="custom-button" >
+                    <mat-icon>{{j.icon}}</mat-icon>
+                    <div>{{j.name}}</div>
+                </a>
+            </div>
+            <div class="line"></div>
+        </div>
+</div>

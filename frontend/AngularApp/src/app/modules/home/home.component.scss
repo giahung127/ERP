@@ -1,0 +1,55 @@
+.drag-button {
+    position: absolute;
+}
+
+.body {
+    width: 100%;
+    height: calc(100% - 124px);
+
+    .sidenav {
+        height: 100%;
+        padding: 0px;
+    }
+
+    .sidenav-content {
+        display: flex;
+        flex-direction: column;
+        width: auto;
+        height: 100%;
+        align-items: stretch;
+        justify-content: flex-start;
+        background-color: #E5E5E5;
+    }
+
+    .main-container {
+        // margin: 32px;
+        // background-color: #ffffff;
+        // width: auto;
+        // height: calc(100% - 115px);
+        // border-radius: 8px;
+        overflow-y: auto;
+        padding: 22px;
+    }
+}
+
+.mat-icon-button {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    top: 21px;
+    left: 6px;
+    background-color: #ffffff;
+    &:focus,
+    &:active:focus,
+    &.active:focus {
+        outline: none;
+        outline-style: none;
+    }
+}
+
+.mat-icon {
+    font-size: 28px;
+    color: #0C0B0B;
+}

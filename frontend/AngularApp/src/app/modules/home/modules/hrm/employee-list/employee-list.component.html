@@ -1,0 +1,18 @@
+<div class="main-container">
+    <app-home-table-list
+      [title]="'Employee List'"
+      [data]="employeeList"
+      [columnName]="columnName"
+      [columnToProperty]="columnToProperty"
+      [checkbox]="false"
+      [filter]="true"
+      [onViewClick]="onViewClick"
+      [onEditClick]="onEditClick"
+      [onDeleteClick]="onDeleteClick"
+      [key]="'employeeId'"
+      [add]="true"
+      [onAdd]="onAddEmployee"
+    >
+    </app-home-table-list>
+  </div>
+  

@@ -1,0 +1,33 @@
+<div class="header-container">
+    <div class="content">
+        <div class="content-left">
+          <img [src]="logoPath">
+          <div class="title">ERP</div>
+        </div>
+        <div class="content-right">
+            <button  mat-icon-button>
+                <mat-icon class="custom-mat-icon">notifications</mat-icon>
+            </button>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon class="custom-mat-icon">settings</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>
+                <mat-icon>autorenew</mat-icon>
+                <span>Change Password</span>
+              </button>
+              <button mat-menu-item>
+                <mat-icon>person</mat-icon>
+                <span>Logout</span>
+              </button>
+              </mat-menu>
+            <div class="profile">
+                <mat-icon>person</mat-icon>
+                <div class="info">
+                  <div class="name">Gia Hung</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,123 @@
+<div class="main-container">
+    <div *ngIf="header" class="table-header">
+        <div class="content-left">
+          {{title}}
+        </div>
+        <div class="content-right">
+            <div *ngIf="add" class="custom-button" (click)="onAdd()">
+              <mat-icon> add </mat-icon>
+              <div>
+                  Add
+              </div>
+            </div>
+            <div *ngIf="filter" class="custom-button">
+                <mat-icon> filter_alt </mat-icon>
+                <div>
+                    Filter
+                </div>
+            </div>
+            <div *ngIf="search" class="search-tool">
+                <mat-icon> search </mat-icon>
+                <mat-form-field>
+                    <input matInput #search type="text" (keyup)="applyFilter(searchKeyword)" [(ngModel)]="searchKeyword">
+                    <button *ngIf="searchKeyword" matSuffix mat-icon-button aria-label="Clear" (click)="searchKeyword = ''; applyFilter(searchKeyword)">
+                        <mat-icon> close </mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="header" class="line"> </div>
+
+    <table mat-table [dataSource]="data" matSort class="mat-elevation-z0" (matSortChange)="sortColumn()">
+      <div *ngIf="checkbox" >  
+      <ng-container matColumnDef="checkbox">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    >
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="onCheckboxChange(row)"
+                          [checked]="selection.isSelected(row)"
+                          >
+            </mat-checkbox>
+          </td>
+        </ng-container>
+      </div> 
+      <div *ngFor="let i of columnName">
+        <ng-container [matColumnDef]="i">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{i}} </th>
+            <div *ngIf="!isFormField(i) && select">
+              <td mat-cell *matCellDef="let item"  (click)="select(item[key])" class="data-column"> {{getValue(item, i)}} </td>
+            </div>
+            <div *ngIf="!isFormField(i)">
+              <td mat-cell *matCellDef="let item"  class="data-column"> {{getValue(item, i)}} </td>
+            </div>
+        </ng-container>
+      </div>
+  
+      <div *ngIf="more" >
+        <ng-container matColumnDef="more">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let item">
+            <button mat-icon-button>
+            <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+            </button>
+          <mat-menu #menu="matMenu" xPosition="before">
+            <button (click)="onViewClick(item[key])" mat-menu-item>
+              <span>View</span>
+            </button>
+            <button (click)="onEditClick(item[key])" mat-menu-item>
+              <span>Edit</span>
+            </button>
+            <button (click)="onDeleteClick(item[key])" mat-menu-item>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+          </td>
+        </ng-container>
+      </div>
+      <div *ngIf="save" >
+        <ng-container matColumnDef="save">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let item">
+            <button mat-icon-button [disabled]="isInvalid(item)" (click)="onSaveAction.action(item)">
+            <mat-icon class="material-icons-outlined">save</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+      </div>
+      <div *ngIf="customActions" >
+        <ng-container matColumnDef="customActions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let item">
+            <button mat-icon-button>
+              <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <ng-container *ngFor="let entry of customActions">
+                <button mat-menu-item [disabled]="entry.disable === undefined ? false : entry.disable(item)" 
+                (click)="entry.action(item)">
+                  <span>{{entry.display}}</span>
+                </button>
+              </ng-container>
+            </mat-menu>
+          </td>
+        </ng-container>
+      </div>
+
+      <tr mat-header-row *matHeaderRowDef="column"></tr>
+      <tr mat-row *matRowDef="let row; columns: column;"></tr>
+    </table>
+  <div *ngIf="paginating">
+    <mat-paginator *ngIf="usePaginator" style-paginator showFirstLastButtons [pageSizeOptions]="[5, 10, 20]"
+    aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+  
+</div>

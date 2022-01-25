@@ -1,0 +1,29 @@
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 32px;
+    height: 52px;
+    background: #FFFFFF;
+
+    .content-right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0px;
+    
+        position: static;
+        height: 15px;
+        left: 32px;
+        top: 18px;
+    }
+
+    .content-left {
+        position: static;
+        top: 16px;
+        font-size: 16px;
+        text-decoration: none;
+        color: #000000;
+    }
+}

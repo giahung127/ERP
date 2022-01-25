@@ -1,0 +1,33 @@
+<div class="contain">
+    <div class="main-content">
+        <div class="content">
+            <div class="header">
+                <p class="welcome"> Welcome back ! </p>
+                <h3> Sign in to your account to continue </h3>
+            </div>
+            <div class="body-content">
+                <div class="body">
+                    
+                    <div class="title">Username</div>
+                    <mat-form-field appearance="outline" class="input">
+                        <input matInput type="text" placeholder="Enter your username" (keypress)="onChangeEvent()" [(ngModel)]="username">
+                    </mat-form-field>
+                    <div class="title">Password</div>
+                    <mat-form-field appearance="outline" class="input">
+                        <input matInput type="password" placeholder="Enter your password" (keypress)="onChangeEvent()" [(ngModel)]="password">
+                    </mat-form-field>
+                </div>
+                <div class="footer">
+                    <a routerLink="/users/forgot-password"> Forgot your password? </a>
+                </div>
+                <div class="button-content">
+                    <button mat-flat-button color="primary" (click)="login()"> Sign In </button>
+                </div>
+            </div>
+            
+            
+        <div class="error" *ngIf="error.check">{{error.message}}</div>
+        </div>
+    </div>
+  </div>
+  
