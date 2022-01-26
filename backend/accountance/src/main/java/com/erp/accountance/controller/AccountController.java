@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @Slf4j
 @RequestMapping("/account")
@@ -21,7 +23,7 @@ public class AccountController {
     }
 
     @PostMapping("/{id}")
-    public Account loginAccount(@PathVariable("id") long id){
+    public Optional<Account> loginAccount(@PathVariable("id") long id){
         log.info("Inside loginAccount - AccountController");
         return accountService.loginAccount(id);
     }
