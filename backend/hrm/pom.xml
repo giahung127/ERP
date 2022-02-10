@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.erp</groupId>
-	<artifactId>accountance</artifactId>
+	<artifactId>hrm</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>accountance</name>
-	<description>manage account and user information</description>
+	<name>hrm</name>
+	<description>HRM module</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -24,12 +24,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- mysql connector -->

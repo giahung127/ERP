@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 // import { AuthenticationService } from '../../../core/authentication/authentication.service';
@@ -12,8 +12,9 @@ export class LoginComponent implements OnInit {
     username = '';
     password = '';
     error = { check: false, message: '' };
+    headers = new HttpHeaders();
 
-    constructor( private router: Router) {}
+    constructor( private router: Router, public http: HttpClient) {}
 
     ngOnInit() {
         // if (this.authService.isLoggedIn()) {
@@ -22,23 +23,21 @@ export class LoginComponent implements OnInit {
     }
 
     login() {
-        this.router.navigateByUrl('/home');
-        // this.authService.login(this.username, this.password).subscribe(
-        //     (res) => {
-        //         if (res.expiresIn && res.accessToken) {
-        //             this.authService.setSession(res);
-        //             this.router.navigateByUrl('/home');
-        //         }
-        //     },
-        //     (err: HttpErrorResponse) => {
-        //         this.error.message = err.error['message'];
-        //         this.error.check = true;
-        //         this.authService.logout();
-        //     },
-        //     () => {
-        //         // Finalize here
-        //     }
-        // );
+        this.http.post('http://localhost:9001/account/login', { username: this.username, password: this.password }, { headers: this.headers })
+            .subscribe(
+            (res) => {
+                if (res === 'ok') {
+                    this.router.navigateByUrl('/home');
+                }
+            },
+            (err: HttpErrorResponse) => {
+                this.error.message = err.error['message'];
+                this.error.check = true;
+            },
+            () => {
+                // Finalize here
+            }
+        );
     }
     onChangeEvent() {
         this.error.check = false;

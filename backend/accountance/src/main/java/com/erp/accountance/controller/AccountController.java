@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @RestController
 @Slf4j
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/account")
 public class AccountController {
 
@@ -22,9 +23,9 @@ public class AccountController {
         return accountService.newAccount(account);
     }
 
-    @PostMapping("/{id}")
-    public Optional<Account> loginAccount(@PathVariable("id") long id){
+    @PostMapping("/login")
+    public Optional<String> loginAccount(@RequestBody LoginInfo loginInfo){
         log.info("Inside loginAccount - AccountController");
-        return accountService.loginAccount(id);
+        return accountService.loginAccount(loginInfo);
     }
 }
