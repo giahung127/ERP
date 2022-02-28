@@ -25,4 +25,18 @@
         border: 0.5px solid #e9ecef;
     }
 }
+:host ::ng-deep app-home-table-list.import-list{
 
+
+    table {
+        tbody {
+            tr {
+                &:hover,
+                &.active {
+                    background-color: #a8b2e685;
+                }
+                cursor: pointer;
+            }
+        }
+    }
+}

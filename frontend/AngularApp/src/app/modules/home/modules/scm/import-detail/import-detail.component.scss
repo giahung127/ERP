@@ -1,0 +1,27 @@
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    .left-content {
+        flex: 1;
+        background-color: #FFFFFF;
+        height: fit-content;
+        padding: 10px;
+        border-radius: 8px;
+    }
+    .right-content {
+        flex: 0 0 380px;
+        width:100%;
+        padding: 10px;
+        padding-top: 0px;
+        background-color: #FFFFFF;
+        border-radius: 8px;
+    }
+}
+

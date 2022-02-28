@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Employee } from '../../shared/models/employee';
 import { Product } from '../../shared/models/product/product.model';
 
 @Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  selector: 'app-import-list',
+  templateUrl: './import-list.component.html',
+  styleUrls: ['./import-list.component.scss']
 })
-export class ProductListComponent {
+export class ImportListComponent {
 
   constructor(
     private router: Router,
@@ -24,31 +23,24 @@ export class ProductListComponent {
     new Product('p008','My Pham 8', 100000, 'c001', 'My pham', 'ABC')
   ];
   columnName: string[] = [
-    'ProductId',
-    'Name',
-    'Price',
-    'Category',
-    'Description'
+    'ImportId',
+    'Date',
+    'Supplier',
+    'Status'
   ];
   columnToProperty = {
-    'ProductId': 'productId',
-    'Name': 'productName',
-    'Price': 'price',
-    'Category': 'categoryName',
-    'Description': 'description'
+    'ImportId': 'productId',
+    'Date': 'productName',
+    'Supplier': 'productName',
+    'Status': 'price'
   };
   onAddEmployee: () => void = () => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/scm/product-detail']);
+    this.router.navigate(['/home/scm/import-detail']);
   };
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/scm/product-detail', id]);
-  };
-  onEditClick: (id: string) => void = (id: string) => {
-      this.router.navigate(['/home/scm/product-detail', id], {
-          queryParams: { employeeId: id }
-      });
+    this.router.navigate(['/home/scm/import-detail', id]);
   };
 
   onDeleteClick: (id: string) => void = (id: string) => {

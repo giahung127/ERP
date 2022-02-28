@@ -60,9 +60,19 @@ export class NavBarComponent {
       title: 'SCM',
       content: [
           {
+              name: 'Overview',
+              href: '/home/dashboard',
+              icon: 'visibility'
+          },
+          {
               name: 'Products',
               href: '/home/scm/product-list',
               icon: 'category'
+          },
+          {
+              name: 'Import',
+              href: '/home/scm/import-list',
+              icon: 'input'
           },
           {
             name: 'Item2',

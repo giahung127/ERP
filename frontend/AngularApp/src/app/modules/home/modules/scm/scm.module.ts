@@ -22,6 +22,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { SharedModule } from '../shared/shared.module';
+import { AddCategoryModalComponent } from './add-category-modal/add-category-modal.component';
+import { ImportListComponent } from './import-list/import-list.component';
+import { ImportDetailComponent } from './import-detail/import-detail.component';
 
 
 @NgModule({
@@ -29,7 +32,10 @@ import { SharedModule } from '../shared/shared.module';
     ScmComponent,
     ProductDetailComponent,
     ProductListComponent,
-    CategoryListComponent
+    CategoryListComponent,
+    AddCategoryModalComponent,
+    ImportListComponent,
+    ImportDetailComponent
   ],
   imports: [
     CommonModule,
