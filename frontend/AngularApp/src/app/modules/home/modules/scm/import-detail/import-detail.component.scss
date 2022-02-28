@@ -14,14 +14,135 @@
         height: fit-content;
         padding: 10px;
         border-radius: 8px;
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 12px 8px;
+            .content-left {
+                font-weight: bold;
+                font-size: 18px;
+            }
+        }
+        .line {
+            width: 100%;
+            height: 0px;
+            left: 0px;
+            margin-bottom: 14px;
+            border: 0.5px solid #000000;
+        }
+        .label {
+            display: flex;
+            flex-direction: row;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 0px 8px;
+            justify-content: space-between;
+            .delete,.no,.amount{
+                width: 10%;
+                vertical-align: top;
+            }
+            .code,.name {
+                width: 25%;
+                vertical-align: top;
+            }
+        }
+        .import-item{
+            display: flex;
+            flex-direction: row;
+            font-size: 14px;
+            align-items: center;
+            padding: 0px 8px;
+            justify-content: space-between;
+            .delete,.no,.amount{
+                width: 10%;
+                vertical-align: top;
+            }
+            .code,.name {
+                width: 25%;
+                vertical-align: top;
+            }
+
+        }
+        .form-footer{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            width: 100%;
+            gap: 15px;
+            .list-button {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                margin: 6px;
+                gap: 12px;
+                
+            }
+            .green-custom-button {
+                padding: 5px 10px;
+                display: flex;
+                flex-direction: row;
+                width: auto;
+                color: #ffffff;
+                background-color: #1AA053;
+                gap: 16px;
+                &:disabled{
+                    opacity: 0.6;
+                }
+            }
+            .red-custom-button {
+                padding: 5px 10px;
+                display: flex;
+                flex-direction: row;
+                width: auto;
+                color: #ffffff;
+                background-color: #C03221;
+                gap: 16px;
+            }
+        }
     }
     .right-content {
-        flex: 0 0 380px;
+        flex: 0 0 300px;
         width:100%;
         padding: 10px;
-        padding-top: 0px;
         background-color: #FFFFFF;
         border-radius: 8px;
+        .search-tool {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 8px 10px;
+            gap: 8px;
+            height: 40px;
+            background: #f0f0f0;
+            border: 1px solid #e9ecef;
+            box-sizing: border-box;
+            border-radius: 4px;
+  
+            .mat-icon {
+                color: #000000;
+                font-size: 20px;
+                height: 20px;
+                width: 20px;
+            }
+        }
     }
 }
 
+:host ::ng-deep app-home-table-list.product-list{
+
+
+    table {
+        tbody {
+            tr {
+                &:hover,
+                &.active {
+                    background-color: #a8b2e685;
+                }
+                cursor: pointer;
+            }
+        }
+    }
+}
