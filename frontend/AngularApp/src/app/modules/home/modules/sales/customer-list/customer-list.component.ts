@@ -37,14 +37,14 @@ export class CustomerListComponent  {
   };
   onAddEmployee: () => void = () => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/hrm/employee-detail']);
+    this.router.navigate(['/home/sales/customer-detail']);
   };
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/hrm/employee-detail', id]);
+    this.router.navigate(['/home/sales/customer-detail', id]);
   };
   onEditClick: (id: string) => void = (id: string) => {
-      this.router.navigate(['/home/hrm/employee-detail', id], {
+      this.router.navigate(['/home/sales/customer-detail', id], {
           queryParams: { employeeId: id }
       });
   };
