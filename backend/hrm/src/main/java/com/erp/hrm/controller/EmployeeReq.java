@@ -3,8 +3,7 @@ package com.erp.hrm.controller;
 import java.sql.Date;
 
 public class EmployeeReq {
-    public String  fname;
-    public String  lname;
+    public String  name;
     public Integer sex;
     public String  department;
     public String  position;

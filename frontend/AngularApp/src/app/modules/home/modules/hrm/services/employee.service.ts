@@ -10,6 +10,6 @@ export class EmployeeService {
   constructor(public http: HttpClient) { }
 
   getAllEmployee (){
-    return this.http.get('', { headers: this.headers })
+    return this.http.get('http://localhost:9002/hrm/employee/getAll', { headers: this.headers })
   }
 }

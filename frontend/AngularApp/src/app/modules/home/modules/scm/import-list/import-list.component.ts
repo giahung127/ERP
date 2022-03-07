@@ -13,14 +13,14 @@ export class ImportListComponent {
     private router: Router,
   ) {}
   productList: Product[] = [
-    new Product('p001','My Pham 1', 100000, 'c001', 'My pham', 'ABC'),
-    new Product('p002','My Pham 2', 100000, 'c001', 'My pham', 'ABC'),
-    new Product('p003','My Pham 3', 100000, 'c001', 'My pham', 'ABC'),
-    new Product('p004','My Pham 4', 100000, 'c001', 'My pham', 'ABC'),
-    new Product('p005','My Pham 5', 100000, 'c001', 'My pham', 'ABC'),
-    new Product('p006','My Pham 6', 100000, 'c001', 'My pham', 'ABC'),
-    new Product('p007','My Pham 7', 100000, 'c001', 'My pham', 'ABC'),
-    new Product('p008','My Pham 8', 100000, 'c001', 'My pham', 'ABC')
+    new Product('i001','Don nhap 1', 100000, 'Finish', 'Dai ly A', 'ABC'),
+    new Product('i002','Don nhap 2', 100000, 'Processing', 'Dai ly A', 'ABC'),
+    new Product('i003','Don nhap 3', 100000, 'Processing', 'Dai ly A', 'ABC'),
+    new Product('i004','Don nhap 4', 100000, 'Processing', 'Dai ly B', 'ABC'),
+    new Product('i005','Don nhap 5', 100000, 'Processing', 'Dai ly B', 'ABC'),
+    new Product('i006','Don nhap 6', 100000, 'Processing', 'Dai ly A', 'ABC'),
+    new Product('i007','Don nhap 7', 100000, 'Processing', 'Dai ly B', 'ABC'),
+    new Product('i008','Don nhap 8', 100000, 'Processing', 'Dai ly A', 'ABC')
   ];
   columnName: string[] = [
     'ImportId',
@@ -32,8 +32,10 @@ export class ImportListComponent {
     'ImportId': 'productId',
     'Date': 'productName',
     'Supplier': 'productName',
-    'Status': 'price'
+    'Status': 'categoryId'
   };
+
+
   onAddEmployee: () => void = () => {
     // console.log("On View Click: ", id);
     this.router.navigate(['/home/scm/import-detail']);

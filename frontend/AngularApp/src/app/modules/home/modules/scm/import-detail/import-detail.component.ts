@@ -43,7 +43,7 @@ export class ImportDetailComponent {
   ) { 
     this.showProductList = this.productList;
     this.route.queryParams.subscribe((params) => {
-      if (params['id']) {
+      if (params['id'] && params['id'] == 'i001') {
         this.viewModeCheck = false;
       } else {
         this.viewModeCheck = true;

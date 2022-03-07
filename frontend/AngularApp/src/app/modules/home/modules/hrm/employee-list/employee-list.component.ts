@@ -9,33 +9,46 @@ import { EmployeeService } from '../services/employee.service';
   styleUrls: ['./employee-list.component.scss']
 })
 export class EmployeeListComponent {
-
+  employeeList: Employee[] = []
   constructor(
     private router: Router,
     private employeeService: EmployeeService
   ) {
-    console.log(this.employeeService.getAllEmployee());
+    let data;
+    this.employeeService.getAllEmployee().subscribe(res => {
+      data = res
+      this.employeeList = data.map(({ employeeId, name, position, phone, department})=>{
+      return {
+        'employeeId': employeeId,
+        'name': name,
+        'position': position,
+        'phone': phone,
+        'department': department
+      }
+    })
+    console.log(data);
+  })
   }
-  employeeList: Employee[] = [
-    new Employee('p001','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p002','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p003','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p004','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p005','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p006','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p007','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p008','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p009','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p010','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p011','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p012','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p013','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p014','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p015','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p016','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p017','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p018','Nguyen Van A', '012346789', 'Software Enginering', 'Intership')
-  ];
+  // employeeList: Employee[] = [
+  //   new Employee('p001','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p002','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p003','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p004','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p005','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p006','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p007','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p008','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p009','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p010','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p011','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p012','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p013','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p014','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p015','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p016','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p017','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
+  //   new Employee('p018','Nguyen Van A', '012346789', 'Software Enginering', 'Intership')
+  // ];
   columnName: string[] = [
     'EmployeeId',
     'Name',

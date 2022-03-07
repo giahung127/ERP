@@ -20,8 +20,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long    id;
 
-    private String  fname;
-    private String  lname;
+    private String  name;
     private Integer sex;
     private String  department;
     private String  position;
@@ -38,8 +37,7 @@ public class Employee {
     private Long    account_no;
 
     public Employee(EmployeeReq employeeReq){
-        this.fname              = employeeReq.fname;
-        this.lname              = employeeReq.lname;
+        this.name              = employeeReq.name;
         this.sex                = employeeReq.sex;
         this.department         = employeeReq.department;
         this.position           = employeeReq.position;

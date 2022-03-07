@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:42975")
 @RequestMapping("/hrm/employee")
 public class EmployeeController {
     @Autowired
@@ -38,8 +38,8 @@ public class EmployeeController {
         List<EmployeeRes> empReslst = empList.parallelStream()
                 .map(empp ->{
                     final EmployeeRes emRes = new EmployeeRes();
-                    emRes.setFname(empp.getFname());
-                    emRes.setLname(empp.getLname());
+                    emRes.setEmployeeId(empp.getId());
+                    emRes.setName(empp.getName());
                     emRes.setPosition(empp.getPosition());
                     emRes.setDepartment(empp.getDepartment());
                     emRes.setPhone(empp.getPhone());
@@ -64,8 +64,8 @@ public class EmployeeController {
         List<EmployeeRes> empReslst = empList.getContent().parallelStream()
                 .map(empp ->{
                     final EmployeeRes emRes = new EmployeeRes();
-                    emRes.setFname(empp.getFname());
-                    emRes.setLname(empp.getLname());
+                    emRes.setEmployeeId(empp.getId());
+                    emRes.setName(empp.getName());
                     emRes.setPosition(empp.getPosition());
                     emRes.setDepartment(empp.getDepartment());
                     emRes.setPhone(empp.getPhone());
@@ -73,4 +73,16 @@ public class EmployeeController {
                 }).collect(Collectors.toList());
         return empReslst;
     }
+
+
+//    @PostMapping("/updateById")
+//    public ResponseEntity<String> upDateByID(@RequestBody Employee updateData){
+//        return employeeService.findByIDAndUpdate(updateData);
+//    }
+//
+//    @PostMapping("/deleteByID/{id}")
+//    public ResponseEntity<String> deleteById(@PathVariable long id){
+//        return employeeService.deleteProduct(id);
+//    }
+
 }
