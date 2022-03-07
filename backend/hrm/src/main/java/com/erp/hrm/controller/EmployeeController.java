@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping("/addEmployee")
-    public String addEmployee(@RequestBody EmployeeReq employeeReq){
+    public ResponseEntity<String> addEmployee(@RequestBody EmployeeReq employeeReq){
         return employeeService.newEmployee(employeeReq);
     }
     @GetMapping("/getAll")
@@ -51,7 +52,6 @@ public class EmployeeController {
     public List<EmployeeRes> getPage(@RequestBody GetInforReq getInforReq){
         Integer pageNum = getInforReq.pageNum;
         Integer size = getInforReq.size;
-        System.out.println(size);
         PageRequest sort = PageRequest.of(pageNum, size);
         Page<Employee> empList = employeeService.loadPageEmployee(sort);
         if (empList.isEmpty()){
