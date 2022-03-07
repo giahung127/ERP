@@ -25,6 +25,26 @@ const routes: Routes = [
         // canActivate: [AuthGuard]
     },
     {
+        path: 'scm',
+        component: HomeComponent,
+        loadChildren: () => {
+            return import('./modules/scm/scm.module').then((m) => {
+                return m.ScmModule;
+            });
+        },
+        // canActivate: [AuthGuard]
+    },
+    {
+        path: 'sales',
+        component: HomeComponent,
+        loadChildren: () => {
+            return import('./modules/sales/sales.module').then((m) => {
+                return m.SalesModule;
+            });
+        },
+        // canActivate: [AuthGuard]
+    },
+    {
         path: '',
         component: HomeComponent,
         loadChildren: () => {

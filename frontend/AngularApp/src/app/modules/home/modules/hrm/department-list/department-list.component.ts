@@ -13,10 +13,10 @@ export class DepartmentListComponent {
     private router: Router
   ) { }
   departmentList: Department[] = [
-    new Department('#d001','Software Enginering', '0123456879', 'Nguyen Van A'),
-    new Department('#d002','Software Enginering', '0123456789', 'Nguyen Van A'),
-    new Department('#d003','Software Enginering', '0123456879', 'Nguyen Van A'),
-    new Department('#d004','Software Enginering', '0123456789', 'Nguyen Van A')
+    new Department('d001','Software Enginering', '0123456879', 'Nguyen Van A'),
+    new Department('d002','Software Enginering', '0123456789', 'Nguyen Van A'),
+    new Department('d003','Software Enginering', '0123456879', 'Nguyen Van A'),
+    new Department('d004','Software Enginering', '0123456789', 'Nguyen Van A')
   ];
   columnName: string[] = [
     'DepartmentId',

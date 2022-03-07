@@ -1,0 +1,46 @@
+<div class="main-container">
+
+<mat-dialog-content>
+    <form [formGroup]="addCategoryForm">
+        <div class="partial-container">
+            <div *ngIf="!editMode" class="title">
+                <p>Add category</p>
+            </div>
+            <div *ngIf="editMode" class="title">
+                <p>Edit category</p>
+            </div>
+            <div class="line"></div>
+            <div class="row">
+                <div class="custom-field-l">
+                    <div class="label">Category Name</div>
+                    <mat-form-field  appearance="outline" required>
+                        <input matInput type="text" formControlName="categoryName">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="custom-field-l">
+                    <div class="label">Parent Category</div>
+                    <mat-form-field  appearance="outline" required><mat-select formControlName="parentCategory">
+                        <mat-option>None</mat-option>
+                        <mat-option *ngFor="let category of categoryList" [value]="category.categoryId">
+                          {{category.categoryName}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+  
+<mat-dialog-actions>
+    <button class="green-custom-button" mat-button (click)="onSave()">
+        <mat-icon>save</mat-icon> Save
+    </button>
+    <button class="red-custom-button" mat-button (click)="onCancel()">
+        Cancel
+    </button>
+</mat-dialog-actions>
+
+</div>

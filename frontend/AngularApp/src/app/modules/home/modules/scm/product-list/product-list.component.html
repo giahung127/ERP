@@ -1,0 +1,22 @@
+<div class="main-container">
+    <div class="body" >
+        <app-category-list></app-category-list>
+        <div class="line"></div>
+        <app-home-table-list
+        [title]="'Product List'"
+        [data]="productList"
+        [columnName]="columnName"
+        [columnToProperty]="columnToProperty"
+        [checkbox]="false"
+        [filter]="true"
+        [onViewClick]="onViewClick"
+        [onEditClick]="onEditClick"
+        [onDeleteClick]="onDeleteClick"
+        [key]="'productId'"
+        [add]="true"
+        [onAdd]="onAddEmployee"
+        >
+        </app-home-table-list>
+    </div>
+  </div>
+  

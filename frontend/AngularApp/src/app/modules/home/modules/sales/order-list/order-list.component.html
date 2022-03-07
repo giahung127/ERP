@@ -1,0 +1,17 @@
+<div class="main-container">
+    <app-home-table-list
+    class="import-list"
+    [title]="'Order List'"
+    [data]="productList"
+    [columnName]="columnName"
+    [columnToProperty]="columnToProperty"
+    [checkbox]="false"
+    [filter]="true"
+    [select]="onViewClick"
+    [key]="'productId'"
+    [add]="true"
+    [onAdd]="onAddEmployee"
+    [more]="false"
+    >
+    </app-home-table-list>
+</div>

@@ -1,0 +1,63 @@
+<div class="main-container">
+    <div class="form-header">
+        <button mat-button class="title" (click)="onBack()"><mat-icon>arrow_back_ios
+        </mat-icon> Product Detail </button>
+    </div>
+    <form [formGroup]="addProductForm">
+        <div class="partial-container">
+            <div class="title">
+                <p>General Information</p>
+            </div>
+            <div class="line"></div>
+            <div class="row">
+            <div class="custom-field-s">
+                <div class="label">Product Code</div>
+                <mat-form-field  appearance="outline" required>
+                    <input matInput type="textarea" formControlName="productCode">
+                </mat-form-field>
+            </div>
+            <div class="custom-field-s">
+                <div class="label">Product Name</div>
+                <mat-form-field  appearance="outline" required>
+                    <input matInput type="text" formControlName="productName">
+                </mat-form-field>
+            </div>
+            <div class="custom-field-s">
+                <div class="label">Category</div>
+                <mat-form-field  appearance="outline" required>
+                    <mat-select formControlName="category">
+                        <mat-option>None</mat-option>
+                        <mat-option *ngFor="let department of departmentList" [value]="department.departmentId">
+                          {{department.name}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="custom-field-s">
+                <div class="label">Price</div>
+                <mat-form-field  appearance="outline" required>
+                    <input matInput type="number" formControlName="price">
+                </mat-form-field>
+            </div>
+            <div class="custom-field-m">
+                <div class="label">Description</div>
+                <mat-form-field  appearance="outline">
+                    <input matInput type="textarea" formControlName="description">
+                </mat-form-field>
+            </div>
+        </div>
+        </div>
+        
+        <div class="line"></div>
+        <div class="form-footer">
+            <button class="red-custom-button" mat-button  (click)="onBack()">
+                <mat-icon>delete_outline</mat-icon> Cancel
+            </button>
+            <button mat-button class="green-custom-button" [disabled]="!addProductForm.valid">
+                <mat-icon>save</mat-icon> Save
+            </button>
+        </div>
+    </form>
+</div>
