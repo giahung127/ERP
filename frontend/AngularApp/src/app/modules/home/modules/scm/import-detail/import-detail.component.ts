@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { nonAccentVietnamese } from 'src/app/common/functions/ultils';
 import { ImportProduct } from '../../shared/models/product/import-product.model';
 import { Product } from '../../shared/models/product/product.model';
@@ -34,13 +35,20 @@ export class ImportDetailComponent {
     'Name': 'productName',
     'Category': 'categoryName',
   };
-  importProductList: ImportProduct[] = [
-    new ImportProduct(1, 'p001','My Pham 1', 1)
-  ];
+  importProductList: ImportProduct[] = [];
+
   constructor(
     private _location: Location,
+    private route: ActivatedRoute,
   ) { 
     this.showProductList = this.productList;
+    this.route.queryParams.subscribe((params) => {
+      if (params['id']) {
+        this.viewModeCheck = false;
+      } else {
+        this.viewModeCheck = true;
+      }      
+    })
   }
 
   onBack() {
@@ -56,7 +64,13 @@ export class ImportDetailComponent {
   }
 
   addToImport: (id: string) => void = (id: string) =>{
-
+    const data = this.importProductList.filter(x => {return x.productId === id})[0]
+    if(data){
+      data.amount += 1;
+    } else {
+      const product = this.productList.filter(x => {return x.productId === id})[0]
+      this.importProductList.push(new ImportProduct(this.importProductList.length +1, product.productId, product.productName, 1))
+    }
   }
 
   reIndexNo() {

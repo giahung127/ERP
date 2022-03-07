@@ -35,6 +35,16 @@ const routes: Routes = [
         // canActivate: [AuthGuard]
     },
     {
+        path: 'sales',
+        component: HomeComponent,
+        loadChildren: () => {
+            return import('./modules/sales/sales.module').then((m) => {
+                return m.SalesModule;
+            });
+        },
+        // canActivate: [AuthGuard]
+    },
+    {
         path: '',
         component: HomeComponent,
         loadChildren: () => {

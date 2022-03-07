@@ -31,6 +31,10 @@ const routes: Routes = [
                 path: 'import-detail/:id',
                 component: ImportDetailComponent
             },
+            {
+                path: 'import-detail',
+                component: ImportDetailComponent
+            },
         ]
     }
 ];

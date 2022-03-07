@@ -1,0 +1,19 @@
+<div class="main-container">
+    <app-home-table-list
+      [title]="'Customer List'"
+      [data]="customerList"
+      [columnName]="columnName"
+      [columnToProperty]="columnToProperty"
+      [checkbox]="false"
+      [filter]="true"
+      [onViewClick]="onViewClick"
+      [onEditClick]="onEditClick"
+      [onDeleteClick]="onDeleteClick"
+      [key]="'employeeId'"
+      [add]="true"
+      [onAdd]="onAddEmployee"
+      [checkbox]="true"
+    >
+    </app-home-table-list>
+  </div>
+  

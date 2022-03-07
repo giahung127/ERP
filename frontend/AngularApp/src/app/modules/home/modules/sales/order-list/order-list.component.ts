@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../../shared/models/product/product.model';
 
 @Component({
-  selector: 'app-import-list',
-  templateUrl: './import-list.component.html',
-  styleUrls: ['./import-list.component.scss']
+  selector: 'app-order-list',
+  templateUrl: './order-list.component.html',
+  styleUrls: ['./order-list.component.scss']
 })
-export class ImportListComponent {
+export class OrderListComponent {
 
   constructor(
     private router: Router,
@@ -23,13 +23,13 @@ export class ImportListComponent {
     new Product('p008','My Pham 8', 100000, 'c001', 'My pham', 'ABC')
   ];
   columnName: string[] = [
-    'ImportId',
+    'Order Id',
     'Date',
     'Supplier',
     'Status'
   ];
   columnToProperty = {
-    'ImportId': 'productId',
+    'Order Id': 'productId',
     'Date': 'productName',
     'Supplier': 'productName',
     'Status': 'price'

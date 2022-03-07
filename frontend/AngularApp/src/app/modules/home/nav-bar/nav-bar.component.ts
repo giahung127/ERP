@@ -30,7 +30,7 @@ export class NavBarComponent {
         title: 'HRM',
         content: [
             {
-                name: 'Employee List',
+                name: 'Employee',
                 href: '/home/hrm/employee-list',
                 icon: 'groups'
             },
@@ -45,14 +45,19 @@ export class NavBarComponent {
       title: 'Sales',
       content: [
           {
-              name: 'Item1',
-              href: '/home/dashboard',
-              icon: 'note_add'
+              name: 'Order',
+              href: '/home/sales/order-list',
+              icon: 'list_alt'
           },
           {
-            name: 'Item2',
+            name: 'Invoces',
             href: '/home/dashboard',
-            icon: 'note_add'
+            icon: 'receipt'
+          },
+          {
+            name: 'Customers',
+            href: '/home/sales/customer-list',
+            icon: 'supervisor_account'
           }
       ]
     },
@@ -75,9 +80,9 @@ export class NavBarComponent {
               icon: 'input'
           },
           {
-            name: 'Item2',
+            name: 'Shipment',
             href: '/home/dashboard',
-            icon: 'note_add'
+            icon: 'local_shipping'
           }
       ]
     }
