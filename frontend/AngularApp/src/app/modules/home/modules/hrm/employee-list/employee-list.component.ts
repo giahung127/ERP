@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Employee } from '../../shared/models/employee';
+import { EmployeeService } from '../services/employee.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -11,7 +12,10 @@ export class EmployeeListComponent {
 
   constructor(
     private router: Router,
-  ) {}
+    private employeeService: EmployeeService
+  ) {
+    console.log(this.employeeService.getAllEmployee());
+  }
   employeeList: Employee[] = [
     new Employee('p001','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
     new Employee('p002','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),

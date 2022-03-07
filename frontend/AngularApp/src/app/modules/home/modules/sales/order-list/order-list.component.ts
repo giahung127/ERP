@@ -36,11 +36,11 @@ export class OrderListComponent {
   };
   onAddEmployee: () => void = () => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/scm/import-detail']);
+    this.router.navigate(['/home/sales/order-detail']);
   };
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/scm/import-detail'],
+    this.router.navigate(['/home/sales/order-detail'],
     {
       queryParams: { id: id }
   });
