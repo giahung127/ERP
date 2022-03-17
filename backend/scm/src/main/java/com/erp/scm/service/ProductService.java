@@ -11,19 +11,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
-
+    Product temp;
     public ResponseEntity<String> newProduct(NewProductReq newProductReq) {
         try {
-            productRepository.save(new Product(newProductReq));
+            temp = productRepository.save(new Product(newProductReq));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD_REQUEST");
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Inserted new product");
+        return ResponseEntity.status(HttpStatus.OK).body("Inserted new product with ID: " + temp.getId());
     }
 
     public List<Product> loadAllProduct(){
@@ -35,7 +36,7 @@ public class ProductService {
         return result;
     }
 
-    public Optional<Product> loadByID(long ID){
+    public Optional<Product> loadByID(UUID ID){
         Optional<Product> result = productRepository.findById(ID);
         return result;
     }
@@ -50,7 +51,7 @@ public class ProductService {
         result.get().setCode(updateProductReq.getCode());
         result.get().setDescription(updateProductReq.getDescription());
         result.get().setPrice(updateProductReq.getPrice());
-        result.get().setCategory(updateProductReq.getCategory());
+        result.get().setCategoryId(updateProductReq.getCategoryId());
         try {
             productRepository.save(result.get());
         } catch (Error e){
@@ -59,7 +60,7 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.OK).body("Updated new product");
     }
 
-    public ResponseEntity<String> deleteProduct(long ID){
+    public ResponseEntity<String> deleteProduct(UUID ID){
         Optional<Product> result = productRepository.findById(ID);
         try {
             productRepository.delete(result.get());
