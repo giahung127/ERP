@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -28,7 +29,7 @@ public class CategoryController {
     }
 
     @GetMapping("/getById/{id}")
-    public Optional<Category> getProductById(@PathVariable long id){
+    public Optional<Category> getProductById(@PathVariable UUID id){
         return categoryService.loadByID(id);
     }
 
@@ -38,7 +39,7 @@ public class CategoryController {
     }
 
     @PostMapping("/deleteByID/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable long id){
+    public ResponseEntity<String> deleteById(@PathVariable UUID id){
         return categoryService.deleteCategory(id);
     }
 }

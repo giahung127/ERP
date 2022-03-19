@@ -3,11 +3,13 @@ package com.erp.scm.entity;
 import com.erp.scm.controller.NewCategoryReq;
 import com.erp.scm.controller.NewProductReq;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,10 +20,10 @@ import javax.persistence.Id;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long    id;
-
+    @Type(type="uuid-char")
+    private UUID id;
     private Integer level;
-    private Long  parentId;
+    private String  parentId;
     private String  name;
 
     public Category(NewCategoryReq newCategoryReq) {
