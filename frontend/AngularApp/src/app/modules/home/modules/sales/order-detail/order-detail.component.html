@@ -9,7 +9,7 @@
         </div>
         <div class="line"></div>
         <div class="partial-container">
-            <div class="title">General Information</div>
+            <div class="title">General information</div>
             <div class="row">
             <div class="custom-field-s">
                 <div class="label">Created By:</div>
@@ -35,23 +35,42 @@
                 </mat-form-field>
             </div>
             </div>
+            <div class="row">
+                
+            <div class="custom-field-s">
+                <div class="label">Price List:</div>
+                <mat-form-field  appearance="outline" required>
+                    <mat-select>
+                        <mat-option>None</mat-option>
+                        <mat-option>
+                          A
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+                </div>
+            </div>
         </div>
         <div class="line"></div>
-        <div class="import-product-list">
-            <div class="label">
-                <div class="no">No.</div>
-                <div class="code">Product Code</div>
-                <div class="name">Product Name</div>
-                <div class="amount">Amount</div>
-                <div class="delete" *ngIf="viewModeCheck"></div>
-            </div>
-            <div class="import-item" *ngFor="let importProduct of importProductList">
-                <div class="no">{{importProduct.no}}</div>
-                <div class="code">{{importProduct.productId}}</div>
-                <div class="name">{{importProduct.productName}}</div>
-                <mat-form-field class="amount" appearance="outline"><input [value]=importProduct.amount matInput type="number"></mat-form-field>
-                
-                <button *ngIf="viewModeCheck" class="delete" mat-icon-button (click)="delete(importProduct.productId)"><mat-icon>close</mat-icon></button>
+        <div class="partial-container">
+            <div class="title">Price list</div>
+            <div class="row">
+                <div class="import-product-list custom-field-l">
+                    <div class="label">
+                        <div class="no">No.</div>
+                        <div class="code">Product Code</div>
+                        <div class="name">Product Name</div>
+                        <div class="amount">Amount</div>
+                        <div class="delete" *ngIf="viewModeCheck"></div>
+                    </div>
+                    <div class="import-item" *ngFor="let importProduct of importProductList">
+                        <div class="no">{{importProduct.no}}</div>
+                        <div class="code">{{importProduct.productId}}</div>
+                        <div class="name">{{importProduct.productName}}</div>
+                        <mat-form-field class="amount" appearance="outline"><input [value]=importProduct.amount matInput type="number"></mat-form-field>
+                        
+                        <button *ngIf="viewModeCheck" class="delete" mat-icon-button (click)="delete(importProduct.productId)"><mat-icon>close</mat-icon></button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="line"></div>

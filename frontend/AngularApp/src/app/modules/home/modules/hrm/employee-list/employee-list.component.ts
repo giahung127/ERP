@@ -26,7 +26,6 @@ export class EmployeeListComponent {
         'department': department
       }
     })
-    console.log(data);
   })
   }
   // employeeList: Employee[] = [

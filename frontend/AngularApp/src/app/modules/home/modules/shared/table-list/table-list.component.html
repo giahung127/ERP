@@ -58,9 +58,24 @@
             <div *ngIf="!isFormField(i)">
               <td mat-cell *matCellDef="let item"  class="data-column"> {{getValue(item, i)}} </td>
             </div>
+            <div *ngIf="isFormField(i)">
+              <td mat-cell *matCellDef="let item">
+                <mat-form-field appearance="legacy" *ngIf="(i === 'Price')">
+                  <input
+                    style="text-align: right;"
+                    matInput
+                    (change)="onQuickUpdate.action(item)"
+                    [(ngModel)]="item[i] ? item[i]: item[columnToProperty[i]]"
+                    type="number"
+                    min=0
+                  >
+                  <span matSuffix>đ</span>
+                </mat-form-field>
+              </td>
+            </div>
         </ng-container>
       </div>
-  
+      
       <div *ngIf="more" >
         <ng-container matColumnDef="more">
           <th mat-header-cell *matHeaderCellDef></th>

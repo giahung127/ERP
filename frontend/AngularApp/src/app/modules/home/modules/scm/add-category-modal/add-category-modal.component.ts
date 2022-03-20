@@ -34,10 +34,10 @@ export class AddCategoryModalComponent {
   }
 
   onSave() {
-      this.dialogRef.close(false);
+      this.dialogRef.close(this.addCategoryForm.value);
   }
 
   onCancel() {
-      this.dialogRef.close(false);
+      this.dialogRef.close();
   }
 }

@@ -4,6 +4,7 @@ import { CustomerDetailComponent } from './customer-detail/customer-detail.compo
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { OrderListComponent } from './order-list/order-list.component';
+import { PriceListComponent } from './price-list/price-list.component';
 import { SalesComponent } from './sales.component';
 
 const routes: Routes = [
@@ -34,6 +35,10 @@ const routes: Routes = [
             {
                 path: 'order-detail',
                 component: OrderDetailComponent
+            },
+            {
+                path: 'price-list',
+                component: PriceListComponent
             },
         ]
     }

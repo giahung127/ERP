@@ -1,6 +1,7 @@
 package com.erp.scm.service;
 
 import com.erp.scm.controller.NewCategoryReq;
+import com.erp.scm.controller.NewCategoryRes;
 import com.erp.scm.entity.Category;
 import com.erp.scm.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,16 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public ResponseEntity<String> newCategory(NewCategoryReq newCategoryReq) {
+    public NewCategoryRes newCategory(NewCategoryReq newCategoryReq) {
         Category temp;
         try {
             temp = categoryRepository.save(new Category(newCategoryReq));
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD_REQUEST");
+            throw e;
         }
-        return ResponseEntity.status(HttpStatus.OK).body("inserted new category with id: " + temp.getId());
+        NewCategoryRes res = new NewCategoryRes("200", "New category is successfully added ", temp.getId().toString());
+
+        return res;
     }
 
     public List<Category> loadAllCategory(){
@@ -37,10 +40,10 @@ public class CategoryService {
         return result;
     }
 
-    public ResponseEntity<String> findByIDAndUpdate(Category updateCategory) {
+    public NewCategoryRes findByIDAndUpdate(Category updateCategory) {
         Optional<Category> result =  categoryRepository.findById(updateCategory.getId());
         if (result.isEmpty()){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Found No Data");
+            return new NewCategoryRes("404", "Category is not exist", "");
         }
 
         result.get().setLevel(updateCategory.getLevel());
@@ -49,9 +52,9 @@ public class CategoryService {
         try {
             categoryRepository.save(result.get());
         } catch (Error e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD_REQUEST");
+            throw e;
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Updated category");
+        return new NewCategoryRes("200", "The category is successfully updated ", "");
     }
 
     public ResponseEntity<String> deleteCategory(UUID ID){

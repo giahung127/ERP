@@ -4,7 +4,8 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { Category } from '../../shared/models/category/category.model';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddCategoryModalComponent } from '../add-category-modal/add-category-modal.component';
-
+import { CategoryService } from '../services/category.service'
+import { ToastrService } from 'ngx-toastr';
 interface Node {
   name: string;
   id: string;
@@ -26,10 +27,32 @@ interface ExampleFlatNode {
   styleUrls: ['./category-list.component.scss']
 })
 export class CategoryListComponent {
-
   constructor(
     private dialog: MatDialog,
+    private toastr: ToastrService,
+    private categoryService: CategoryService
   ) {
+    this.initData()
+  }
+  treeData: Node[] = [];
+  currentNodeId = '';
+  maxLevel = 0;
+  categoryList: Category[] = [];
+  initData() {
+    this.categoryService.getAllCategory()
+      .subscribe((res) => {
+        let data;
+        data = res
+        this.categoryList = data.map(({ id, name, level, parentId})=>{
+          return {
+            'categoryId': id,
+            'categoryName': name,
+            'description': '',
+            'level': level,
+            'parentId': parentId !== null ? parentId : ''
+          }
+        })
+    this.maxLevel = Math.max(...this.categoryList.map((category) => {return category.level}))
     this.dataSource.data = [{ name: 'All', id: '',children: this.constructData(0, '')}]
     this.treeControl.dataNodes
             .filter((node) => {
@@ -38,20 +61,9 @@ export class CategoryListComponent {
             .forEach((node) => {
                 this.treeControl.expand(node);
             });
+      })
   }
-  treeData: Node[] = [];
-  currentNodeId = '';
-  categoryList: Category[] = [
-    new Category('c001','My pham 1', 'DEF', 0, ''),
-    new Category('c002','My pham 2', 'DEF', 0, ''),
-    new Category('c003','Mat na', 'DEF', 1, 'c001'),
-    new Category('c004','Nuoc tay trang', 'DEF', 1, 'c001'),
-    new Category('c005','Kem chong nang', 'DEF', 1, 'c002'),
-    new Category('c006','Mat na 1', 'DEF', 2, 'c003'),
-    new Category('c007','Nuoc tay trang 1', 'DEF', 2, 'c004')
-  ];
-
-  maxLevel = Math.max(...this.categoryList.map((category) => {return category.level}))
+  
 
   treeControl = new FlatTreeControl<ExampleFlatNode>(
     (node) => {
@@ -127,7 +139,7 @@ export class CategoryListComponent {
 
   openCreateCategoryDialog(selectedCategoryId: string) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
+    dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
       categoryList: this.categoryList,
@@ -136,7 +148,67 @@ export class CategoryListComponent {
     const dialogRef = this.dialog.open(AddCategoryModalComponent, dialogConfig);
     dialogRef
         .afterClosed()
-        .subscribe(() => {
+        .subscribe(
+          (newCategory) => {
+            if(newCategory){
+              const data = {
+                id: selectedCategoryId,
+                name: newCategory.categoryName,
+                parentId: newCategory.parentCategory ? newCategory.parentCategory : null,
+                level: newCategory.parentCategory ? this.categoryList.filter(x=> {return x.categoryId === newCategory.parentCategory})[0].level + 1 : 0
+              }
+              if(selectedCategoryId === ''){
+                this.categoryService.addNewCategory(data)
+                  .subscribe(
+                  (res)=>{
+                    let tempRes;
+                    tempRes = res;
+                    this.toastr.success('New category is successfully added');
+                    const temp = {
+                      'categoryId': tempRes.data,
+                      'categoryName': data.name,
+                      'description': '',
+                      'level': data.level,
+                      'parentId': newCategory.parentCategory
+                    }
+                    this.categoryList.push(temp);
+                    this.maxLevel = Math.max(...this.categoryList.map((category) => {return category.level}))
+                    this.dataSource.data = [{ name: 'All', id: '',children: this.constructData(0, '')}]
+                    this.treeControl.dataNodes
+                            .filter((node) => {
+                                return node.name === 'All';
+                            })
+                            .forEach((node) => {
+                                this.treeControl.expand(node);
+                            });
+                  })
+                } else {
+                  this.categoryService.updateCategoryById(data)
+                  .subscribe(
+                    (res)=>{
+                      this.toastr.success('The category is successfully updated');
+                      const temp = {
+                        'categoryId': data.id,
+                        'categoryName': data.name,
+                        'description': '',
+                        'level': data.level,
+                        'parentId': data.parentId
+                      } 
+                      this.categoryList = [...this.categoryList.filter(x => {return x.categoryId !== selectedCategoryId}), temp];
+                      
+                      this.maxLevel = Math.max(...this.categoryList.map((category) => {return category.level}))
+                      this.dataSource.data = [{ name: 'All', id: '',children: this.constructData(0, '')}]
+                      this.treeControl.dataNodes
+                              .filter((node) => {
+                                  return node.name === 'All';
+                              })
+                              .forEach((node) => {
+                                  this.treeControl.expand(node);
+                              });
+                    }
+                  )
+                }
+              }
         });
 }
 }

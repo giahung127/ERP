@@ -58,7 +58,12 @@ export class NavBarComponent {
             name: 'Customers',
             href: '/home/sales/customer-list',
             icon: 'supervisor_account'
-          }
+          },
+          {
+            name: 'Price List',
+            href: '/home/sales/price-list',
+            icon: 'request_quote'
+          },
       ]
     },
     {

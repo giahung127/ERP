@@ -1,0 +1,32 @@
+<div class="main-container">
+    <div class="body" >
+        <div class="right-container">
+            <div class="header">
+                <div class="title">Price List</div>
+                <button mat-icon-button><mat-icon>add</mat-icon></button>
+            </div>
+            <div class="price-list">
+                <div>
+                    <div class="node">
+                        <button mat-button >General</button>
+                        <button mat-icon-button class="edit-button"><mat-icon>edit</mat-icon> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line"></div>
+        <app-home-table-list
+        [title]="'Price List'"
+        [data]="productList"
+        [columnName]="columnName"
+        [columnToProperty]="columnToProperty"
+        [checkbox]="false"
+        [more]="false"
+        [key]="'productId'"
+        [add]="true"
+        [formField]= "formFieldList"
+        >
+        </app-home-table-list>
+    </div>
+</div>
+  

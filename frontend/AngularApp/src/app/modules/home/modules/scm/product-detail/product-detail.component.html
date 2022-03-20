@@ -27,8 +27,8 @@
                 <mat-form-field  appearance="outline" required>
                     <mat-select formControlName="category">
                         <mat-option>None</mat-option>
-                        <mat-option *ngFor="let department of departmentList" [value]="department.departmentId">
-                          {{department.name}}
+                        <mat-option *ngFor="let category of categoryList" [value]="category.categoryId">
+                          {{category.categoryName}}
                         </mat-option>
                       </mat-select>
                 </mat-form-field>

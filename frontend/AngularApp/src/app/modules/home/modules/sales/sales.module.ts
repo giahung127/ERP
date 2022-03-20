@@ -23,6 +23,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { OrderListComponent } from './order-list/order-list.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { PriceListComponent } from './price-list/price-list.component';
 
 
 
@@ -32,7 +33,8 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
     CustomerDetailComponent,
     SalesComponent,
     OrderListComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    PriceListComponent
   ],
   imports: [
     CommonModule,

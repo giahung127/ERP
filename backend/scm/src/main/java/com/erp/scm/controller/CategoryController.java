@@ -19,7 +19,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/addCategory")
-    public ResponseEntity<String> addProduct(@RequestBody NewCategoryReq newCategoryReq){
+    public NewCategoryRes addProduct(@RequestBody NewCategoryReq newCategoryReq){
         return categoryService.newCategory(newCategoryReq);
     }
 
@@ -34,7 +34,7 @@ public class CategoryController {
     }
 
     @PostMapping("/updateById")
-    public ResponseEntity<String> upDateByID(@RequestBody Category updateData){
+    public NewCategoryRes upDateByID(@RequestBody Category updateData){
         return categoryService.findByIDAndUpdate(updateData);
     }
 
