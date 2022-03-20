@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CategoryService {
@@ -17,12 +18,13 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public ResponseEntity<String> newCategory(NewCategoryReq newCategoryReq) {
+        Category temp;
         try {
-            categoryRepository.save(new Category(newCategoryReq));
+            temp = categoryRepository.save(new Category(newCategoryReq));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD_REQUEST");
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Inserted new Category");
+        return ResponseEntity.status(HttpStatus.OK).body("inserted new category with id: " + temp.getId());
     }
 
     public List<Category> loadAllCategory(){
@@ -30,7 +32,7 @@ public class CategoryService {
     }
 
 
-    public Optional<Category> loadByID(long ID){
+    public Optional<Category> loadByID(UUID ID){
         Optional<Category> result = categoryRepository.findById(ID);
         return result;
     }
@@ -52,7 +54,7 @@ public class CategoryService {
         return ResponseEntity.status(HttpStatus.OK).body("Updated category");
     }
 
-    public ResponseEntity<String> deleteCategory(long ID){
+    public ResponseEntity<String> deleteCategory(UUID ID){
         Optional<Category> result = categoryRepository.findById(ID);
         try {
             categoryRepository.delete(result.get());

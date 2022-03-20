@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping("/getById/{id}")
-    public Optional<Product> getProductById(@PathVariable long id){
+    public Optional<Product> getProductById(@PathVariable UUID id){
         return productService.loadByID(id);
     }
 
@@ -50,7 +51,7 @@ public class ProductController {
     }
 
     @PostMapping("/deleteByID/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable long id){
+    public ResponseEntity<String> deleteById(@PathVariable UUID id){
         return productService.deleteProduct(id);
     }
 
