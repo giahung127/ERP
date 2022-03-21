@@ -23,7 +23,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/addProduct")
-    public ResponseEntity<String> addProduct(@RequestBody NewProductReq newProductReq){
+    public NewProductRes addProduct(@RequestBody NewProductReq newProductReq){
         return productService.newProduct(newProductReq);
     }
 
@@ -46,7 +46,7 @@ public class ProductController {
     }
 
     @PostMapping("/updateById")
-    public ResponseEntity<String> upDateByID(@RequestBody Product updateData){
+    public NewProductRes upDateByID(@RequestBody Product updateData){
         return productService.findByIDAndUpdate(updateData);
     }
 

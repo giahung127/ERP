@@ -31,13 +31,22 @@ public class CategoryService {
     }
 
     public List<Category> loadAllCategory(){
-        return (List<Category>) categoryRepository.findAll();
+        try {
+            return (List<Category>) categoryRepository.findAll();
+        }catch (Error e){
+            throw e;
+        }
     }
 
 
     public Optional<Category> loadByID(UUID ID){
-        Optional<Category> result = categoryRepository.findById(ID);
-        return result;
+        try {
+            Optional<Category> result = categoryRepository.findById(ID);
+            return result;
+        }catch (Error e){
+            throw e;
+        }
+
     }
 
     public NewCategoryRes findByIDAndUpdate(Category updateCategory) {
@@ -62,8 +71,8 @@ public class CategoryService {
         try {
             categoryRepository.delete(result.get());
         } catch (Error e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD_REQUEST");
+            throw e;
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted category - ID " + ID);
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted category - ID: " + ID);
     }
 }

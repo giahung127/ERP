@@ -1,6 +1,7 @@
 package com.erp.scm.service;
 
 import com.erp.scm.controller.NewProductReq;
+import com.erp.scm.controller.NewProductRes;
 import com.erp.scm.entity.Product;
 import com.erp.scm.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,33 +19,45 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
     Product temp;
-    public ResponseEntity<String> newProduct(NewProductReq newProductReq) {
+    public NewProductRes newProduct(NewProductReq newProductReq) {
         try {
             temp = productRepository.save(new Product(newProductReq));
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD_REQUEST");
+            throw e;
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Inserted new product with ID: " + temp.getId());
+        return new NewProductRes("200", "New product inserted", temp.getId().toString());
     }
 
     public List<Product> loadAllProduct(){
-        return (List<Product>) productRepository.findAll();
+        try {
+            return (List<Product>) productRepository.findAll();
+        }catch (Error e){
+            throw e;
+        }
     }
 
     public Page<Product> loadPageProduct(PageRequest sort) {
-        Page<Product> result = productRepository.findAll(sort);
-        return result;
+        try{
+            Page<Product> result = productRepository.findAll(sort);
+            return result;
+        }catch (Error e){
+            throw e;
+        }
     }
 
     public Optional<Product> loadByID(UUID ID){
-        Optional<Product> result = productRepository.findById(ID);
-        return result;
+        try{
+            Optional<Product> result = productRepository.findById(ID);
+            return result;
+        }catch (Error e){
+            throw e;
+        }
     }
 
-    public ResponseEntity<String> findByIDAndUpdate(Product updateProductReq) {
+    public NewProductRes findByIDAndUpdate(Product updateProductReq) {
         Optional<Product> result =  productRepository.findById(updateProductReq.getId());
         if (result.isEmpty()){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Found No Data");
+            return new NewProductRes("404", "Found no Product", "");
         }
 
         result.get().setName(updateProductReq.getName());
@@ -55,9 +68,9 @@ public class ProductService {
         try {
             productRepository.save(result.get());
         } catch (Error e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD_REQUEST");
+            throw e;
         }
-        return ResponseEntity.status(HttpStatus.OK).body("Updated new product");
+        return new NewProductRes("200", "Updated Product", result.get().getId().toString());
     }
 
     public ResponseEntity<String> deleteProduct(UUID ID){
@@ -69,5 +82,4 @@ public class ProductService {
         }
         return ResponseEntity.status(HttpStatus.OK).body("Deleted product - ID " + ID);
     }
-
 }
