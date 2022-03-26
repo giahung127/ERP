@@ -1,7 +1,6 @@
 package com.erp.scm.entity;
 
-import com.erp.scm.controller.NewCategoryReq;
-import com.erp.scm.controller.NewProductReq;
+import com.erp.scm.controller.request.NewCategoryReq;
 import lombok.*;
 import org.hibernate.annotations.Type;
 

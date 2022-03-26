@@ -1,7 +1,7 @@
 package com.erp.scm.service;
 
-import com.erp.scm.controller.NewProductReq;
-import com.erp.scm.controller.NewProductRes;
+import com.erp.scm.controller.request.NewProductReq;
+import com.erp.scm.controller.response.NewProductRes;
 import com.erp.scm.entity.Product;
 import com.erp.scm.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,7 @@ public class ProductService {
         result.get().setCode(updateProductReq.getCode());
         result.get().setDescription(updateProductReq.getDescription());
         result.get().setPrice(updateProductReq.getPrice());
-        result.get().setCategoryId(updateProductReq.getCategoryId());
+        result.get().setCategory_id(updateProductReq.getCategory_id());
         try {
             productRepository.save(result.get());
         } catch (Error e){

@@ -1,6 +1,9 @@
 package com.erp.scm.controller;
 
 
+import com.erp.scm.controller.request.GetInforReq;
+import com.erp.scm.controller.request.NewProductReq;
+import com.erp.scm.controller.response.NewProductRes;
 import com.erp.scm.entity.Product;
 import com.erp.scm.service.ProductService;
 import lombok.extern.slf4j.Slf4j;

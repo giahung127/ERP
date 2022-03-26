@@ -1,5 +1,7 @@
 package com.erp.scm.controller;
 
+import com.erp.scm.controller.request.NewCategoryReq;
+import com.erp.scm.controller.response.NewCategoryRes;
 import com.erp.scm.entity.Category;
 import com.erp.scm.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;

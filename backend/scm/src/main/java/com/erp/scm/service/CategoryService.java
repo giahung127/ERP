@@ -1,7 +1,7 @@
 package com.erp.scm.service;
 
-import com.erp.scm.controller.NewCategoryReq;
-import com.erp.scm.controller.NewCategoryRes;
+import com.erp.scm.controller.request.NewCategoryReq;
+import com.erp.scm.controller.response.NewCategoryRes;
 import com.erp.scm.entity.Category;
 import com.erp.scm.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

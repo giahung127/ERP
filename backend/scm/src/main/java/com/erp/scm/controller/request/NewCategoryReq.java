@@ -1,4 +1,4 @@
-package com.erp.scm.controller;
+package com.erp.scm.controller.request;
 
 public class NewCategoryReq {
     public  Integer level;

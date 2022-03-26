@@ -1,8 +1,9 @@
-package com.erp.sale.controller;
+package com.erp.sale.controller.request;
 
-public class OderItem {
+public class OrderItemReq {
     public Integer  noNum;
     public String   productCode;
     public String   productName;
     public Integer  amount;
+    public String   productId;
 }

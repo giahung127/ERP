@@ -1,6 +1,8 @@
 package com.erp.sale.controller;
 
-import com.erp.sale.entity.OrderN;
+import com.erp.sale.controller.request.NewOrderReq;
+import com.erp.sale.controller.response.NewOrderRes;
+import com.erp.sale.entity.Order;
 import com.erp.sale.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,12 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/newOrder")
-    public ResponseEntity<String> addProduct(@RequestBody NewOrderReq newCategoryReq){
+    public NewOrderRes addProduct(@RequestBody NewOrderReq newCategoryReq){
         return orderService.newOrder(newCategoryReq);
     }
 
     @GetMapping("/loadAll")
-    public List<OrderN> getAllProduct(){
+    public List<Order> getAllProduct(){
         return orderService.loadAllOrder();
     }
-
 }
