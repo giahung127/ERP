@@ -3,108 +3,121 @@
         <button mat-button class="title" (click)="onBack()"><mat-icon>arrow_back_ios
         </mat-icon> Customer Detail </button>
     </div>
-    <form [formGroup]="addEmployeeForm">
-        <div class="partial-container">
-            <div class="title">
-                <p>General Information</p>
-            </div>
-            <div class="line"></div>
-            <div class="row">
-            <div class="custom-field-s">
-                <div class="label">First Name</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="textarea" formControlName="firstName">
-                </mat-form-field>
-            </div>
-            <div class="custom-field-s">
-                <div class="label">Last Name</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="text" formControlName="lastName">
-                </mat-form-field>
-            </div>
+    <mat-tab-group mat-align-tabs="left" >
+        <mat-tab [label]="'Information'">
+            <ng-template mat-tab-label>
+                <span>Information</span>
+            </ng-template>
+            <form [formGroup]="addEmployeeForm">
+                <div class="partial-container">
+                    <div class="title">
+                        <p>General Information</p>
+                    </div>
+                    <div class="line"></div>
+                    <div class="row">
+                    <div class="custom-field-s">
+                        <div class="label">First Name</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="textarea" formControlName="firstName">
+                        </mat-form-field>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Last Name</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="text" formControlName="lastName">
+                        </mat-form-field>
+                    </div>
+                    
+                </div>
+                <div class="row">
+        
+                    <div class="custom-field-s">
+                        <div class="label">Change Date</div>
+                        <mat-form-field  appearance="outline">
+                            <input matInput type="date" formControlName="changeDate">
+                        </mat-form-field>
+                    </div>
+                </div>
+                </div>
+                <div class="partial-container">
+                    <div class="title">
+                        <p>Personal Information</p>
+                    </div>
+                    <div class="line"></div>
+                    <div class="row">
+                        <div class="custom-field-s">
+                            <div class="label">Join Date</div>
+                            <mat-form-field  appearance="outline">
+                                <input matInput type="date" formControlName="joinDate">
+                            </mat-form-field>
+                        </div>
+                        <div class="custom-field-s">
+                            <div class="label">Birthday</div>
+                            <mat-form-field  appearance="outline">
+                                <input matInput type="date" formControlName="birthday">
+                            </mat-form-field>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="custom-field-s">
+                        <div class="label">Contact Address</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="text" formControlName="contactAddress">
+                        </mat-form-field>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Phone</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="number" formControlName="phone">
+                        </mat-form-field>
+                    </div>
+        
+                    <div class="custom-field-s">
+                        <div class="label">Company Email</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="text" formControlName="companyEmail">
+                        </mat-form-field>
+                    </div>
+        
+                    <div class="custom-field-s">
+                        <div class="label">Personal Email</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="text" formControlName="personalEmail">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="custom-field-s">
+                        <div class="label">Bank Name</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="text" formControlName="bankName">
+                        </mat-form-field>
+                    </div>
+        
+                    <div class="custom-field-s">
+                        <div class="label">Account No</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="text" formControlName="accountNo">
+                        </mat-form-field>
+                    </div>
+                </div>
+                </div>
+                <div class="line"></div>
+                <div class="form-footer">
+                    <button class="red-custom-button" mat-button  (click)="onBack()">
+                        <mat-icon>delete_outline</mat-icon> Cancel
+                    </button>
+                    <button mat-button class="green-custom-button" [disabled]="!addEmployeeForm.valid">
+                        <mat-icon>save</mat-icon> Save
+                    </button>
+                </div>
+            </form>
             
-        </div>
-        <div class="row">
-
-            <div class="custom-field-s">
-                <div class="label">Change Date</div>
-                <mat-form-field  appearance="outline">
-                    <input matInput type="date" formControlName="changeDate">
-                </mat-form-field>
-            </div>
-        </div>
-        </div>
-        <div class="partial-container">
-            <div class="title">
-                <p>Personal Information</p>
-            </div>
-            <div class="line"></div>
-            <div class="row">
-                <div class="custom-field-s">
-                    <div class="label">Join Date</div>
-                    <mat-form-field  appearance="outline">
-                        <input matInput type="date" formControlName="joinDate">
-                    </mat-form-field>
-                </div>
-                <div class="custom-field-s">
-                    <div class="label">Birthday</div>
-                    <mat-form-field  appearance="outline">
-                        <input matInput type="date" formControlName="birthday">
-                    </mat-form-field>
-                </div>
-        </div>
-        <div class="row">
-            <div class="custom-field-s">
-                <div class="label">Contact Address</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="text" formControlName="contactAddress">
-                </mat-form-field>
-            </div>
-            <div class="custom-field-s">
-                <div class="label">Phone</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="number" formControlName="phone">
-                </mat-form-field>
-            </div>
-
-            <div class="custom-field-s">
-                <div class="label">Company Email</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="text" formControlName="companyEmail">
-                </mat-form-field>
-            </div>
-
-            <div class="custom-field-s">
-                <div class="label">Personal Email</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="text" formControlName="personalEmail">
-                </mat-form-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="custom-field-s">
-                <div class="label">Bank Name</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="text" formControlName="bankName">
-                </mat-form-field>
-            </div>
-
-            <div class="custom-field-s">
-                <div class="label">Account No</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="text" formControlName="accountNo">
-                </mat-form-field>
-            </div>
-        </div>
-        </div>
-        <div class="line"></div>
-        <div class="form-footer">
-            <button class="red-custom-button" mat-button  (click)="onBack()">
-                <mat-icon>delete_outline</mat-icon> Cancel
-            </button>
-            <button mat-button class="green-custom-button" [disabled]="!addEmployeeForm.valid">
-                <mat-icon>save</mat-icon> Save
-            </button>
-        </div>
-    </form>
+        </mat-tab>
+        
+        <mat-tab [label]="'Transaction hitory'">
+            
+        </mat-tab>
+    </mat-tab-group>
+    
 </div>

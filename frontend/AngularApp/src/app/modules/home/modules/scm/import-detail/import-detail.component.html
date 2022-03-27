@@ -47,7 +47,7 @@
             </div>
             <div class="import-item" *ngFor="let importProduct of importProductList">
                 <div class="no">{{importProduct.no}}</div>
-                <div class="code">{{importProduct.productId}}</div>
+                <div class="code">{{importProduct.productCode}}</div>
                 <div class="name">{{importProduct.productName}}</div>
                 <mat-form-field class="amount" appearance="outline"><input [value]=importProduct.amount matInput type="number"></mat-form-field>
                 

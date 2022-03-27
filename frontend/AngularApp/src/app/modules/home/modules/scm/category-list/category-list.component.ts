@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Category } from '../../shared/models/category/category.model';
@@ -27,6 +27,7 @@ interface ExampleFlatNode {
   styleUrls: ['./category-list.component.scss']
 })
 export class CategoryListComponent {
+  @Output() childrenChanged: EventEmitter<{ id: String }> = new EventEmitter();
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -164,7 +165,7 @@ export class CategoryListComponent {
                     let tempRes;
                     tempRes = res;
                     this.toastr.success('New category is successfully added');
-                    const temp = {
+                    const temp: Category = {
                       'categoryId': tempRes.data,
                       'categoryName': data.name,
                       'description': '',
@@ -210,5 +211,9 @@ export class CategoryListComponent {
                 }
               }
         });
-}
+    }
+
+  onViewDetail( id: string) {
+    this.childrenChanged.emit({ id });
+  }
 }

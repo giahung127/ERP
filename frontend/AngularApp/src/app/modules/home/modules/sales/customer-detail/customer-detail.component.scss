@@ -9,6 +9,10 @@
     background: #FFFFFF;
     border-radius: 8px;
     gap: 16px;
+    .mat-tab-group {
+        flex-grow: 1;
+        width: 100%;
+    }
     .form-header{
         display: flex;
         flex-direction: column;
@@ -16,7 +20,6 @@
         align-items: flex-start;
         width: 100%;
         gap: 24px;
-        margin-bottom: 10px;
     }
     
     .form-header .title{
@@ -25,6 +28,7 @@
     }
     
     form {
+        padding-top: 16px;
         width: 100%;
     }
     

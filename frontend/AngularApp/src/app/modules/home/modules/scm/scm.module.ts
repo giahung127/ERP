@@ -25,6 +25,8 @@ import { SharedModule } from '../shared/shared.module';
 import { AddCategoryModalComponent } from './add-category-modal/add-category-modal.component';
 import { ImportListComponent } from './import-list/import-list.component';
 import { ImportDetailComponent } from './import-detail/import-detail.component';
+import { SupplierListComponent } from './supplier-list/supplier-list.component';
+import { SupplierDetailComponent } from './supplier-detail/supplier-detail.component';
 
 
 @NgModule({
@@ -35,7 +37,9 @@ import { ImportDetailComponent } from './import-detail/import-detail.component';
     CategoryListComponent,
     AddCategoryModalComponent,
     ImportListComponent,
-    ImportDetailComponent
+    ImportDetailComponent,
+    SupplierListComponent,
+    SupplierDetailComponent
   ],
   imports: [
     CommonModule,

@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { nonAccentVietnamese } from 'src/app/common/functions/ultils';
+import { ProductService } from '../../scm/services/product.service';
 import { ImportProduct } from '../../shared/models/product/import-product.model';
 import { Product } from '../../shared/models/product/product.model';
 
@@ -18,12 +19,12 @@ export class OrderDetailComponent {
   
   showProductList: Product[] = [];
   columnName: string[] = [
-    'ProductId',
+    'Code',
     'Name',
     'Category',
   ];
   columnToProperty = {
-    'ProductId': 'productId',
+    'Code': 'productCode',
     'Name': 'productName',
     'Category': 'categoryName',
   };
@@ -32,6 +33,7 @@ export class OrderDetailComponent {
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
+    private productService: ProductService
   ) { 
     this.showProductList = this.productList;
     this.route.queryParams.subscribe((params) => {
@@ -39,8 +41,28 @@ export class OrderDetailComponent {
         this.viewModeCheck = false;
       } else {
         this.viewModeCheck = true;
-      }      
+      }
+      this.getProductList();     
     })
+  }
+
+  getProductList() {
+    this.productService.getAllProduct()
+      .subscribe(res => {
+        let data;
+        data = res;
+        this.productList = data.map(({ id, code, name, price, category, description})=>{
+          return {
+            'productId': id,
+            'productCode': code,
+            'productName': name,
+            'categoryName': category,
+            'price': price,
+            'description': description
+          }
+        })
+        this.showProductList = this.productList;
+      })
   }
 
   onBack() {
@@ -61,7 +83,7 @@ export class OrderDetailComponent {
       data.amount += 1;
     } else {
       const product = this.productList.filter(x => {return x.productId === id})[0]
-      this.importProductList.push(new ImportProduct(this.importProductList.length +1, product.productId, product.productName, 1))
+      this.importProductList.push(new ImportProduct(this.importProductList.length +1, product.productId, product.productCode, product.productName, 1))
     }
   }
 

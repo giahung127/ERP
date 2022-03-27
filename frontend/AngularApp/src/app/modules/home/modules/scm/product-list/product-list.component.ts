@@ -16,6 +16,7 @@ export class ProductListComponent implements OnInit {
     private productService: ProductService
   ) {}
   productList: Product[] = [];
+  showProductList: Product[] = [];
   columnName: string[] = [
     'ProductCode',
     'Name',
@@ -40,16 +41,18 @@ export class ProductListComponent implements OnInit {
       .subscribe(res => {
         let data;
         data = res;
-        this.productList = data.map(({ id, code, name,price, category, description})=>{
+        this.productList = data.map(({ id, code, name,price, category, description, category_id})=>{
           return {
             'productId': id,
             'productCode': code,
             'productName': name,
+            'categoryId': category_id,
             'categoryName': category,
             'price': price,
             'description': description
           }
         })
+        this.showProductList = this.productList;
       })
   }
   onAddEmployee: () => void = () => {
@@ -58,7 +61,10 @@ export class ProductListComponent implements OnInit {
   };
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/scm/product-detail', id]);
+    this.router.navigate(['/home/scm/product-detail'], {
+      queryParams: { productId: id }
+    });
+    
   };
   onEditClick: (id: string) => void = (id: string) => {
       this.router.navigate(['/home/scm/product-detail', id], {
@@ -68,4 +74,11 @@ export class ProductListComponent implements OnInit {
 
   onDeleteClick: (id: string) => void = (id: string) => {
   };
+  childrenChangedHandler(data) {
+    if(data.id !== ''){
+      this.showProductList = this.productList.filter(x => {return x.categoryId === data.id});
+    } else {
+      this.showProductList = this.productList
+    }
+  }
 }

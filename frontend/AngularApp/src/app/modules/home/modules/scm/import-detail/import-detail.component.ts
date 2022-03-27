@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { nonAccentVietnamese } from 'src/app/common/functions/ultils';
 import { ImportProduct } from '../../shared/models/product/import-product.model';
 import { Product } from '../../shared/models/product/product.model';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-import-detail',
@@ -18,12 +19,12 @@ export class ImportDetailComponent {
   
   showProductList: Product[] = [];
   columnName: string[] = [
-    'ProductId',
+    'Code',
     'Name',
     'Category',
   ];
   columnToProperty = {
-    'ProductId': 'productId',
+    'Code': 'productCode',
     'Name': 'productName',
     'Category': 'categoryName',
   };
@@ -32,20 +33,42 @@ export class ImportDetailComponent {
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
+    private productService: ProductService
   ) { 
-    this.showProductList = this.productList;
+    this.getProductList();
     this.route.queryParams.subscribe((params) => {
       if (params['id'] && params['id'] == 'i001') {
         this.viewModeCheck = false;
       } else {
         this.viewModeCheck = true;
-      }      
+      }     
     })
   }
 
   onBack() {
     this._location.back();
   }
+
+  
+  getProductList() {
+    this.productService.getAllProduct()
+      .subscribe(res => {
+        let data;
+        data = res;
+        this.productList = data.map(({ id, code, name, price, category, description})=>{
+          return {
+            'productId': id,
+            'productCode': code,
+            'productName': name,
+            'categoryName': category,
+            'price': price,
+            'description': description
+          }
+        })
+        this.showProductList = this.productList;
+      })
+  }
+
   applyFilter(filterValue: string) {
     filterValue.trim();
     filterValue.toLowerCase();
@@ -61,7 +84,7 @@ export class ImportDetailComponent {
       data.amount += 1;
     } else {
       const product = this.productList.filter(x => {return x.productId === id})[0]
-      this.importProductList.push(new ImportProduct(this.importProductList.length +1, product.productId, product.productName, 1))
+      this.importProductList.push(new ImportProduct(this.importProductList.length +1, product.productId, product.productCode, product.productName, 1))
     }
   }
 

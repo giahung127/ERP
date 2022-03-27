@@ -12,10 +12,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { TableListComponent } from './table-list/table-list.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 @NgModule({
-    declarations: [TableListComponent],
+    declarations: [TableListComponent, ConfirmDialogComponent],
     imports: [
         CommonModule,
         MatIconModule,
@@ -28,7 +30,8 @@ import { TableListComponent } from './table-list/table-list.component';
         MatMenuModule,
         MatCheckboxModule,
         MatRadioModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatDialogModule
     ],
     exports: [TableListComponent]
 })

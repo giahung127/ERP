@@ -13,13 +13,13 @@ export class PriceListComponent {
   productList: Product[] = [
   ];
   columnName: string[] = [
-    'ProductId',
-    'Name',
+    'Code',
+    'Product',
     'Price'
   ];
   columnToProperty = {
-    'ProductId': 'productId',
-    'Name': 'productName',
+    'Code': 'productCode',
+    'Product': 'productName',
     'Price': 'price'
   };
   formFieldList = {
