@@ -1,19 +1,20 @@
 package com.erp.sale.service;
 
 import com.erp.sale.controller.request.NewPriceListReq;
-import com.erp.sale.controller.request.PriceListItemReq;
+import com.erp.sale.controller.response.GetByIdPriceList;
+import com.erp.sale.controller.response.GetPriceListByIdRes;
 import com.erp.sale.controller.response.NewPriceListRes;
-import com.erp.sale.entity.OrderItem;
 import com.erp.sale.entity.PriceList;
 import com.erp.sale.entity.PriceListItem;
 import com.erp.sale.repository.PriceListItemRepository;
 import com.erp.sale.repository.PriceListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PriceListService {
@@ -41,5 +42,17 @@ public class PriceListService {
             throw e;
         }
         return new NewPriceListRes("200", "Inserted new Price List with ID", newPriceList.getId().toString());
+    }
+
+    public GetPriceListByIdRes getById(String priceListId) throws Error {
+        Optional<PriceList> priceList = priceListRepository.findById(UUID.fromString(priceListId));;
+        System.out.println(priceList.get().getId());
+        List<PriceListItem> priceListItems = priceListItemRepository.findPriceListItemByPriceListId(priceListId);
+        System.out.println(priceListItems.get(0).getPriceListId());
+        GetByIdPriceList result = new GetByIdPriceList(priceList, priceListItems);
+        if (priceListItems.isEmpty()){
+            return  new GetPriceListByIdRes("404", "Found no Data", null);
+        }
+        return new GetPriceListByIdRes("200", "Found Data", result);
     }
 }
