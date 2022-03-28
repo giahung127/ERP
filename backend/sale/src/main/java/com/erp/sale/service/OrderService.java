@@ -31,7 +31,6 @@ public class OrderService {
             for (int i = 0; i < newOrderReq.product_item_list.stream().count(); i++) {
                 ItemList.add(new OrderItem(newOrder.getId().toString(),newOrderReq.product_item_list.get(i)));
             }
-
             orderItemRepository.saveAll(ItemList);
         } catch (Exception e){
             throw e;

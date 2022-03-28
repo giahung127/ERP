@@ -12,7 +12,6 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "`price_list`")
 public class PriceList {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,8 +21,7 @@ public class PriceList {
     private  String          priceListCode;
 
     public PriceList(NewPriceListReq newPriceListReq) {
-        this.id = newPriceListReq.id;
-        this.priceListCode = newPriceListReq.priceListCode;
-        this.priceListName = newPriceListReq.priceListName;
+        this.priceListCode = newPriceListReq.price_list_code;
+        this.priceListName = newPriceListReq.price_list_name;
     }
 }
