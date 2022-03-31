@@ -1,6 +1,7 @@
 package com.erp.sale.service;
 
 import com.erp.sale.controller.request.NewOrderReq;
+import com.erp.sale.controller.response.GetOrderRes;
 import com.erp.sale.controller.response.NewOrderRes;
 import com.erp.sale.entity.Order;
 import com.erp.sale.entity.OrderItem;
@@ -9,12 +10,12 @@ import com.erp.sale.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class OrderService {
@@ -44,5 +45,13 @@ public class OrderService {
     public Page<Order> loadPageOrder(PageRequest sort) {
         Page<Order> resultt =  orderRepository.findAll(sort);
         return resultt;
+    }
+
+    public GetOrderRes getOrderById(String id) throws Error {
+        Optional<Order> result =  orderRepository.findById(UUID.fromString(id));
+        if (result.isEmpty()){
+            return new GetOrderRes("404", "Not Found", result);
+        }
+        return new GetOrderRes("200", "Get Order By ID", result);
     }
 }
