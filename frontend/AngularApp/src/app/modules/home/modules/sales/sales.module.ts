@@ -24,6 +24,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { OrderListComponent } from './order-list/order-list.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { PriceListComponent } from './price-list/price-list.component';
+import { AddPriceListModalComponent } from './add-price-list-modal/add-price-list-modal.component';
+import { AddProductToPriceListModalComponent } from './add-product-to-price-list-modal/add-product-to-price-list-modal.component';
 
 
 
@@ -34,7 +36,9 @@ import { PriceListComponent } from './price-list/price-list.component';
     SalesComponent,
     OrderListComponent,
     OrderDetailComponent,
-    PriceListComponent
+    PriceListComponent,
+    AddPriceListModalComponent,
+    AddProductToPriceListModalComponent
   ],
   imports: [
     CommonModule,

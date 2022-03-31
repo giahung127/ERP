@@ -1,0 +1,18 @@
+<div class="main-container">
+    <app-home-table-list
+      class="shipping-list"
+      [title]="'Shipping List'"
+      [data]="customerList"
+      [columnName]="columnName"
+      [columnToProperty]="columnToProperty"
+      [checkbox]="false"
+      [filter]="false"
+      [select]="onViewClick"
+      [more]="false"
+      [key]="'customerId'"
+      [add]="false"
+      [onAdd]="onAddEmployee"
+    >
+    </app-home-table-list>
+  </div>
+  

@@ -86,7 +86,7 @@ export class NavBarComponent {
           },
           {
             name: 'Shipment',
-            href: '/home/dashboard',
+            href: '/home/scm/shipping-list',
             icon: 'local_shipping'
           }
       ]

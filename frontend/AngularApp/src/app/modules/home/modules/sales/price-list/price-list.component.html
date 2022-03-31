@@ -6,9 +6,9 @@
                 <button mat-icon-button><mat-icon>add</mat-icon></button>
             </div>
             <div class="price-list">
-                <div>
+                <div *ngFor="let priceList of priceListList">
                     <div class="node">
-                        <button mat-button >General</button>
+                        <button mat-button>{{priceList.name}}</button>
                         <button mat-icon-button class="edit-button"><mat-icon>edit</mat-icon> </button>
                     </div>
                 </div>
