@@ -1,8 +1,10 @@
 package com.erp.scm.controller;
 
 
+import com.erp.scm.controller.request.AddProductToPriceListReq;
 import com.erp.scm.controller.request.GetInforReq;
 import com.erp.scm.controller.request.NewProductReq;
+import com.erp.scm.controller.response.AddNewProductToPriceListRes;
 import com.erp.scm.controller.response.NewProductRes;
 import com.erp.scm.entity.Product;
 import com.erp.scm.service.ProductService;
@@ -57,5 +59,7 @@ public class ProductController {
     public ResponseEntity<String> deleteById(@PathVariable UUID id){
         return productService.deleteProduct(id);
     }
+
+
 
 }

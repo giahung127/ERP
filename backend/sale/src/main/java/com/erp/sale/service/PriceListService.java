@@ -1,6 +1,8 @@
 package com.erp.sale.service;
 
+import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.NewPriceListReq;
+import com.erp.sale.controller.response.AddNewProductToPriceListRes;
 import com.erp.sale.controller.response.GetByIdPriceList;
 import com.erp.sale.controller.response.GetPriceListByIdRes;
 import com.erp.sale.controller.response.NewPriceListRes;
@@ -46,13 +48,16 @@ public class PriceListService {
 
     public GetPriceListByIdRes getById(String priceListId) throws Error {
         Optional<PriceList> priceList = priceListRepository.findById(UUID.fromString(priceListId));;
-        System.out.println(priceList.get().getId());
         List<PriceListItem> priceListItems = priceListItemRepository.findPriceListItemByPriceListId(priceListId);
-        System.out.println(priceListItems.get(0).getPriceListId());
         GetByIdPriceList result = new GetByIdPriceList(priceList, priceListItems);
         if (priceListItems.isEmpty()){
             return  new GetPriceListByIdRes("404", "Found no Data", null);
         }
         return new GetPriceListByIdRes("200", "Found Data", result);
+    }
+
+    public AddNewProductToPriceListRes addNewProductToPriceList(AddProductToPriceListReq item) throws Error {
+        priceListItemRepository.save(new PriceListItem(item));
+        return new AddNewProductToPriceListRes("200", "Inserted New Item To PriceList", "" );
     }
 }

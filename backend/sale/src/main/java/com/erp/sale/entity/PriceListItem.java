@@ -1,5 +1,6 @@
 package com.erp.sale.entity;
 
+import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.PriceListItemReq;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,13 @@ public class PriceListItem{
         this.priceListId = priceListID;
         this.productId = priceListItemReq.product_id;
         this.price = priceListItemReq.price;
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+    }
+
+    public PriceListItem(AddProductToPriceListReq item){
+        this.priceListId = item.priceListId;
+        this.productId = item.productId;
+        this.price    = item.price;
         this.timestamp = new Timestamp(System.currentTimeMillis());
     }
 
