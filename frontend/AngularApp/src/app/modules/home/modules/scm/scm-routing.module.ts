@@ -7,6 +7,8 @@ import { ImportListComponent } from './import-list/import-list.component';
 import { ImportDetailComponent } from './import-detail/import-detail.component';
 import { ShippingListComponent } from './shipping-list/shipping-list.component';
 import { ShippingDetailComponent } from './shipping-detail/shipping-detail.component';
+import { SupplierListComponent } from './supplier-list/supplier-list.component';
+import { SupplierDetailComponent } from './supplier-detail/supplier-detail.component';
 
 const routes: Routes = [
     {
@@ -48,6 +50,18 @@ const routes: Routes = [
             {
                 path: 'shipping-detail/',
                 component: ShippingDetailComponent
+            },
+            {
+                path: 'supplier-list',
+                component: SupplierListComponent
+            },
+            {
+                path: 'supplier-detail/:id',
+                component: SupplierDetailComponent
+            },
+            {
+                path: 'supplier-detail/',
+                component: SupplierDetailComponent
             },
         ]
     }

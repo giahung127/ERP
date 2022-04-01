@@ -3,7 +3,7 @@
         <div class="right-container">
             <div class="header">
                 <div class="title">Price List</div>
-                <button mat-icon-button><mat-icon>add</mat-icon></button>
+                <button (click)="openCreatePriceListDialog('')" mat-icon-button><mat-icon>add</mat-icon></button>
             </div>
             <div class="price-list">
                 <div *ngFor="let priceList of priceListList">
@@ -24,6 +24,7 @@
         [more]="false"
         [key]="'productId'"
         [add]="true"
+        [onAdd]="onAddEmployee"
         [formField]= "formFieldList"
         >
         </app-home-table-list>

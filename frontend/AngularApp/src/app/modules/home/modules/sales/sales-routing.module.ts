@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
+import { InvoiceDetailComponent } from './invoice-detail/invoice-detail.component';
+import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { OrderListComponent } from './order-list/order-list.component';
 import { PriceListComponent } from './price-list/price-list.component';
@@ -40,6 +42,18 @@ const routes: Routes = [
                 path: 'price-list',
                 component: PriceListComponent
             },
+            {
+                path: 'invoice-list',
+                component: InvoiceListComponent
+            },
+            {
+                path: 'invoice-detail',
+                component: InvoiceDetailComponent
+            },
+            {
+                path: 'invoice-detail',
+                component: InvoiceDetailComponent
+            }
         ]
     }
 ];

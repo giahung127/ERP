@@ -1,1 +1,42 @@
-<p>add-price-list-modal works!</p>
+<div class="main-container">
+
+    <mat-dialog-content>
+        <form [formGroup]="addPriceListForm">
+            <div class="partial-container">
+                <div *ngIf="!editMode" class="title">
+                    <p>Add price list</p>
+                </div>
+                <div *ngIf="editMode" class="title">
+                    <p>Edit price list</p>
+                </div>
+                <div class="line"></div>
+                <div class="row">
+                    <div class="custom-field-l">
+                        <div class="label">Code</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="text" formControlName="priceListCode">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="custom-field-l">
+                        <div class="label">Name</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="text" formControlName="priceListName">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+      
+    <mat-dialog-actions>
+        <button class="green-custom-button" mat-button (click)="onSave()">
+            <mat-icon>save</mat-icon> Save
+        </button>
+        <button class="red-custom-button" mat-button (click)="onCancel()">
+            <mat-icon>delete</mat-icon> Delete
+        </button>
+    </mat-dialog-actions>
+    
+    </div>

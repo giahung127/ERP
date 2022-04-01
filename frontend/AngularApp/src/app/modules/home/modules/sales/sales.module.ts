@@ -26,6 +26,8 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { PriceListComponent } from './price-list/price-list.component';
 import { AddPriceListModalComponent } from './add-price-list-modal/add-price-list-modal.component';
 import { AddProductToPriceListModalComponent } from './add-product-to-price-list-modal/add-product-to-price-list-modal.component';
+import { InvoiceListComponent } from './invoice-list/invoice-list.component';
+import { InvoiceDetailComponent } from './invoice-detail/invoice-detail.component';
 
 
 
@@ -38,7 +40,9 @@ import { AddProductToPriceListModalComponent } from './add-product-to-price-list
     OrderDetailComponent,
     PriceListComponent,
     AddPriceListModalComponent,
-    AddProductToPriceListModalComponent
+    AddProductToPriceListModalComponent,
+    InvoiceListComponent,
+    InvoiceDetailComponent
   ],
   imports: [
     CommonModule,

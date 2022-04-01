@@ -50,8 +50,8 @@ export class NavBarComponent {
               icon: 'list_alt'
           },
           {
-            name: 'Invoces',
-            href: '/home/dashboard',
+            name: 'Invoices',
+            href: '/home/sales/invoice-list',
             icon: 'receipt'
           },
           {
@@ -69,11 +69,11 @@ export class NavBarComponent {
     {
       title: 'SCM',
       content: [
-          {
-              name: 'Overview',
-              href: '/home/dashboard',
-              icon: 'visibility'
-          },
+          // {
+          //     name: 'Overview',
+          //     href: '/home/dashboard',
+          //     icon: 'visibility'
+          // },
           {
               name: 'Products',
               href: '/home/scm/product-list',
@@ -88,6 +88,11 @@ export class NavBarComponent {
             name: 'Shipment',
             href: '/home/scm/shipping-list',
             icon: 'local_shipping'
+          },
+          {
+            name: 'Supplier',
+            href: '/home/scm/supplier-list',
+            icon: 'inventory_2'
           }
       ]
     }
