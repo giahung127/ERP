@@ -1,6 +1,7 @@
 package com.erp.sale.controller;
 
 import com.erp.sale.controller.request.NewOrderReq;
+import com.erp.sale.controller.response.GetOrderRes;
 import com.erp.sale.controller.response.NewOrderRes;
 import com.erp.sale.entity.Order;
 import com.erp.sale.service.OrderService;
@@ -27,5 +28,10 @@ public class OrderController {
     @GetMapping("/loadAll")
     public List<Order> getAllProduct(){
         return orderService.loadAllOrder();
+    }
+
+    @GetMapping("/getById/{id}")
+    public GetOrderRes getOrderById(@PathVariable String id){
+        return orderService.getOrderById(id);
     }
 }

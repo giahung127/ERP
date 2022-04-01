@@ -4,6 +4,7 @@ package com.erp.scm.controller;
 import com.erp.scm.controller.request.GetInforReq;
 import com.erp.scm.controller.request.NewProductReq;
 import com.erp.scm.controller.response.NewProductRes;
+import com.erp.scm.controller.response.ProductWithCategoryName;
 import com.erp.scm.entity.Product;
 import com.erp.scm.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,12 +32,12 @@ public class ProductController {
     }
 
     @GetMapping("/loadAll")
-    public List<Product> getAllProduct(){
+    public List<ProductWithCategoryName> getAllProduct(){
         return productService.loadAllProduct();
     }
 
     @GetMapping("/getById/{id}")
-    public Optional<Product> getProductById(@PathVariable UUID id){
+    public ProductWithCategoryName getProductById(@PathVariable UUID id){
         return productService.loadByID(id);
     }
 
@@ -57,5 +58,7 @@ public class ProductController {
     public ResponseEntity<String> deleteById(@PathVariable UUID id){
         return productService.deleteProduct(id);
     }
+
+
 
 }

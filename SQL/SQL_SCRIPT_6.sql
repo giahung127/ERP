@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 28, 2022 at 01:52 PM
+-- Generation Time: Mar 28, 2022 at 04:28 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.28
 
@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `test`
 --
+DROP DATABASE IF EXISTS `test`;
 CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `test`;
 
@@ -29,14 +30,28 @@ USE `test`;
 -- Table structure for table `category`
 --
 
-CREATE TABLE `category` (
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE IF NOT EXISTS `category` (
   `id` varchar(36) NOT NULL,
   `level` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `parent_id` varchar(36) DEFAULT NULL,
-  `code` varchar(255) DEFAULT NULL
+  `code` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `parentId_FK` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `category`:
+--   `parent_id`
+--       `category` -> `id`
+--
+
+--
+-- Truncate table before insert `cafirsttegory`
+--
+
+TRUNCATE TABLE `category`;
 --
 -- Dumping data for table `category`
 --
@@ -56,10 +71,20 @@ INSERT INTO `category` (`id`, `level`, `name`, `parent_id`, `code`) VALUES
 -- Table structure for table `hibernate_sequence`
 --
 
-CREATE TABLE `hibernate_sequence` (
+DROP TABLE IF EXISTS `hibernate_sequence`;
+CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `hibernate_sequence`:
+--
+
+--
+-- Truncate table before insert `hibernate_sequence`
+--
+
+TRUNCATE TABLE `hibernate_sequence`;
 --
 -- Dumping data for table `hibernate_sequence`
 --
@@ -73,40 +98,79 @@ INSERT INTO `hibernate_sequence` (`next_val`) VALUES
 -- Table structure for table `price_list`
 --
 
-CREATE TABLE `price_list` (
+DROP TABLE IF EXISTS `price_list`;
+CREATE TABLE IF NOT EXISTS `price_list` (
   `id` varchar(36) NOT NULL,
   `priceListName` int(11) NOT NULL,
-  `priceListCode` varchar(255) NOT NULL
+  `priceListCode` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `price_list`:
+--
+
+--
+-- Truncate table before insert `price_list`
+--
+
+TRUNCATE TABLE `price_list`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `price_list_item`
 --
 
-CREATE TABLE `price_list_item` (
+DROP TABLE IF EXISTS `price_list_item`;
+CREATE TABLE IF NOT EXISTS `price_list_item` (
   `priceListId` varchar(36) NOT NULL,
   `productId` varchar(36) NOT NULL,
   `price` float NOT NULL,
-  `updateDate` date NOT NULL
+  `updateDate` date NOT NULL,
+  PRIMARY KEY (`priceListId`,`productId`),
+  KEY `productId_FK` (`productId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `price_list_item`:
+--   `priceListId`
+--       `price_list` -> `id`
+--
+
+--
+-- Truncate table before insert `price_list_item`
+--
+
+TRUNCATE TABLE `price_list_item`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `product`
 --
 
-CREATE TABLE `product` (
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE IF NOT EXISTS `product` (
   `id` varchar(36) NOT NULL,
   `code` text NOT NULL,
   `name` text NOT NULL,
   `price` float NOT NULL,
   `description` text NOT NULL,
-  `category_id` varchar(36) DEFAULT NULL
+  `category_id` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `category_id` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `product`:
+--   `category_id`
+--       `category` -> `id`
+--
+
+--
+-- Truncate table before insert `product`
+--
+
+TRUNCATE TABLE `product`;
 --
 -- Dumping data for table `product`
 --
@@ -121,155 +185,166 @@ INSERT INTO `product` (`id`, `code`, `name`, `price`, `description`, `category_i
 -- Table structure for table `shipment`
 --
 
-CREATE TABLE `shipment` (
+DROP TABLE IF EXISTS `shipment`;
+CREATE TABLE IF NOT EXISTS `shipment` (
   `shipmentId` varchar(36) NOT NULL,
   `transporterId` varchar(36) NOT NULL,
   `orderId` varchar(36) NOT NULL,
   `toAddress` varchar(255) NOT NULL,
   `shipmentType` varchar(255) NOT NULL,
   `toDate` date NOT NULL,
-  `status` varchar(255) NOT NULL
+  `status` varchar(255) NOT NULL,
+  PRIMARY KEY (`shipmentId`),
+  KEY `transporterId_FK` (`transporterId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `shipment`:
+--   `transporterId`
+--       `transporter` -> `id`
+--
+
+--
+-- Truncate table before insert `shipment`
+--
+
+TRUNCATE TABLE `shipment`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `shipmentItem`
 --
 
-CREATE TABLE `shipmentItem` (
+DROP TABLE IF EXISTS `shipmentItem`;
+CREATE TABLE IF NOT EXISTS `shipmentItem` (
   `productId` varchar(36) NOT NULL,
   `shipmentId` varchar(36) NOT NULL,
-  `amount` int(11) NOT NULL
+  `amount` int(11) NOT NULL,
+  PRIMARY KEY (`productId`,`shipmentId`),
+  KEY `shipmentId_FK` (`shipmentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `shipmentItem`:
+--   `productId`
+--       `product` -> `id`
+--   `shipmentId`
+--       `shipment` -> `shipmentId`
+--
+
+--
+-- Truncate table before insert `shipmentItem`
+--
+
+TRUNCATE TABLE `shipmentItem`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `supplement`
 --
 
-CREATE TABLE `supplement` (
+DROP TABLE IF EXISTS `supplement`;
+CREATE TABLE IF NOT EXISTS `supplement` (
   `id` varchar(36) NOT NULL,
   `supplierId` varchar(36) NOT NULL,
   `amount` int(11) NOT NULL,
   `date` date NOT NULL,
   `total` int(11) NOT NULL,
-  `status` varchar(255) NOT NULL
+  `status` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `supplierId` (`supplierId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `supplement`:
+--   `supplierId`
+--       `supplier` -> `id`
+--
+
+--
+-- Truncate table before insert `supplement`
+--
+
+TRUNCATE TABLE `supplement`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `supplementItem`
 --
 
-CREATE TABLE `supplementItem` (
+DROP TABLE IF EXISTS `supplementItem`;
+CREATE TABLE IF NOT EXISTS `supplementItem` (
   `productId` varchar(36) NOT NULL,
   `supplementId` varchar(36) NOT NULL,
   `price` float NOT NULL,
-  `amount` int(11) NOT NULL
+  `amount` int(11) NOT NULL,
+  PRIMARY KEY (`productId`,`supplementId`),
+  KEY `supplementID_FK` (`supplementId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `supplementItem`:
+--   `productId`
+--       `product` -> `id`
+--   `supplementId`
+--       `supplement` -> `id`
+--
+
+--
+-- Truncate table before insert `supplementItem`
+--
+
+TRUNCATE TABLE `supplementItem`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `supplier`
 --
 
-CREATE TABLE `supplier` (
+DROP TABLE IF EXISTS `supplier`;
+CREATE TABLE IF NOT EXISTS `supplier` (
   `id` varchar(36) NOT NULL,
   `name` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `phone` bigint(20) NOT NULL,
-  `email` varchar(255) NOT NULL
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `supplier`:
+--
+
+--
+-- Truncate table before insert `supplier`
+--
+
+TRUNCATE TABLE `supplier`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `transporter`
 --
 
-CREATE TABLE `transporter` (
+DROP TABLE IF EXISTS `transporter`;
+CREATE TABLE IF NOT EXISTS `transporter` (
   `id` varchar(36) NOT NULL,
   `transporterName` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL
+  `description` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indexes for dumped tables
+-- RELATIONSHIPS FOR TABLE `transporter`:
 --
 
 --
--- Indexes for table `category`
+-- Truncate table before insert `transporter`
 --
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parentId_FK` (`parent_id`);
 
---
--- Indexes for table `price_list`
---
-ALTER TABLE `price_list`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `price_list_item`
---
-ALTER TABLE `price_list_item`
-  ADD PRIMARY KEY (`priceListId`,`productId`),
-  ADD KEY `productId_FK` (`productId`);
-
---
--- Indexes for table `product`
---
-ALTER TABLE `product`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `category_id` (`category_id`);
-
---
--- Indexes for table `shipment`
---
-ALTER TABLE `shipment`
-  ADD PRIMARY KEY (`shipmentId`),
-  ADD KEY `transporterId_FK` (`transporterId`);
-
---
--- Indexes for table `shipmentItem`
---
-ALTER TABLE `shipmentItem`
-  ADD PRIMARY KEY (`productId`,`shipmentId`),
-  ADD KEY `shipmentId_FK` (`shipmentId`);
-
---
--- Indexes for table `supplement`
---
-ALTER TABLE `supplement`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `supplierId` (`supplierId`);
-
---
--- Indexes for table `supplementItem`
---
-ALTER TABLE `supplementItem`
-  ADD PRIMARY KEY (`productId`,`supplementId`),
-  ADD KEY `supplementID_FK` (`supplementId`);
-
---
--- Indexes for table `supplier`
---
-ALTER TABLE `supplier`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `transporter`
---
-ALTER TABLE `transporter`
-  ADD PRIMARY KEY (`id`);
-
+TRUNCATE TABLE `transporter`;
 --
 -- Constraints for dumped tables
 --
@@ -320,6 +395,7 @@ ALTER TABLE `supplementItem`
 --
 -- Database: `test_sale`
 --
+DROP DATABASE IF EXISTS `test_sale`;
 CREATE DATABASE IF NOT EXISTS `test_sale` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `test_sale`;
 
@@ -329,26 +405,47 @@ USE `test_sale`;
 -- Table structure for table `customer`
 --
 
-CREATE TABLE `customer` (
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE IF NOT EXISTS `customer` (
   `id` varchar(36) NOT NULL,
   `name` text NOT NULL,
   `gender` text NOT NULL,
   `age` int(11) NOT NULL,
   `email` text NOT NULL,
   `phone` int(11) NOT NULL,
-  `address` text NOT NULL
+  `address` text NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `customer`:
+--
+
+--
+-- Truncate table before insert `customer`
+--
+
+TRUNCATE TABLE `customer`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `hibernate_sequence`
 --
 
-CREATE TABLE `hibernate_sequence` (
+DROP TABLE IF EXISTS `hibernate_sequence`;
+CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `hibernate_sequence`:
+--
+
+--
+-- Truncate table before insert `hibernate_sequence`
+--
+
+TRUNCATE TABLE `hibernate_sequence`;
 --
 -- Dumping data for table `hibernate_sequence`
 --
@@ -362,20 +459,32 @@ INSERT INTO `hibernate_sequence` (`next_val`) VALUES
 -- Table structure for table `invoice`
 --
 
-CREATE TABLE `invoice` (
+DROP TABLE IF EXISTS `invoice`;
+CREATE TABLE IF NOT EXISTS `invoice` (
   `id` varchar(36) NOT NULL,
   `total_tax` int(11) NOT NULL,
   `total_discount` int(11) NOT NULL,
-  `total_price` int(11) NOT NULL
+  `total_price` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `invoice`:
+--
+
+--
+-- Truncate table before insert `invoice`
+--
+
+TRUNCATE TABLE `invoice`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `order`
 --
 
-CREATE TABLE `order` (
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE IF NOT EXISTS `order` (
   `id` varchar(36) NOT NULL,
   `creator_name` text NOT NULL,
   `price_list_id` varchar(36) DEFAULT NULL,
@@ -389,9 +498,20 @@ CREATE TABLE `order` (
   `create_date` date DEFAULT NULL,
   `customer_id` varchar(36) DEFAULT NULL,
   `customer_name` text NOT NULL,
-  `order_status` int(11) DEFAULT NULL
+  `order_status` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `customerId_FK` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `order`:
+--
+
+--
+-- Truncate table before insert `order`
+--
+
+TRUNCATE TABLE `order`;
 --
 -- Dumping data for table `order`
 --
@@ -405,16 +525,33 @@ INSERT INTO `order` (`id`, `creator_name`, `price_list_id`, `total_include_tax`,
 -- Table structure for table `order_item`
 --
 
-CREATE TABLE `order_item` (
+DROP TABLE IF EXISTS `order_item`;
+CREATE TABLE IF NOT EXISTS `order_item` (
   `id` varchar(255) NOT NULL,
   `order_id` varchar(36) NOT NULL,
   `amount` int(11) DEFAULT NULL,
   `no_num` int(11) DEFAULT NULL,
   `product_code` varchar(255) DEFAULT NULL,
   `product_id` varchar(255) DEFAULT NULL,
-  `product_name` varchar(255) DEFAULT NULL
+  `product_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  KEY `productId2_FK` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `order_item`:
+--   `order_id`
+--       `order` -> `id`
+--   `product_id`
+--       `product` -> `id`
+--
+
+--
+-- Truncate table before insert `order_item`
+--
+
+TRUNCATE TABLE `order_item`;
 --
 -- Dumping data for table `order_item`
 --
@@ -429,23 +566,50 @@ INSERT INTO `order_item` (`id`, `order_id`, `amount`, `no_num`, `product_code`, 
 -- Table structure for table `order_to_invoices`
 --
 
-CREATE TABLE `order_to_invoices` (
+DROP TABLE IF EXISTS `order_to_invoices`;
+CREATE TABLE IF NOT EXISTS `order_to_invoices` (
   `orderId` varchar(36) NOT NULL,
-  `invoicesId` varchar(36) NOT NULL
+  `invoicesId` varchar(36) NOT NULL,
+  PRIMARY KEY (`orderId`,`invoicesId`),
+  KEY `invoicesId_FK` (`invoicesId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `order_to_invoices`:
+--   `invoicesId`
+--       `invoice` -> `id`
+--   `orderId`
+--       `order` -> `id`
+--
+
+--
+-- Truncate table before insert `order_to_invoices`
+--
+
+TRUNCATE TABLE `order_to_invoices`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `price_list`
 --
 
-CREATE TABLE `price_list` (
+DROP TABLE IF EXISTS `price_list`;
+CREATE TABLE IF NOT EXISTS `price_list` (
   `id` varchar(36) NOT NULL,
   `price_list_code` text NOT NULL,
-  `price_list_name` text NOT NULL
+  `price_list_name` text NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `price_list`:
+--
+
+--
+-- Truncate table before insert `price_list`
+--
+
+TRUNCATE TABLE `price_list`;
 --
 -- Dumping data for table `price_list`
 --
@@ -464,14 +628,25 @@ INSERT INTO `price_list` (`id`, `price_list_code`, `price_list_name`) VALUES
 -- Table structure for table `price_list_item`
 --
 
-CREATE TABLE `price_list_item` (
+DROP TABLE IF EXISTS `price_list_item`;
+CREATE TABLE IF NOT EXISTS `price_list_item` (
   `price_list_id` varchar(36) NOT NULL,
   `product_id` varchar(36) NOT NULL,
   `price` float NOT NULL,
   `update_time` timestamp NOT NULL DEFAULT current_timestamp(),
-  `timestamp` datetime DEFAULT NULL
+  `timestamp` datetime DEFAULT NULL,
+  PRIMARY KEY (`price_list_id`,`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- RELATIONSHIPS FOR TABLE `price_list_item`:
+--
+
+--
+-- Truncate table before insert `price_list_item`
+--
+
+TRUNCATE TABLE `price_list_item`;
 --
 -- Dumping data for table `price_list_item`
 --
@@ -486,72 +661,27 @@ INSERT INTO `price_list_item` (`price_list_id`, `product_id`, `price`, `update_t
 -- Table structure for table `user`
 --
 
-CREATE TABLE `user` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
   `id` varchar(36) NOT NULL,
   `name` text NOT NULL,
   `gender` text NOT NULL,
   `age` int(11) NOT NULL,
   `email` text NOT NULL,
   `phone` int(11) NOT NULL,
-  `address` text NOT NULL
+  `address` text NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indexes for dumped tables
+-- RELATIONSHIPS FOR TABLE `user`:
 --
 
 --
--- Indexes for table `customer`
+-- Truncate table before insert `user`
 --
-ALTER TABLE `customer`
-  ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `invoice`
---
-ALTER TABLE `invoice`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `order`
---
-ALTER TABLE `order`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `customerId_FK` (`customer_id`);
-
---
--- Indexes for table `order_item`
---
-ALTER TABLE `order_item`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `order_id` (`order_id`),
-  ADD KEY `productId2_FK` (`product_id`);
-
---
--- Indexes for table `order_to_invoices`
---
-ALTER TABLE `order_to_invoices`
-  ADD PRIMARY KEY (`orderId`,`invoicesId`),
-  ADD KEY `invoicesId_FK` (`invoicesId`);
-
---
--- Indexes for table `price_list`
---
-ALTER TABLE `price_list`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `price_list_item`
---
-ALTER TABLE `price_list_item`
-  ADD PRIMARY KEY (`price_list_id`,`product_id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
-
+TRUNCATE TABLE `user`;
 --
 -- Constraints for dumped tables
 --

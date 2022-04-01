@@ -1,6 +1,8 @@
 package com.erp.sale.controller;
 
+import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.NewPriceListReq;
+import com.erp.sale.controller.response.AddNewProductToPriceListRes;
 import com.erp.sale.controller.response.GetPriceListByIdRes;
 import com.erp.sale.controller.response.NewPriceListRes;
 import com.erp.sale.entity.PriceList;
@@ -32,6 +34,11 @@ public class PriceListController {
     @GetMapping("/getById/{priceListId}")
     public GetPriceListByIdRes getById(@PathVariable String priceListId){
         return priceListService.getById(priceListId);
+    }
+
+    @PostMapping("newProduct")
+    public AddNewProductToPriceListRes addNewProductToPriceList(@RequestBody AddProductToPriceListReq item){
+        return priceListService.addNewProductToPriceList(item);
     }
 }
 
