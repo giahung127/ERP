@@ -2,10 +2,7 @@ package com.erp.sale.service;
 
 import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.NewPriceListReq;
-import com.erp.sale.controller.response.AddNewProductToPriceListRes;
-import com.erp.sale.controller.response.GetByIdPriceList;
-import com.erp.sale.controller.response.GetPriceListByIdRes;
-import com.erp.sale.controller.response.NewPriceListRes;
+import com.erp.sale.controller.response.*;
 import com.erp.sale.entity.PriceList;
 import com.erp.sale.entity.PriceListItem;
 import com.erp.sale.repository.PriceListItemRepository;
@@ -29,7 +26,7 @@ public class PriceListService {
         return (List<PriceList>) priceListRepository.findAll();
     }
 
-    public NewPriceListRes newPriceList(NewPriceListReq newPriceListReq){
+    public NormalRes newPriceList(NewPriceListReq newPriceListReq){
         PriceList newPriceList;
         try {
             newPriceList = priceListRepository.save(new PriceList(newPriceListReq));
@@ -43,7 +40,7 @@ public class PriceListService {
         }catch (Error e){
             throw e;
         }
-        return new NewPriceListRes("200", "Inserted new Price List with ID", newPriceList.getId().toString());
+        return new NormalRes("200", "Inserted new Price List with ID", newPriceList.getId().toString());
     }
 
     public GetPriceListByIdRes getById(String priceListId) throws Error {

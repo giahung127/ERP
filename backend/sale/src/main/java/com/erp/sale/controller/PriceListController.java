@@ -4,7 +4,7 @@ import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.NewPriceListReq;
 import com.erp.sale.controller.response.AddNewProductToPriceListRes;
 import com.erp.sale.controller.response.GetPriceListByIdRes;
-import com.erp.sale.controller.response.NewPriceListRes;
+import com.erp.sale.controller.response.NormalRes;
 import com.erp.sale.entity.PriceList;
 import com.erp.sale.service.PriceListService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class PriceListController {
     }
 
     @PostMapping("/addNew")
-    public NewPriceListRes newPriceList(@RequestBody NewPriceListReq newPriceListReq){
+    public NormalRes newPriceList(@RequestBody NewPriceListReq newPriceListReq){
         return priceListService.newPriceList(newPriceListReq);
     }
 
