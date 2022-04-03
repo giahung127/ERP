@@ -31,7 +31,7 @@
     </mat-dialog-content>
       
     <mat-dialog-actions>
-        <button class="green-custom-button" mat-button (click)="onSave()">
+        <button class="green-custom-button" mat-button (click)="onSave()" [disabled]="!addPriceListForm.valid">
             <mat-icon>save</mat-icon> Save
         </button>
         <button class="red-custom-button" mat-button (click)="onCancel()">

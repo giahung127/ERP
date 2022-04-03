@@ -27,11 +27,18 @@ export class PriceListComponent implements OnInit {
   getAllPriceList(){
     this.priceListService.getAllPriceList()
       .subscribe((res)=> {
-      
+        let data;
+        data = res;
+        this.priceListList = data.map(({ id, priceListCode, priceListName})=>{
+          return {
+            'id': id,
+            'code': priceListCode,
+            'name': priceListName
+          }
+        })
       })
   }
-  productList: Product[] = [
-  ];
+  productList: Product[] = [];
   columnName: string[] = [
     'Code',
     'Product',
@@ -61,13 +68,25 @@ export class PriceListComponent implements OnInit {
           (newPriceList) => {
             if(newPriceList){
               const data = {
-                
+                price_list_name: newPriceList.priceListName,
+                price_list_code: newPriceList.priceListCode,
+                price_list_items: []
               }
               if(selectedPriceListId === ''){
-                    this.toastr.success('New price list is successfully added');
-                
+                  this.priceListService.addNewPriceList(data)
+                  .subscribe(
+                    (res)=>{
+                      let temp;
+                      temp = res
+                      this.priceListList.push(new PriceList(temp.data ,data.price_list_code, data.price_list_name))
+                      this.toastr.success('New price list is successfully added');
+                    },
+                    (err) => {
+                      this.toastr.error(err)
+                    }
+                  )
                 } else {
-                      this.toastr.success('The price list is successfully updated');
+                  this.toastr.success('The price list is successfully updated');
                 }
               }
         });

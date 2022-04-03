@@ -1,5 +1,5 @@
 <div class="main-container">
-    <div class="left-content">
+    <div class="left-content" *ngIf="selectedOrder">
         <div class="header">
             <div (click)="onBack()">
                 <mat-icon>arrow_back_ios</mat-icon>
@@ -8,36 +8,121 @@
             <p class="content-left" *ngIf="!viewModeCheck" >Order Detail</p>
         </div>
         <div class="line"></div>
-        <div class="partial-container">
-            <div class="title">General information</div>
-            <div class="row">
-            <div class="custom-field-s">
-                <div class="label">Created By:</div>
-                <mat-form-field  appearance="outline" required>
-                    <input disabled matInput type="text" value="Gia Hung">
-                </mat-form-field>
-            </div>
-            <div class="custom-field-s">
-                <div class="label">Created Date:</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="date">
-                </mat-form-field>
-            </div>
-            <div class="custom-field-s">
-                <div class="label">Customer:</div>
-                <mat-form-field  appearance="outline" required>
-                    <mat-select>
-                        <mat-option>None</mat-option>
-                        <mat-option>
-                          A
-                        </mat-option>
-                      </mat-select>
-                </mat-form-field>
-            </div>
-            </div>
-            <div class="row">
+        <div *ngIf="!viewModeCheck">
+            <div class="partial-container">
+                <div class="title">General information</div>
+                <div class="row">
                 <div class="custom-field-s">
-                    <div class="label">Price List:</div>
+                    <div class="label">Created By:</div> 
+                    {{selectedOrder.creatorName}}
+                </div>
+                <div class="custom-field-s">
+                    <div class="label">Created Date:</div>
+                    {{selectedOrder.createdDate}}
+                </div>
+                <div class="custom-field-s">
+                    <div class="label">Customer:</div>
+                    {{selectedOrder.customerName}}
+                </div>
+                </div>
+                <div class="row">
+                    <div class="custom-field-s">
+                        <div class="label">Price List:</div>
+                        {{selectedOrder.priceListName}}
+                    </div>
+                    <div class="custom-field-s">
+                        <mat-checkbox disabled="true">Shipping</mat-checkbox>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!viewModeCheck">
+                <div class="line"></div>
+                <div class="partial-container">
+                    <div class="title">Shipping information</div>
+                    <div class="row">
+                        abc
+                    </div>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="partial-container">
+                <div class="title">Product list</div>
+                <div class="row">
+                    <div class="import-product-list custom-field-l">
+                        <div class="label">
+                            <div class="no">No.</div>
+                            <div class="code">Code</div>
+                            <div class="name">Product</div>
+                            <div class="amount">Amount</div>
+                            <div class="price">Price</div>
+                            <div class="total">Total</div>
+                            <div class="delete" *ngIf="viewModeCheck"></div>
+                        </div>
+                        <div class="import-item" *ngFor="let importProduct of importProductList">
+                            <div class="no">{{importProduct.no}}</div>
+                            <div class="code">{{importProduct.productCode}}</div>
+                            <div class="name">{{importProduct.productName}}</div>
+                            <div class="amount">{{importProduct.amount}}</div>
+                            <div class="price">{{importProduct.price}}</div>
+                            <div class="total">{{importProduct.price * importProduct.amount}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="partial-container">
+                <div class="order-footer">
+                    <div class="row">
+                        <div class="footer-title"> Total (Exclude Tax):</div>
+                        <div class="footer-content"> {{selectedOrder.totalExcludeTax}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="footer-title"> Tax rate:</div>
+                        <div class="footer-content"> {{selectedOrder.tax}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="footer-title"> Total tax:</div>
+                        <div class="footer-content"> {{selectedOrder.tax * selectedOrder.totalExcludeTax}} </div>
+                    </div>
+                    <div class="row">
+                        <div class="footer-title"> Shipping:</div>
+                        <div class="footer-content">{{selectedOrder.shippingFee}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="footer-title"> Total (Include Tax):</div>
+                        <div class="footer-content"> {{selectedOrder.totalIncludeTax}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <button mat-button class="green-custom-button" (click)="onSave()" >
+                    <mat-icon>save</mat-icon> Save
+                </button>
+                <button class="red-custom-button" mat-button  (click)="onBack()"> 
+                    <mat-icon>delete_outline</mat-icon> Cancel
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="viewModeCheck">
+            <div class="partial-container">
+                <div class="title">General information</div>
+                <div class="row">
+                <div class="custom-field-s">
+                    <div class="label">Created By: </div>
+                    <mat-form-field  appearance="outline" required>
+                        <input disabled matInput type="text" [(ngModel)]="selectedOrder.creatorName">
+                    </mat-form-field>
+                </div>
+                <div class="custom-field-s">
+                    <div class="label">Created Date:</div>
+                    <mat-form-field  appearance="outline" required>
+                        <input matInput type="date" [(ngModel)]="selectedOrder.createDate">
+                    </mat-form-field>
+                </div>
+                <div class="custom-field-s">
+                    <div class="label">Customer:</div>
                     <mat-form-field  appearance="outline" required>
                         <mat-select>
                             <mat-option>None</mat-option>
@@ -47,79 +132,92 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="custom-field-s">
-                    <mat-checkbox>Shipping</mat-checkbox>
+                </div>
+                <div class="row">
+                    <div class="custom-field-s">
+                        <div class="label">Price List:</div>
+                        <mat-form-field  appearance="outline" required>
+                            <mat-select>
+                                <mat-option *ngFor="let priceList of priceListList" [value]="priceList.id">
+                                {{priceList.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="custom-field-s">
+                        <mat-checkbox>Shipping</mat-checkbox>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div *ngIf="!viewModeCheck">
+            <div *ngIf="!viewModeCheck">
+                <div class="line"></div>
+                <div class="partial-container">
+                    <div class="title">Shipping information</div>
+                    <div class="row">
+                        abc
+                    </div>
+                </div>
+            </div>
             <div class="line"></div>
             <div class="partial-container">
-                <div class="title">Shipping information</div>
+                <div class="title">Product list</div>
                 <div class="row">
-                    abc
-                </div>
-            </div>
-        </div>
-        <div class="line"></div>
-        <div class="partial-container">
-            <div class="title">Product list</div>
-            <div class="row">
-                <div class="import-product-list custom-field-l">
-                    <div class="label">
-                        <div class="no">No.</div>
-                        <div class="code">Code</div>
-                        <div class="name">Product</div>
-                        <div class="amount">Amount</div>
-                        <div class="price">Price</div>
-                        <div class="total">Total</div>
-                        <div class="delete" *ngIf="viewModeCheck"></div>
-                    </div>
-                    <div class="import-item" *ngFor="let importProduct of importProductList">
-                        <div class="no">{{importProduct.no}}</div>
-                        <div class="code">{{importProduct.productCode}}</div>
-                        <div class="name">{{importProduct.productName}}</div>
-                        <mat-form-field class="amount" appearance="outline"><input [(ngModel)]=importProduct.amount (ngModelChange)="reCalculateTotal()" matInput type="number"></mat-form-field>
-                        <div class="price">{{importProduct.price}}</div>
-                        <div class="total">{{importProduct.price * importProduct.amount}}</div>
-                        <button *ngIf="viewModeCheck" class="delete" mat-icon-button (click)="delete(importProduct.productId)"><mat-icon>close</mat-icon></button>
+                    <div class="import-product-list custom-field-l">
+                        <div class="label">
+                            <div class="no">No.</div>
+                            <div class="code">Code</div>
+                            <div class="name">Product</div>
+                            <div class="amount">Amount</div>
+                            <div class="price">Price</div>
+                            <div class="total">Total</div>
+                            <div class="delete" *ngIf="viewModeCheck"></div>
+                        </div>
+                        <div class="import-item" *ngFor="let importProduct of importProductList">
+                            <div class="no">{{importProduct.no}}</div>
+                            <div class="code">{{importProduct.productCode}}</div>
+                            <div class="name">{{importProduct.productName}}</div>
+                            <mat-form-field class="amount" appearance="outline"><input [(ngModel)]=importProduct.amount (ngModelChange)="reCalculateTotal()" matInput type="number"></mat-form-field>
+                            <div class="price">{{importProduct.price}}</div>
+                            <div class="total">{{importProduct.price * importProduct.amount}}</div>
+                            <button *ngIf="viewModeCheck" class="delete" mat-icon-button (click)="delete(importProduct.productId)"><mat-icon>close</mat-icon></button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="line"></div>
-        <div class="partial-container">
-            <div class="order-footer">
-                <div class="row">
-                    <div class="footer-title"> Subtotal:</div>
-                    <div class="footer-content"> {{totalPrice}}</div>
-                </div>
-                <div class="row">
-                    <div class="footer-title"> Tax rate:</div>
-                    <div class="footer-content"> 0</div>
-                </div>
-                <div class="row">
-                    <div class="footer-title"> Total tax:</div>
-                    <div class="footer-content">0</div>
-                </div>
-                <div class="row">
-                    <div class="footer-title"> Shipping:</div>
-                    <div class="footer-content">0</div>
-                </div>
-                <div class="row">
-                    <div class="footer-title"> Total:</div>
-                    <div class="footer-content"> 0</div>
+            <div class="line"></div>
+            <div class="partial-container">
+                <div class="order-footer">
+                    <div class="row">
+                        <div class="footer-title"> Subtotal:</div>
+                        <div class="footer-content"> {{totalPrice}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="footer-title"> Tax rate:</div>
+                        <div class="footer-content"> 0</div>
+                    </div>
+                    <div class="row">
+                        <div class="footer-title"> Total tax:</div>
+                        <div class="footer-content">0</div>
+                    </div>
+                    <div class="row">
+                        <div class="footer-title"> Shipping:</div>
+                        <div class="footer-content">0</div>
+                    </div>
+                    <div class="row">
+                        <div class="footer-title"> Total:</div>
+                        <div class="footer-content"> 0</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-footer">
-            <button mat-button class="green-custom-button" (click)="onSave()" >
-                <mat-icon>save</mat-icon> Save
-            </button>
-            <button class="red-custom-button" mat-button  (click)="onBack()"> 
-                <mat-icon>delete_outline</mat-icon> Cancel
-            </button>
+            <div class="form-footer">
+                <button mat-button class="green-custom-button" (click)="onSave()" >
+                    <mat-icon>save</mat-icon> Save
+                </button>
+                <button class="red-custom-button" mat-button  (click)="onBack()"> 
+                    <mat-icon>delete_outline</mat-icon> Cancel
+                </button>
+            </div>
         </div>
     </div>
     <div class="right-content"  *ngIf="viewModeCheck">

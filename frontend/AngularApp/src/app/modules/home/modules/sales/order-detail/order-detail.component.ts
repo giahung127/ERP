@@ -6,9 +6,11 @@ import { ToastrService } from 'ngx-toastr';
 import { nonAccentVietnamese } from 'src/app/common/functions/ultils';
 import { ProductService } from '../../scm/services/product.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { PriceList } from '../../shared/models/price-list/price-list.model';
 import { ImportProduct } from '../../shared/models/product/import-product.model';
 import { Product } from '../../shared/models/product/product.model';
 import { OrderService } from '../service/order.service';
+import { PriceListService } from '../service/price-list.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -21,6 +23,8 @@ export class OrderDetailComponent {
   productList: Product[] = [
   ];
   totalPrice = 0;
+  selectedOrder;
+  priceListList: PriceList[] = [];
   showProductList: Product[] = [];
   columnName: string[] = [
     'Code',
@@ -41,15 +45,31 @@ export class OrderDetailComponent {
     private orderService: OrderService,
     private dialog: MatDialog,
     private toastr: ToastrService,
+    private priceListService: PriceListService
   ) { 
-    this.showProductList = this.productList;
-    this.route.queryParams.subscribe((params) => {
+    this.getPriceListList();
+    this.route.queryParams.subscribe((params) => {  
       if (params['id']) {
         this.viewModeCheck = false;
+        this.getSelectedOrder(params['id']);
       } else {
         this.viewModeCheck = true;
-      }
-      this.getProductList();     
+        this.selectedOrder = {
+          orderId: "",
+          createdDate: new Date(),
+          status: "",
+          creatorName: "GiaHung",
+          priceListId: "",
+          totalIncludeTax: 0,
+          totalExcludeTax: 0,
+          tax: 0,
+          discount: 0,
+          shippingFee: 0,
+          customerId: "",
+          customerName: "",
+        }
+        this.getProductList();  
+      } 
     })
   }
 
@@ -70,6 +90,44 @@ export class OrderDetailComponent {
         })
         this.showProductList = this.productList;
       })
+  }
+
+  getPriceListList(){
+    this.priceListService.getAllPriceList()
+      .subscribe((res)=> {
+        let data;
+        data = res;
+        this.priceListList = data.map(({ id, priceListCode, priceListName})=>{
+          return {
+            'id': id,
+            'code': priceListCode,
+            'name': priceListName
+          }
+        })
+    })
+  }
+
+  getSelectedOrder(orderId: string){
+    this.orderService.getOrderById(orderId)
+    .subscribe((res)=> {
+      let temp;
+      temp = res
+      this.selectedOrder = {
+        orderId: temp.data.id,
+        createdDate: new Date(temp.data.createDate).toDateString(),
+        status: temp.data.orderStatus,
+        creatorName: temp.data.creatorName,
+        priceListId: temp.data.priceListId,
+        totalIncludeTax: temp.data.totalIncludeTax,
+        totalExcludeTax: temp.data.totalExcludeTax,
+        tax: temp.data.tax,
+        discount: temp.data.discount,
+        shippingFee: temp.data.shippingFee,
+        customerId: temp.data.customerId,
+        customerName: temp.data.customerName,
+      }
+      console.log(this.selectedOrder)
+    })
   }
 
   onBack() {

@@ -9,7 +9,7 @@
                 <div *ngFor="let priceList of priceListList">
                     <div class="node">
                         <button mat-button>{{priceList.name}}</button>
-                        <button mat-icon-button class="edit-button"><mat-icon>edit</mat-icon> </button>
+                        <button mat-icon-button class="edit-button" (click)="openCreatePriceListDialog(priceList.id)"><mat-icon>edit</mat-icon> </button>
                     </div>
                 </div>
             </div>

@@ -17,4 +17,7 @@ export class PriceListService {
     return this.http.get(`http://localhost:9004/sale/price_list/getById/${priceListId}`, { headers: this.headers })
   }
 
+  addNewPriceList(data){
+    return this.http.post('http://localhost:9004/sale/price_list/addNew', data, { headers: this.headers })
+  }
 }

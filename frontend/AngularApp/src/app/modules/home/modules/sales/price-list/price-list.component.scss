@@ -44,5 +44,18 @@
         margin-bottom: 14px;
         border: 0.5px solid #e9ecef;
     }
+    
+    .edit-button {
+        display: none
+    }
+    .node{
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+        justify-content: flex-start;
+    }
+    .node:hover .edit-button {
+        display: block;
+    }
 }
 
