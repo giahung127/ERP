@@ -1,6 +1,7 @@
 package com.erp.scm.controller;
 
 import com.erp.scm.controller.request.NewShipmentReq;
+import com.erp.scm.controller.request.UpdateShipmentItemReq;
 import com.erp.scm.controller.request.UpdateShipmentReq;
 import com.erp.scm.controller.response.GetShipmentByIdRes;
 import com.erp.scm.controller.response.NormalRes;
@@ -38,5 +39,10 @@ public class ShipmentController {
     @PostMapping("updateById")
     public NormalRes UpdateById(@RequestBody UpdateShipmentReq updateShipmentReq) {
         return shipmentService.updateById(updateShipmentReq);
+    }
+
+    @PostMapping("updateShipmentItem")
+    public NormalRes updateShipmentItem(@RequestBody UpdateShipmentItemReq updateShipmentItemReq){
+        return shipmentService.updateShipmentItem(updateShipmentItemReq);
     }
 }

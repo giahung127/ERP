@@ -1,5 +1,7 @@
 package com.erp.scm.controller.request;
 
+import com.erp.scm.controller.status.ShipmentStatus;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -10,5 +12,5 @@ public class UpdateShipmentReq {
     public String to_address;
     public String shipment_type;
     public Date to_date;
-    public String status;
+    public ShipmentStatus status;
 }

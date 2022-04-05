@@ -7,11 +7,11 @@ import java.util.Optional;
 public class GetShipmentByIdRes {
     public String status;
     public String message;
-    public Optional<Shipment> customer;
+    public ShipmentWithItems items;
 
-    public GetShipmentByIdRes(String s, String m, Optional<Shipment> c){
+    public GetShipmentByIdRes(String s, String m, ShipmentWithItems items){
         this.message = m;
         this.status = s;
-        this.customer = c;
+        this.items = items;
     }
 }
