@@ -1,11 +1,11 @@
-package com.erp.sale.controller.response;
+package com.erp.scm.controller.response;
 
-public class NewOrderRes {
+public class NormalRes {
     public String code;
     public String message;
     public String data;
 
-    public NewOrderRes(String code, String message, String data){
+    public NormalRes(String code, String message, String data){
         this.code = code;
         this.message = message;
         this.data = data;

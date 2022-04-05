@@ -1,8 +1,9 @@
 package com.erp.sale.service;
 
 import com.erp.sale.controller.request.NewOrderReq;
+import com.erp.sale.controller.request.UpdateStatusReq;
 import com.erp.sale.controller.response.GetOrderRes;
-import com.erp.sale.controller.response.NewOrderRes;
+import com.erp.sale.controller.response.NormalRes;
 import com.erp.sale.entity.Order;
 import com.erp.sale.entity.OrderItem;
 import com.erp.sale.repository.OrderItemRepository;
@@ -24,7 +25,7 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    public NewOrderRes newOrder(NewOrderReq newOrderReq) {
+    public NormalRes newOrder(NewOrderReq newOrderReq) {
         Order newOrder;
         try {
             newOrder = orderRepository.save(new Order(newOrderReq));
@@ -36,7 +37,7 @@ public class OrderService {
         } catch (Exception e){
             throw e;
         }
-        return new NewOrderRes("200", "New Order Inserted",  newOrder.getId().toString());
+        return new NormalRes("200", "New Order Inserted",  newOrder.getId().toString());
     }
     public List<Order> loadAllOrder(){
         return (List<Order>) orderRepository.findAll();
@@ -53,5 +54,14 @@ public class OrderService {
             return new GetOrderRes("404", "Not Found", result);
         }
         return new GetOrderRes("200", "Get Order By ID", result);
+    }
+
+    public NormalRes updateStatus(UpdateStatusReq updateStatusReq) throws Error{
+        Optional<Order> item = orderRepository.findById(UUID.fromString(updateStatusReq.id));
+        if (item.isEmpty()){
+            return new  NormalRes("404", "Not found", "");
+        }
+        item.get().setOrderStatus(updateStatusReq.orderStatus);
+        return new NormalRes("200", "Updated", item.get().getOrderStatus().toString());
     }
 }
