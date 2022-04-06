@@ -4,10 +4,14 @@ import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
 import com.erp.sale.controller.response.GetOrderRes;
 import com.erp.sale.controller.response.NormalRes;
+import com.erp.sale.entity.Invoice;
 import com.erp.sale.entity.Order;
 import com.erp.sale.entity.OrderItem;
+import com.erp.sale.entity.PriceListItem;
+import com.erp.sale.repository.InvoiceRepository;
 import com.erp.sale.repository.OrderItemRepository;
 import com.erp.sale.repository.OrderRepository;
+import com.erp.sale.repository.PriceListItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -24,6 +29,10 @@ public class OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private InvoiceRepository invoiceRepository;
+    @Autowired
+    private PriceListItemRepository priceListItemRepository;
 
     public NormalRes newOrder(NewOrderReq newOrderReq) {
         Order newOrder;
@@ -63,5 +72,29 @@ public class OrderService {
         }
         item.get().setOrderStatus(updateStatusReq.orderStatus);
         return new NormalRes("200", "Updated", item.get().getOrderStatus().toString());
+    }
+
+    public NormalRes toInvoice(String id) throws Error {
+        Optional<Order> order = orderRepository.findById(UUID.fromString(id));
+        if (order.isEmpty()){
+            return new NormalRes("404", "Found no record while transfer to invoice", "");
+        }
+        // Get PriceList
+        String priceListId = order.get().getPriceListId();
+        // Get all item to find out list of productId
+        List<OrderItem> itemList = orderItemRepository.findAllByOrderId(order.get().getId().toString());
+        List<PriceListItem> priceListItems = itemList.parallelStream().map(
+                orderItem -> {
+                    return (priceListItemRepository.findPriceListItemByPriceListIdAndPriceListId(orderItem.getId().toString(), priceListId)).get();
+                }
+        ).collect(Collectors.toList());
+        // From productIdList get priceList
+        double totalPrice = 0;
+        for (PriceListItem priceListItem : priceListItems) {
+            totalPrice += priceListItem.getPrice();
+        }
+
+        invoiceRepository.save(new Invoice(order.get(), 0.0f));
+        return new NormalRes("200", "New Invoice is made", "");
     }
 }
