@@ -2,13 +2,13 @@ package com.erp.sale.entity;
 
 import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.PriceListItemReq;
+import com.erp.sale.entity.compositeKey.CompositeKeyPriceListItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 
@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@IdClass(CompositeKey.class)
+@IdClass(CompositeKeyPriceListItem.class)
 public class PriceListItem{
     @Id
     private String priceListId;

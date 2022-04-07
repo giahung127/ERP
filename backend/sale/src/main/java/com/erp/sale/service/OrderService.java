@@ -4,14 +4,8 @@ import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
 import com.erp.sale.controller.response.GetOrderRes;
 import com.erp.sale.controller.response.NormalRes;
-import com.erp.sale.entity.Invoice;
-import com.erp.sale.entity.Order;
-import com.erp.sale.entity.OrderItem;
-import com.erp.sale.entity.PriceListItem;
-import com.erp.sale.repository.InvoiceRepository;
-import com.erp.sale.repository.OrderItemRepository;
-import com.erp.sale.repository.OrderRepository;
-import com.erp.sale.repository.PriceListItemRepository;
+import com.erp.sale.entity.*;
+import com.erp.sale.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +27,8 @@ public class OrderService {
     private InvoiceRepository invoiceRepository;
     @Autowired
     private PriceListItemRepository priceListItemRepository;
+    @Autowired
+    private OrderToInvoiceRepository orderToInvoiceRepository;
 
     public NormalRes newOrder(NewOrderReq newOrderReq) {
         Order newOrder;
@@ -84,17 +80,17 @@ public class OrderService {
         // Get all item to find out list of productId
         List<OrderItem> itemList = orderItemRepository.findAllByOrderId(order.get().getId().toString());
         List<PriceListItem> priceListItems = itemList.parallelStream().map(
-                orderItem -> {
-                    return (priceListItemRepository.findPriceListItemByPriceListIdAndPriceListId(orderItem.getId().toString(), priceListId)).get();
-                }
+                orderItem -> (priceListItemRepository.findPriceListItemByPriceListIdAndPriceListId(orderItem.getId().toString(), priceListId)).get()
         ).collect(Collectors.toList());
         // From productIdList get priceList
         double totalPrice = 0;
         for (PriceListItem priceListItem : priceListItems) {
             totalPrice += priceListItem.getPrice();
         }
-
-        invoiceRepository.save(new Invoice(order.get(), 0.0f));
+        double totalDiscount = totalPrice*(order.get().getDiscount())/100.0f;
+        double totalTax = totalPrice*(order.get().getTax())/100.0f;
+        Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax, totalPrice));
+        orderToInvoiceRepository.save(new OrderToInvoice(order.get().getId().toString(), newInvoice.getId().toString()));
         return new NormalRes("200", "New Invoice is made", "");
     }
 }

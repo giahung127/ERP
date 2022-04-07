@@ -28,9 +28,9 @@ public class Invoice {
     private double totalPrice;
 
     // single order to invoice
-    public Invoice(Order order, float totalPrice){
-        this.totalDiscount = order.getDiscount();
-        this.totalTax = order.getTax();
+    public Invoice(double totalDiscount, double totalTax, double totalPrice){
+        this.totalDiscount = totalDiscount;
+        this.totalTax = totalTax;
         this.totalPrice = totalPrice;
     }
 
