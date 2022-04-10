@@ -4,6 +4,7 @@ import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
 import com.erp.sale.controller.response.GetOrderRes;
 import com.erp.sale.controller.response.NormalRes;
+import com.erp.sale.controller.response.OrderWithItems;
 import com.erp.sale.entity.*;
 import com.erp.sale.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,17 +49,13 @@ public class OrderService {
         return (List<Order>) orderRepository.findAll();
     }
 
-    public Page<Order> loadPageOrder(PageRequest sort) {
-        Page<Order> resultt =  orderRepository.findAll(sort);
-        return resultt;
-    }
-
     public GetOrderRes getOrderById(String id) throws Error {
         Optional<Order> result =  orderRepository.findById(UUID.fromString(id));
         if (result.isEmpty()){
-            return new GetOrderRes("404", "Not Found", result);
+            return new GetOrderRes("404", "Not Found", null);
         }
-        return new GetOrderRes("200", "Get Order By ID", result);
+        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(result.get().getId().toString());
+        return new GetOrderRes("200", "Get Order By ID", new OrderWithItems(result.get(), orderItems) );
     }
 
     public NormalRes updateStatus(UpdateStatusReq updateStatusReq) throws Error{

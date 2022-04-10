@@ -7,6 +7,8 @@ import com.erp.sale.entity.PriceList;
 import com.erp.sale.entity.PriceListItem;
 import com.erp.sale.repository.PriceListItemRepository;
 import com.erp.sale.repository.PriceListRepository;
+import com.erp.sale.controller.response.related.PriceListItemWithName;
+import com.erp.sale.service.api.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PriceListService {
@@ -21,10 +24,20 @@ public class PriceListService {
     private PriceListRepository priceListRepository;
     @Autowired
     private PriceListItemRepository priceListItemRepository;
+    @Autowired
+    private ProductService productService;
 
-    public List<PriceList> loadAllPriceList(){
-        return (List<PriceList>) priceListRepository.findAll();
-    }
+
+//    public List<GetByIdPriceList> loadAllPriceList(){
+//        // Take all priceList out
+//        List<PriceList> priceLists = priceListRepository.findAll();
+//        // Merger PriceList + PriceListItemWithName
+//        List<PriceListItemWithName> result = priceLists.parallelStream().map(
+//            priceList -> {
+//
+//            }
+//        )
+//    }
 
     public NormalRes newPriceList(NewPriceListReq newPriceListReq){
         PriceList newPriceList;
@@ -46,10 +59,16 @@ public class PriceListService {
     public GetPriceListByIdRes getById(String priceListId) throws Error {
         Optional<PriceList> priceList = priceListRepository.findById(UUID.fromString(priceListId));;
         List<PriceListItem> priceListItems = priceListItemRepository.findPriceListItemByPriceListId(priceListId);
-        GetByIdPriceList result = new GetByIdPriceList(priceList, priceListItems);
         if (priceListItems.isEmpty()){
-            return  new GetPriceListByIdRes("404", "Found no Data", null);
+            return  new GetPriceListByIdRes("404", "Found no Data for price list item", null);
         }
+        List<PriceListItemWithName> itemWithNameList = priceListItems.parallelStream().map(
+                priceListItem -> {
+                    String productName = String.valueOf(productService.getProductNameById(priceListItem.getProductId()));
+                    return new PriceListItemWithName(priceListItem, productName);
+                }
+        ).collect(Collectors.toList());
+        GetByIdPriceList result = new GetByIdPriceList(priceList.get(), itemWithNameList);
         return new GetPriceListByIdRes("200", "Found Data", result);
     }
 

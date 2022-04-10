@@ -116,4 +116,13 @@ public class ProductService {
         }
         return ResponseEntity.status(HttpStatus.OK).body("Deleted product - ID " + ID);
     }
+
+    public String getProductNameById(String productId) throws Error {
+        String name = productRepository.findProductNameById(productId);
+        System.out.println(productId);
+        if (name.isEmpty()){
+            return "Not found";
+        }
+        return name;
+    }
 }
