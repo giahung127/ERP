@@ -3,6 +3,7 @@ package com.erp.sale.controller;
 import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.NewPriceListReq;
 import com.erp.sale.controller.response.AddNewProductToPriceListRes;
+import com.erp.sale.controller.response.GetByIdPriceList;
 import com.erp.sale.controller.response.GetPriceListByIdRes;
 import com.erp.sale.controller.response.NormalRes;
 import com.erp.sale.entity.PriceList;
@@ -21,10 +22,10 @@ public class PriceListController {
     @Autowired
     private PriceListService priceListService;
 
-    @GetMapping("/loadAll")
-    public List<PriceList> getAllPriceList(){
-        return priceListService.loadAllPriceList();
-    }
+//    @GetMapping("/loadAll")
+//    public List<GetByIdPriceList> getAllPriceList(){
+//        return priceListService.loadAllPriceList();
+//    }
 
     @PostMapping("/addNew")
     public NormalRes newPriceList(@RequestBody NewPriceListReq newPriceListReq){
