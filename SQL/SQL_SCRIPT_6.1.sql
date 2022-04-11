@@ -355,122 +355,6 @@ INSERT INTO `transporter` (`id`, `transporter_name`, `phone`, `address`, `descri
 -- Indexes for dumped tables
 --
 
---
--- Indexes for table `category`
---
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parentId_FK` (`parent_id`);
-
---
--- Indexes for table `price_list`
---
-ALTER TABLE `price_list`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `price_list_item`
---
-ALTER TABLE `price_list_item`
-  ADD PRIMARY KEY (`priceListId`,`productId`),
-  ADD KEY `productId_FK` (`productId`);
-
---
--- Indexes for table `product`
---
-ALTER TABLE `product`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `category_id` (`category_id`);
-
---
--- Indexes for table `shipment`
---
-ALTER TABLE `shipment`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `transporterId_FK` (`transporter_id`),
-  ADD KEY `orderId_FK` (`order_id`);
-
---
--- Indexes for table `shipment_item`
---
-ALTER TABLE `shipment_item`
-  ADD PRIMARY KEY (`product_id`,`shipment_id`),
-  ADD KEY `shipmentId_FK` (`shipment_id`);
-
---
--- Indexes for table `supplement`
---
-ALTER TABLE `supplement`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `supplierId` (`supplierId`);
-
---
--- Indexes for table `supplemen_item`
---
-ALTER TABLE `supplemen_item`
-  ADD PRIMARY KEY (`product_id`,`supplement_id`);
-
---
--- Indexes for table `supplier`
---
-ALTER TABLE `supplier`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `transporter`
---
-ALTER TABLE `transporter`
-  ADD PRIMARY KEY (`id`);
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `category`
---
-ALTER TABLE `category`
-  ADD CONSTRAINT `parentId_FK` FOREIGN KEY (`parent_id`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `price_list_item`
---
-ALTER TABLE `price_list_item`
-  ADD CONSTRAINT `priceListId_FK` FOREIGN KEY (`priceListId`) REFERENCES `price_list` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Constraints for table `product`
---
-ALTER TABLE `product`
-  ADD CONSTRAINT `categoryid_FK` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `shipment`
---
-ALTER TABLE `shipment`
-  ADD CONSTRAINT `orderId_FK` FOREIGN KEY (`order_id`) REFERENCES `test_sale`.`order` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `transporterId_FK` FOREIGN KEY (`transporter_id`) REFERENCES `transporter` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Constraints for table `shipment_item`
---
-ALTER TABLE `shipment_item`
-  ADD CONSTRAINT `productId3_FK` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `shipmentId_FK` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Constraints for table `supplement`
---
-ALTER TABLE `supplement`
-  ADD CONSTRAINT `supplierId` FOREIGN KEY (`supplierId`) REFERENCES `supplier` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Constraints for table `supplemen_item`
---
-ALTER TABLE `supplemen_item`
-  ADD CONSTRAINT `productId2_FK` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `supplementID_FK` FOREIGN KEY (`supplement_id`) REFERENCES `supplement` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
---
 -- Database: `test_sale`
 --
 DROP DATABASE IF EXISTS `test_sale`;
@@ -760,10 +644,127 @@ TRUNCATE TABLE `user`;
 --
 -- Indexes for dumped tables
 --
+USE `test`;
+--
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parentId_FK` (`parent_id`);
 
+--
+-- Indexes for table `price_list`
+--
+ALTER TABLE `price_list`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `price_list_item`
+--
+ALTER TABLE `price_list_item`
+  ADD PRIMARY KEY (`priceListId`,`productId`),
+  ADD KEY `productId_FK` (`productId`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Indexes for table `shipment`
+--
+ALTER TABLE `shipment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `transporterId_FK` (`transporter_id`),
+  ADD KEY `orderId_FK` (`order_id`);
+
+--
+-- Indexes for table `shipment_item`
+--
+ALTER TABLE `shipment_item`
+  ADD PRIMARY KEY (`product_id`,`shipment_id`),
+  ADD KEY `shipmentId_FK` (`shipment_id`);
+
+--
+-- Indexes for table `supplement`
+--
+ALTER TABLE `supplement`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `supplierId` (`supplierId`);
+
+--
+-- Indexes for table `supplemen_item`
+--
+ALTER TABLE `supplemen_item`
+  ADD PRIMARY KEY (`product_id`,`supplement_id`);
+
+--
+-- Indexes for table `supplier`
+--
+ALTER TABLE `supplier`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `transporter`
+--
+ALTER TABLE `transporter`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `category`
+--
+ALTER TABLE `category`
+  ADD CONSTRAINT `parentId_FK` FOREIGN KEY (`parent_id`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `price_list_item`
+--
+ALTER TABLE `price_list_item`
+  ADD CONSTRAINT `priceListId_FK` FOREIGN KEY (`priceListId`) REFERENCES `price_list` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `categoryid_FK` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipment`
+--
+ALTER TABLE `shipment`
+  ADD CONSTRAINT `orderId_FK` FOREIGN KEY (`order_id`) REFERENCES `test_sale`.`order` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `transporterId_FK` FOREIGN KEY (`transporter_id`) REFERENCES `transporter` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipment_item`
+--
+ALTER TABLE `shipment_item`
+  ADD CONSTRAINT `productId3_FK` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `shipmentId_FK` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supplement`
+--
+ALTER TABLE `supplement`
+  ADD CONSTRAINT `supplierId` FOREIGN KEY (`supplierId`) REFERENCES `supplier` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supplemen_item`
+--
+ALTER TABLE `supplemen_item`
+  ADD CONSTRAINT `productId2_FK` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `supplementID_FK` FOREIGN KEY (`supplement_id`) REFERENCES `supplement` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+--
 --
 -- Indexes for table `customer`
 --
+USE `test_sale`;
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
 
@@ -830,6 +831,121 @@ ALTER TABLE `order_item`
 ALTER TABLE `order_to_invoices`
   ADD CONSTRAINT `invoicesId_FK` FOREIGN KEY (`invoicesId`) REFERENCES `invoice` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `oderId_FK` FOREIGN KEY (`orderId`) REFERENCES `order` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parentId_FK` (`parent_id`);
+
+--
+-- Indexes for table `price_list`
+--
+ALTER TABLE `price_list`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `price_list_item`
+--
+ALTER TABLE `price_list_item`
+  ADD PRIMARY KEY (`priceListId`,`productId`),
+  ADD KEY `productId_FK` (`productId`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Indexes for table `shipment`
+--
+ALTER TABLE `shipment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `transporterId_FK` (`transporter_id`),
+  ADD KEY `orderId_FK` (`order_id`);
+
+--
+-- Indexes for table `shipment_item`
+--
+ALTER TABLE `shipment_item`
+  ADD PRIMARY KEY (`product_id`,`shipment_id`),
+  ADD KEY `shipmentId_FK` (`shipment_id`);
+
+--
+-- Indexes for table `supplement`
+--
+ALTER TABLE `supplement`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `supplierId` (`supplierId`);
+
+--
+-- Indexes for table `supplemen_item`
+--
+ALTER TABLE `supplemen_item`
+  ADD PRIMARY KEY (`product_id`,`supplement_id`);
+
+--
+-- Indexes for table `supplier`
+--
+ALTER TABLE `supplier`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `transporter`
+--
+ALTER TABLE `transporter`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `category`
+--
+ALTER TABLE `category`
+  ADD CONSTRAINT `parentId_FK` FOREIGN KEY (`parent_id`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `price_list_item`
+--
+ALTER TABLE `price_list_item`
+  ADD CONSTRAINT `priceListId_FK` FOREIGN KEY (`priceListId`) REFERENCES `price_list` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `categoryid_FK` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipment`
+--
+ALTER TABLE `shipment`
+  ADD CONSTRAINT `orderId_FK` FOREIGN KEY (`order_id`) REFERENCES `test_sale`.`order` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `transporterId_FK` FOREIGN KEY (`transporter_id`) REFERENCES `transporter` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `shipment_item`
+--
+ALTER TABLE `shipment_item`
+  ADD CONSTRAINT `productId3_FK` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `shipmentId_FK` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supplement`
+--
+ALTER TABLE `supplement`
+  ADD CONSTRAINT `supplierId` FOREIGN KEY (`supplierId`) REFERENCES `supplier` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supplemen_item`
+--
+ALTER TABLE `supplemen_item`
+  ADD CONSTRAINT `productId2_FK` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `supplementID_FK` FOREIGN KEY (`supplement_id`) REFERENCES `supplement` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

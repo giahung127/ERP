@@ -12,26 +12,25 @@
             <div class="partial-container">
                 <div class="title">General information</div>
                 <div class="row">
-                <div class="custom-field-s">
-                    <div class="label">Created By:</div> 
-                    {{selectedOrder.creatorName}}
-                </div>
-                <div class="custom-field-s">
-                    <div class="label">Created Date:</div>
-                    {{selectedOrder.createdDate}}
-                </div>
-                <div class="custom-field-s">
-                    <div class="label">Customer:</div>
-                    {{selectedOrder.customerName}}
-                </div>
-                </div>
-                <div class="row">
                     <div class="custom-field-s">
-                        <div class="label">Price List:</div>
-                        {{selectedOrder.priceListName}}
+                        <div class="label">Created By:</div>
+                        <div class="content">{{selectedOrder.creatorName}}</div>
                     </div>
                     <div class="custom-field-s">
-                        <mat-checkbox disabled="true">Shipping</mat-checkbox>
+                        <div class="label">Created Date:</div>
+                        <div class="content">{{selectedOrder.createdDate}}</div>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Customer:</div>
+                        <div class="content">{{selectedOrder.customerName}}</div>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Price List:</div>
+                        <div class="content">{{selectedOrder.priceListName}}</div>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Status:</div>
+                        <div class="content">{{selectedOrder.status}}</div>
                     </div>
                 </div>
             </div>
@@ -58,7 +57,7 @@
                             <div class="total">Total</div>
                             <div class="delete" *ngIf="viewModeCheck"></div>
                         </div>
-                        <div class="import-item" *ngFor="let importProduct of importProductList">
+                        <div class="import-item" *ngFor="let importProduct of orderProductList">
                             <div class="no">{{importProduct.no}}</div>
                             <div class="code">{{importProduct.productCode}}</div>
                             <div class="name">{{importProduct.productName}}</div>
@@ -95,9 +94,9 @@
                 </div>
             </div>
 
-            <div class="form-footer">
-                <button mat-button class="green-custom-button" (click)="onSave()" >
-                    <mat-icon>save</mat-icon> Save
+            <div class="form-footer" *ngIf="selectedOrder.status === 'WAITING'">
+                <button mat-button class="green-custom-button" (click)="onConfirm()" >
+                    <mat-icon>check</mat-icon> Confirm
                 </button>
                 <button class="red-custom-button" mat-button  (click)="onBack()"> 
                     <mat-icon>delete_outline</mat-icon> Cancel
@@ -124,10 +123,9 @@
                 <div class="custom-field-s">
                     <div class="label">Customer:</div>
                     <mat-form-field  appearance="outline" required>
-                        <mat-select>
-                            <mat-option>None</mat-option>
-                            <mat-option>
-                            A
+                        <mat-select [(ngModel)]="selectedOrder.customerId">
+                            <mat-option *ngFor="let customer of customerList" [value]="customer.customerId">
+                            {{customer.name}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -137,7 +135,7 @@
                     <div class="custom-field-s">
                         <div class="label">Price List:</div>
                         <mat-form-field  appearance="outline" required>
-                            <mat-select>
+                            <mat-select [(ngModel)]="selectedOrder.priceListId" (ngModelChange)="getProductPriceList(selectedOrder.priceListId)">
                                 <mat-option *ngFor="let priceList of priceListList" [value]="priceList.id">
                                 {{priceList.name}}
                                 </mat-option>
@@ -172,7 +170,7 @@
                             <div class="total">Total</div>
                             <div class="delete" *ngIf="viewModeCheck"></div>
                         </div>
-                        <div class="import-item" *ngFor="let importProduct of importProductList">
+                        <div class="import-item" *ngFor="let importProduct of orderProductList">
                             <div class="no">{{importProduct.no}}</div>
                             <div class="code">{{importProduct.productCode}}</div>
                             <div class="name">{{importProduct.productName}}</div>

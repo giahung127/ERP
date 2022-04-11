@@ -13,28 +13,28 @@ export class AddProductToPriceListModalComponent {
   editMode = false;
   addPriceListForm = new FormGroup({});
   priceListList: PriceList[] = [];
+  productList;
+  price;
+  selectPriceList
+  selectProduct
   constructor(
     private dialogRef: MatDialogRef<AddProductToPriceListModalComponent>,
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) data
   ) {
     this.priceListList = data.priceListList
-    if(data.selectedPriceListId !== ''){
-      this.editMode = true;
-      this.addPriceListForm = this.fb.group({
-        priceListName: new FormControl('', Validators.required),
-        priceListCode: new FormControl('')
-      })
-    } else{
-      this.addPriceListForm = this.fb.group({
-        priceListName: new FormControl('', Validators.required),
-        priceListCode: new FormControl('')
-      })
-    }
+    this.productList = data.productList
+    this.selectPriceList = data.currentPriceListId
+      console.log(this.productList)
   }
 
   onSave() {
-      this.dialogRef.close(this.addPriceListForm.value);
+    const data = {
+      priceListId: this.selectPriceList,
+      productId: this.selectProduct,
+      price: this.price
+    }
+    this.dialogRef.close(data);
   }
 
   onCancel() {

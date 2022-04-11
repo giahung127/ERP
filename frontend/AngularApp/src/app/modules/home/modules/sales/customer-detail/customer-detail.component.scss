@@ -29,7 +29,6 @@
     
     form {
         padding-top: 16px;
-        width: 100%;
     }
     
     .partial-container{
@@ -63,6 +62,8 @@
 
     .partial-container .mat-tab-group{
         flex-grow: 1;
+        
+
     }
     
     .line {
@@ -167,6 +168,10 @@
         align-items: center;
         margin: 6px;
         gap: 12px;
+    }
+
+    .mat-tab-body-content{
+        overflow:unset;
     }
 }
 

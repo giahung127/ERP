@@ -1,10 +1,10 @@
 export class PriceListItem {
-    itemId: string;
+    productId: string;
     priceListId: string;
     price: number;
     updatedAt: string;
-    constructor(itemId: string, priceListId: string, price: number, updatedAt: string){
-        this.itemId = itemId;
+    constructor(productId: string, priceListId: string, price: number, updatedAt: string){
+        this.productId = productId;
         this.priceListId = priceListId;
         this.price = price;
         this.updatedAt = updatedAt;

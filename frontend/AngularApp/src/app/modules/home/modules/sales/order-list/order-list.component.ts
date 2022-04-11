@@ -29,10 +29,11 @@ export class OrderListComponent implements OnInit {
         return {
           'orderId': id,
           'createdDate': createDate,
-          'customer': customerName,
+          'customerName': customerName,
           'status': orderStatus
         }
       })
+      console.log(this.orderList)
     })
   }
 
@@ -47,7 +48,7 @@ export class OrderListComponent implements OnInit {
   columnToProperty = {
     'Order Id': 'orderId',
     'Date': 'createdDate',
-    'Customer': 'customer',
+    'Customer': 'customerName',
     'Status': 'status'
   };
   onAddEmployee: () => void = () => {

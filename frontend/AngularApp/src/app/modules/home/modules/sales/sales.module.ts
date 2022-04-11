@@ -28,8 +28,7 @@ import { AddPriceListModalComponent } from './add-price-list-modal/add-price-lis
 import { AddProductToPriceListModalComponent } from './add-product-to-price-list-modal/add-product-to-price-list-modal.component';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { InvoiceDetailComponent } from './invoice-detail/invoice-detail.component';
-
-
+import { ScmModule } from '../scm/scm.module';
 
 @NgModule({
   declarations: [
@@ -64,7 +63,8 @@ import { InvoiceDetailComponent } from './invoice-detail/invoice-detail.componen
     MatDialogModule,
     MatCheckboxModule,
     MatSelectModule,
-    SharedModule
+    SharedModule,
+    ScmModule
   ]
 })
 export class SalesModule { }

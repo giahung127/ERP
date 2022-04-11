@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Customer } from '../../shared/models/customer/customer.model';
 import { Employee } from '../../shared/models/employee';
+import { CustomerService } from '../service/customer.service';
 
 @Component({
   selector: 'app-customer-list',
@@ -10,19 +11,30 @@ import { Employee } from '../../shared/models/employee';
 })
 export class CustomerListComponent  {
 
-
   constructor(
     private router: Router,
-  ) {}
-  customerList: Customer[] = [
-    new Customer('c001','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Customer('c002','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Customer('c003','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Customer('c004','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Customer('c005','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Customer('c006','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Customer('c007','Nguyen Van A', '012346789', 'Software Enginering', 'Intership')
-  ];
+    private customerService: CustomerService
+  ) {
+    this.getCustomerList();
+  }
+
+  getCustomerList(){
+    this.customerService.getAllCustomerList()
+    .subscribe((res) => {
+      let data;
+      data = res
+      this.customerList = data.map(({ id, name, phone, address})=>{
+        return {
+          'customerId': id,
+          'name': name,
+          'phone': phone,
+          'address': address
+        }
+      })
+    })
+  }
+
+  customerList: Customer[] = [];
   columnName: string[] = [
     'Customer Id',
     'Name',
@@ -41,7 +53,9 @@ export class CustomerListComponent  {
   };
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/sales/customer-detail', id]);
+    this.router.navigate(['/home/sales/customer-detail'],{
+      queryParams: { employeeId: id }
+    });
   };
   onEditClick: (id: string) => void = (id: string) => {
       this.router.navigate(['/home/sales/customer-detail', id], {

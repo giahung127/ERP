@@ -48,7 +48,7 @@ const routes: Routes = [
                 component: ShippingDetailComponent
             },
             {
-                path: 'shipping-detail/',
+                path: 'shipping-detail',
                 component: ShippingDetailComponent
             },
             {

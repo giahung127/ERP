@@ -8,26 +8,41 @@
             <div class="price-list">
                 <div *ngFor="let priceList of priceListList">
                     <div class="node">
-                        <button mat-button>{{priceList.name}}</button>
+                        <button mat-button (click)="getProductPriceList(priceList.id)">{{priceList.name}}</button>
                         <button mat-icon-button class="edit-button" (click)="openCreatePriceListDialog(priceList.id)"><mat-icon>edit</mat-icon> </button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="line"></div>
-        <app-home-table-list
-        [title]="'Price List'"
-        [data]="productList"
-        [columnName]="columnName"
-        [columnToProperty]="columnToProperty"
-        [checkbox]="false"
-        [more]="false"
-        [key]="'productId'"
-        [add]="true"
-        [onAdd]="onAddEmployee"
-        [formField]= "formFieldList"
-        >
-        </app-home-table-list>
+        <div class="table">
+            <div class="table-header">
+                <div class="content-left">Price list</div>
+                <div class="content-right">
+                    <div class="custom-button" (click)="onSave()">
+                        <mat-icon>save</mat-icon><div> Save</div>
+                    </div>
+                    <div class="custom-button" (click)="onAddEmployee()">
+                        <mat-icon>add</mat-icon><div> Add</div>
+                    </div>
+                </div>
+            </div>
+            <div class="line"> </div>
+            <app-home-table-list
+            [title]="'Price List'"
+            [data]="productPriceList"
+            [columnName]="columnName"
+            [columnToProperty]="columnToProperty"
+            [checkbox]="false"
+            [more]="false"
+            [header]="false"
+            [key]="'productId'"
+            [add]="true"
+            [onAdd]="onAddEmployee"
+            [formField]= "formFieldList"
+            >
+            </app-home-table-list>
+        </div>
     </div>
 </div>
   

@@ -20,4 +20,8 @@ export class PriceListService {
   addNewPriceList(data){
     return this.http.post('http://localhost:9004/sale/price_list/addNew', data, { headers: this.headers })
   }
+
+  addProductToPriceList(data) {
+    return this.http.post('http://localhost:9004/sale/price_list/newProduct', data, { headers: this.headers })
+  }
 }
