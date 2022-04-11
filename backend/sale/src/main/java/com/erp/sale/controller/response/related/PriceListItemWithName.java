@@ -9,6 +9,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PriceListItemWithName {
-    PriceListItem priceListItem;
-    String        productName;
+    public String priceListId;
+    public String productId;
+    public Float  price;
+    public String productName;
+    public PriceListItemWithName(PriceListItem priceListItem, String productName){
+        this.priceListId = priceListItem.getPriceListId();
+        this.productId = priceListItem.getProductId();
+        this.price = priceListItem.getPrice();
+        this.productName = productName;
+    }
 }
