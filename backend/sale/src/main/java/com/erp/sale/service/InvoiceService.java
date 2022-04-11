@@ -61,6 +61,4 @@ public class InvoiceService {
         }
         return new NormalRes("200", "Inserted new Invoice", newInvoice.getId().toString());
     }
-
-
 }

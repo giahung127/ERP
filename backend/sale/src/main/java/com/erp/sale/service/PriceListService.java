@@ -60,7 +60,11 @@ public class PriceListService {
         Optional<PriceList> priceList = priceListRepository.findById(UUID.fromString(priceListId));;
         List<PriceListItem> priceListItems = priceListItemRepository.findPriceListItemByPriceListId(priceListId);
         if (priceListItems.isEmpty()){
-            return  new GetPriceListByIdRes("404", "Found no Data for price list item", null);
+            if (priceList.isEmpty()){
+                return  new GetPriceListByIdRes("404", "Found no Data for price list item", null);
+            }
+            GetByIdPriceList result = new GetByIdPriceList(priceList.get(), null);
+            return new GetPriceListByIdRes("200", "Found Data with no itemList", result);
         }
         List<PriceListItemWithName> itemWithNameList = priceListItems.parallelStream().map(
                 priceListItem -> {
