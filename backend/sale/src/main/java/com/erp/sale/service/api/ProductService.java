@@ -7,8 +7,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class ProductService {
-    @Autowired
-    private WebClient.Builder webClientBuilder;
+    private final WebClient.Builder webClientBuilder;
+
+    public ProductService(WebClient.Builder webClientBuilder) {
+        this.webClientBuilder = webClientBuilder;
+    }
 
     public String getProductNameById(String productId){
         return webClientBuilder.build()

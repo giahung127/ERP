@@ -1,9 +1,5 @@
 package com.erp.scm.controller.response;
 
-import com.erp.scm.entity.Shipment;
-
-import java.util.Optional;
-
 public class GetShipmentByIdRes {
     public String status;
     public String message;

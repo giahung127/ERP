@@ -45,4 +45,10 @@ public class OrderController {
         return orderService.updateStatus(updateStatusReq);
     }
 
+    @GetMapping("/getOrderByCustomerId/{customerId}")
+    public GetOrderRes getOrderByCustomerId(@PathVariable String customerId){
+        return orderService.getOrderByCustomerId(customerId);
+    }
+
+
 }

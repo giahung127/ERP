@@ -2,6 +2,7 @@ package com.erp.sale.service;
 
 import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.NewPriceListReq;
+import com.erp.sale.controller.request.UpdatePriceListItemReq;
 import com.erp.sale.controller.response.*;
 import com.erp.sale.entity.PriceList;
 import com.erp.sale.entity.PriceListItem;
@@ -28,16 +29,15 @@ public class PriceListService {
     private ProductService productService;
 
 
-//    public List<GetByIdPriceList> loadAllPriceList(){
-//        // Take all priceList out
-//        List<PriceList> priceLists = priceListRepository.findAll();
-//        // Merger PriceList + PriceListItemWithName
-//        List<PriceListItemWithName> result = priceLists.parallelStream().map(
-//            priceList -> {
-//
-//            }
-//        )
-//    }
+    public List<GetPriceListByIdRes> loadAllPriceList(){
+        // Take all priceList out
+        List<PriceList> priceLists = priceListRepository.findAll();
+        // Merger PriceList + PriceListItemWithName
+        List<GetPriceListByIdRes> result = priceLists.parallelStream().map(
+            priceList -> getById(priceList.getId().toString())
+        ).collect(Collectors.toList());
+        return result;
+    }
 
     public NormalRes newPriceList(NewPriceListReq newPriceListReq){
         PriceList newPriceList;
@@ -64,7 +64,7 @@ public class PriceListService {
         }
         List<PriceListItemWithName> itemWithNameList = priceListItems.parallelStream().map(
                 priceListItem -> {
-                    String productName = String.valueOf(productService.getProductNameById(priceListItem.getProductId()));
+                    String productName = productService.getProductNameById(priceListItem.getProductId());
                     return new PriceListItemWithName(priceListItem, productName);
                 }
         ).collect(Collectors.toList());
@@ -75,5 +75,16 @@ public class PriceListService {
     public AddNewProductToPriceListRes addNewProductToPriceList(AddProductToPriceListReq item) throws Error {
         priceListItemRepository.save(new PriceListItem(item));
         return new AddNewProductToPriceListRes("200", "Inserted New Item To PriceList", "" );
+    }
+
+
+    public NormalRes updatePriceListItem(UpdatePriceListItemReq itemReq) throws Error {
+        Optional<PriceListItem> temp = priceListItemRepository.findPriceListItemByPriceListIdAndProductId(itemReq.price_list_id, itemReq.product_id);
+        if (temp.isEmpty()){
+            return new NormalRes("404", "Not found priceListItem", "");
+        }
+        temp.get().setPrice(itemReq.price);
+        priceListItemRepository.save(temp.get());
+        return new NormalRes("200", "Updated priceListItem", "");
     }
 }

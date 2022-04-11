@@ -16,11 +16,11 @@ public class ShipmentWithItems {
     public List<ShipmentItem> shipmen_item_list;
     
     public ShipmentWithItems(Shipment shipment, List<ShipmentItem> itemList){
-        this.transporter_id = shipment.getTransporter_id();
-        this.order_id = shipment.getOrder_id();
-        this.to_address = shipment.getTo_address();
-        this.shipment_type = shipment.getShipment_type();
-        this.to_date = shipment.getTo_date();
+        this.transporter_id = shipment.getTransporterId();
+        this.order_id = shipment.getOrderId();
+        this.to_address = shipment.getToAddress();
+        this.shipment_type = shipment.getShipmentType();
+        this.to_date = shipment.getToDate();
         this.shipmen_item_list = itemList;
     }
 }

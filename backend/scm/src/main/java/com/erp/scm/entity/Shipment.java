@@ -22,19 +22,19 @@ public class Shipment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type="uuid-char")
     private UUID id;
-    private String transporter_id;
-    private String order_id;
-    private String to_address;
-    private String shipment_type;
-    private Date   to_date;
+    private String transporterId;
+    private String orderId;
+    private String toAddress;
+    private String shipmentType;
+    private Date   toDate;
     private ShipmentStatus shipmentStatus;
 
     public Shipment(NewShipmentReq newShipmentReq){
-        this.transporter_id = newShipmentReq.transporter_id;
-        this.order_id = newShipmentReq.order_id;
-        this.to_address = newShipmentReq.to_address;
-        this.shipment_type = newShipmentReq.shipment_type;
-        this.to_date = newShipmentReq.to_date;
+        this.transporterId = newShipmentReq.transporter_id;
+        this.orderId = newShipmentReq.order_id;
+        this.toAddress = newShipmentReq.to_address;
+        this.shipmentType = newShipmentReq.shipment_type;
+        this.toDate = newShipmentReq.to_date;
         this.shipmentStatus = ShipmentStatus.IN_STOCK;
     }
 }
