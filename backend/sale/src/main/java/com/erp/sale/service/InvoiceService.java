@@ -42,7 +42,7 @@ public class InvoiceService {
             // Get all item to find out list of productId
             List<OrderItem> itemList = orderItemRepository.findAllByOrderId(order.get().getId().toString());
             List<PriceListItem> priceListItems = itemList.parallelStream().map(
-                    orderItem -> (priceListItemRepository.findPriceListItemByPriceListIdAndPriceListId(orderItem.getId().toString(), priceListId)).get()
+                    orderItem -> (priceListItemRepository.findPriceListItemByPriceListIdAndProductId(orderItem.getId().toString(), priceListId)).get()
             ).collect(Collectors.toList());
             // From productIdList get priceList
             double partialPrice = 0;
