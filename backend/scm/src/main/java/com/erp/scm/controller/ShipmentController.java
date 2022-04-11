@@ -45,4 +45,10 @@ public class ShipmentController {
     public NormalRes updateShipmentItem(@RequestBody UpdateShipmentItemReq updateShipmentItemReq){
         return shipmentService.updateShipmentItem(updateShipmentItemReq);
     }
+
+    @GetMapping("getByOrderId/{orderId}")
+    public GetShipmentByIdRes getByOrderId(@PathVariable String orderId){
+        return shipmentService.getByOrderId(orderId);
+    }
+
 }

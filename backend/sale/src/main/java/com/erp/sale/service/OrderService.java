@@ -77,7 +77,7 @@ public class OrderService {
         // Get all item to find out list of productId
         List<OrderItem> itemList = orderItemRepository.findAllByOrderId(order.get().getId().toString());
         List<PriceListItem> priceListItems = itemList.parallelStream().map(
-                orderItem -> (priceListItemRepository.findPriceListItemByPriceListIdAndPriceListId(orderItem.getId().toString(), priceListId)).get()
+                orderItem -> (priceListItemRepository.findPriceListItemByPriceListIdAndProductId(priceListId, orderItem.getProductId())).get()
         ).collect(Collectors.toList());
         // From productIdList get priceList
         double totalPrice = 0;
@@ -89,5 +89,15 @@ public class OrderService {
         Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax, totalPrice));
         orderToInvoiceRepository.save(new OrderToInvoice(order.get().getId().toString(), newInvoice.getId().toString()));
         return new NormalRes("200", "New Invoice is made", "");
+    }
+
+
+    public GetOrderRes getOrderByCustomerId(String customerId) throws Error{
+        Optional<Order> order = orderRepository.findByCustomerId(customerId);
+        if (order.isEmpty()){
+            return new GetOrderRes("404", "Not Found", null);
+        }
+        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(order.get().getId().toString());
+        return new GetOrderRes("200", "Get Order By ID", new OrderWithItems(order.get(), orderItems) );
     }
 }

@@ -119,7 +119,6 @@ public class ProductService {
 
     public String getProductNameById(String productId) throws Error {
         String name = productRepository.findProductNameById(productId);
-        System.out.println(productId);
         if (name.isEmpty()){
             return "Not found";
         }

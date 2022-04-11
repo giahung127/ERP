@@ -59,11 +59,11 @@ public class ShipmentService {
         if (temp.isEmpty()){
             return new NormalRes("404", "No record in DB", "");
         }
-        temp.get().setTransporter_id(updateShipmentReq.transporter_id);
-        temp.get().setOrder_id(updateShipmentReq.order_id);
-        temp.get().setTo_address(updateShipmentReq.to_address);
-        temp.get().setShipment_type(updateShipmentReq.shipment_type);
-        temp.get().setTo_date(updateShipmentReq.to_date);
+        temp.get().setTransporterId(updateShipmentReq.transporter_id);
+        temp.get().setOrderId(updateShipmentReq.order_id);
+        temp.get().setToAddress(updateShipmentReq.to_address);
+        temp.get().setShipmentType(updateShipmentReq.shipment_type);
+        temp.get().setToDate(updateShipmentReq.to_date);
         temp.get().setShipmentStatus(updateShipmentReq.status);
         shipmentRepository.save(temp.get());
         return new NormalRes("200", "Updated", "");
@@ -78,5 +78,16 @@ public class ShipmentService {
         item.get().setAmount(updateShipmentItemReq.amount);
         shipmentItemRepository.save(item.get());
         return new NormalRes("200", "Updated item", updateShipmentItemReq.productId + "---" + updateShipmentItemReq.shipmentId);
+    }
+
+
+    public GetShipmentByIdRes getByOrderId(String orderId) throws Error {
+        Optional<Shipment> temp =  shipmentRepository.findShipmentByOrderId(orderId);
+        if (temp.isEmpty()){
+            return new GetShipmentByIdRes("404", "No record in DB", null);
+        }
+        List<ShipmentItem> items = shipmentItemRepository.findAllByShipmentId(temp.get().getId().toString());
+        ShipmentWithItems result = new ShipmentWithItems(temp.get(), items);
+        return new GetShipmentByIdRes("200", "Found record of Shipment", result);
     }
 }
