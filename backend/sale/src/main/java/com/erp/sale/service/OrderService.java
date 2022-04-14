@@ -64,6 +64,7 @@ public class OrderService {
             return new  NormalRes("404", "Not found", "");
         }
         item.get().setOrderStatus(updateStatusReq.orderStatus);
+        orderRepository.save(item.get());
         return new NormalRes("200", "Updated", item.get().getOrderStatus().toString());
     }
 
