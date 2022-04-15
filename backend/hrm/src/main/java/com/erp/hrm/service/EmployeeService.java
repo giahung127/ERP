@@ -1,12 +1,11 @@
 package com.erp.hrm.service;
 
-import com.erp.hrm.controller.EmployeeReq;
+import com.erp.hrm.controller.request.EmployeeReq;
 import com.erp.hrm.entity.Employee;
 import com.erp.hrm.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.erp.hrm.controller;
+package com.erp.hrm.controller.request;
 
 import java.sql.Date;
 

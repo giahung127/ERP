@@ -1,6 +1,8 @@
 package com.erp.hrm.controller;
 
 
+import com.erp.hrm.controller.request.EmployeeReq;
+import com.erp.hrm.controller.response.EmployeeRes;
 import com.erp.hrm.entity.Employee;
 import com.erp.hrm.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@CrossOrigin(origins = "http://localhost:42975")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/hrm/employee")
 public class EmployeeController {
     @Autowired

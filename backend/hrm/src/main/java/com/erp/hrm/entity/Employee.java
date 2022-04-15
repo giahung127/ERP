@@ -1,24 +1,26 @@
 package com.erp.hrm.entity;
 
-import com.erp.hrm.controller.EmployeeReq;
+import com.erp.hrm.controller.request.EmployeeReq;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long    id;
+    @Type(type="uuid-char")
+    private UUID id;
 
     private String  name;
     private Integer sex;
