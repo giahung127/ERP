@@ -6,6 +6,8 @@ import com.erp.hrm.entity.CompanyInfo;
 import com.erp.hrm.repository.CompanyInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,6 +37,10 @@ public class CompanyInfoService {
     }
 
     public CompanyInfo getInfo() throws Error {
+        List<CompanyInfo> lst = companyInfoRepository.findAll();
+        if (lst.isEmpty()){
+            return null;
+        }
         return companyInfoRepository.findAll().get(0);
     }
 }
