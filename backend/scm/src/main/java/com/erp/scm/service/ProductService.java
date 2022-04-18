@@ -2,6 +2,7 @@ package com.erp.scm.service;
 
 import com.erp.scm.controller.request.NewProductReq;
 import com.erp.scm.controller.response.NewProductRes;
+import com.erp.scm.controller.response.ProductNameAndCodeRes;
 import com.erp.scm.controller.response.ProductWithCategoryName;
 import com.erp.scm.entity.Category;
 import com.erp.scm.entity.Product;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
+import javax.persistence.TupleElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -117,11 +120,8 @@ public class ProductService {
         return ResponseEntity.status(HttpStatus.OK).body("Deleted product - ID " + ID);
     }
 
-    public String getProductNameById(String productId) throws Error {
-        String name = productRepository.findProductNameById(productId);
-        if (name.isEmpty()){
-            return "Not found";
-        }
-        return name;
+    public ProductNameAndCodeRes getProductNameAndCodeById(String productId) throws Error {
+        Tuple productNameAndCode = productRepository.findProductNameAndCodeById(productId);
+        return new ProductNameAndCodeRes((String) productNameAndCode.get(0), (String) productNameAndCode.get(1)) ;
     }
 }

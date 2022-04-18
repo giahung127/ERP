@@ -11,6 +11,7 @@ import com.erp.sale.repository.PriceListItemRepository;
 import com.erp.sale.repository.PriceListRepository;
 import com.erp.sale.controller.response.related.PriceListItemWithName;
 import com.erp.sale.service.api.ProductService;
+import com.erp.sale.service.api.response.ProductNameAndCodeRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,8 +70,8 @@ public class PriceListService {
         }
         List<PriceListItemWithName> itemWithNameList = priceListItems.parallelStream().map(
                 priceListItem -> {
-                    String productName = productService.getProductNameById(priceListItem.getProductId());
-                    return new PriceListItemWithName(priceListItem, productName);
+                    ProductNameAndCodeRes productNameAndCodeRes = productService.getProductNameById(priceListItem.getProductId());
+                    return new PriceListItemWithName(priceListItem, productNameAndCodeRes);
                 }
         ).collect(Collectors.toList());
         GetByIdPriceList result = new GetByIdPriceList(priceList.get(), itemWithNameList);

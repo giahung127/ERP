@@ -21,17 +21,20 @@ public class CompanyInfo {
     @Type(type="uuid-char")
     private UUID id;
 
+
     private String companyName;
-    private String phone;
-    private String fax;
-    private String address;
-    private String slogan;
+    private String companyAddress;
+    private String contactName;
+    private String contactEmail;
+    private String contactPhone;
+    private String contactAddress;
 
     public CompanyInfo(UpdateCompanyInfoReq updateCompanyInfoReq){
         this.companyName = updateCompanyInfoReq.company_name;
-        this.phone = updateCompanyInfoReq.phone;
-        this.fax = updateCompanyInfoReq.fax;
-        this.address = updateCompanyInfoReq.address;
-        this.slogan = updateCompanyInfoReq.slogan;
+        this.companyAddress = updateCompanyInfoReq.company_address;
+        this.contactName = updateCompanyInfoReq.contact_name;
+        this.contactEmail = updateCompanyInfoReq.contact_email;
+        this.contactPhone = updateCompanyInfoReq.contact_phone;
+        this.contactAddress = updateCompanyInfoReq.contact_address;
     }
 }

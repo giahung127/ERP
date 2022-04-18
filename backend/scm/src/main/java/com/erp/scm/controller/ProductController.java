@@ -4,6 +4,7 @@ package com.erp.scm.controller;
 import com.erp.scm.controller.request.GetInforReq;
 import com.erp.scm.controller.request.NewProductReq;
 import com.erp.scm.controller.response.NewProductRes;
+import com.erp.scm.controller.response.ProductNameAndCodeRes;
 import com.erp.scm.controller.response.ProductWithCategoryName;
 import com.erp.scm.entity.Product;
 import com.erp.scm.service.ProductService;
@@ -59,9 +60,9 @@ public class ProductController {
         return productService.deleteProduct(id);
     }
 
-    @GetMapping("/getProductName/{productId}")
-    public String getProductNameById(@PathVariable String productId){
-        return productService.getProductNameById(productId);
+    @GetMapping("/getProductNameAndCode/{productId}")
+    public ProductNameAndCodeRes getProductNameAndCodeById(@PathVariable String productId){
+        return productService.getProductNameAndCodeById(productId);
     }
 
 
