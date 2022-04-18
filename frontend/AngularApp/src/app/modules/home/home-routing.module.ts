@@ -52,6 +52,15 @@ const routes: Routes = [
                 return m.DashboardModule;
             });
         }
+    },
+    {
+        path: 'setting',
+        component: HomeComponent,
+        loadChildren: () => {
+            return import('./modules/system-setting/system-setting.module').then((m) => {
+                return m.SystemSettingModule;
+            });
+        }
     }
 ];
 

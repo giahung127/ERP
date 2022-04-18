@@ -2,6 +2,7 @@ package com.erp.sale.controller;
 
 import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
+import com.erp.sale.controller.response.GetListOrderRes;
 import com.erp.sale.controller.response.GetOrderRes;
 import com.erp.sale.controller.response.NormalRes;
 import com.erp.sale.entity.Order;
@@ -46,7 +47,7 @@ public class OrderController {
     }
 
     @GetMapping("/getOrderByCustomerId/{customerId}")
-    public GetOrderRes getOrderByCustomerId(@PathVariable String customerId){
+    public GetListOrderRes getOrderByCustomerId(@PathVariable String customerId){
         return orderService.getOrderByCustomerId(customerId);
     }
 

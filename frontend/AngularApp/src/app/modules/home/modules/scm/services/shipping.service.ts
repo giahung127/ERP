@@ -15,7 +15,10 @@ export class ShippingService {
 
   getShipmentById(id: string){
     return this.http.get(`http://localhost:10003/scm/shipment/getById/${id}`  , { headers: this.headers })
+  }
 
+  getShipmentByOrderId(orderId: string){
+    return this.http.get(`http://localhost:10003/scm/shipment/getByOrderId/${orderId}`  , { headers: this.headers })
   }
 
   addNewShipment(data){

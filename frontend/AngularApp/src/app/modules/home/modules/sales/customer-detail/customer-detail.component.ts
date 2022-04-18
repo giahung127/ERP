@@ -91,7 +91,7 @@ export class CustomerDetailComponent {
       let data;
       data = res;
       console.log(data.data.order)
-      this.orderList = data.data.order.map(({ id, creatorName, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
+      this.orderList = data.data.map(({ id, creatorName, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
         return {
           'orderId': id,
           'createdDate': createDate,

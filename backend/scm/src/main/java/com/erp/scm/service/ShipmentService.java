@@ -3,6 +3,7 @@ package com.erp.scm.service;
 import com.erp.scm.controller.request.NewShipmentReq;
 import com.erp.scm.controller.request.UpdateShipmentItemReq;
 import com.erp.scm.controller.request.UpdateShipmentReq;
+import com.erp.scm.controller.response.GetListShipment;
 import com.erp.scm.controller.response.GetShipmentByIdRes;
 import com.erp.scm.controller.response.NormalRes;
 import com.erp.scm.controller.response.ShipmentWithItems;
@@ -81,13 +82,13 @@ public class ShipmentService {
     }
 
 
-    public GetShipmentByIdRes getByOrderId(String orderId) throws Error {
-        Optional<Shipment> temp =  shipmentRepository.findShipmentByOrderId(orderId);
+    public GetListShipment getByOrderId(String orderId) throws Error {
+        List<Shipment> temp =  shipmentRepository.findShipmentByOrderId(orderId);
         if (temp.isEmpty()){
-            return new GetShipmentByIdRes("404", "No record in DB", null);
+            return new GetListShipment("404", "No record in DB", null);
         }
-        List<ShipmentItem> items = shipmentItemRepository.findAllByShipmentId(temp.get().getId().toString());
-        ShipmentWithItems result = new ShipmentWithItems(temp.get(), items);
-        return new GetShipmentByIdRes("200", "Found record of Shipment", result);
+//        List<ShipmentItem> items = shipmentItemRepository.findAllByShipmentId(temp.get().getId().toString());
+//        ShipmentWithItems result = new ShipmentWithItems(temp.get(), items);
+        return new GetListShipment("200", "Found record of Shipment", temp);
     }
 }

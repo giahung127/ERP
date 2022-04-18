@@ -29,6 +29,7 @@ import { AddProductToPriceListModalComponent } from './add-product-to-price-list
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { InvoiceDetailComponent } from './invoice-detail/invoice-detail.component';
 import { ScmModule } from '../scm/scm.module';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { ScmModule } from '../scm/scm.module';
     MatCheckboxModule,
     MatSelectModule,
     SharedModule,
-    ScmModule
+    ScmModule,
+    NgxPrintModule
   ]
 })
 export class SalesModule { }

@@ -101,14 +101,28 @@ export class PriceListComponent implements OnInit {
                       let temp;
                       temp = res
                       this.priceListList.push(new PriceList(temp.data ,data.price_list_code, data.price_list_name))
-                      this.toastr.success('New price list is successfully added');
+                      this.toastr.success('New price list is added');
                     },
                     (err) => {
                       this.toastr.error(err)
                     }
                   )
                 } else {
-                  this.toastr.success('The price list is successfully updated');
+                  const updateData = {
+                    id: selectedPriceListId,
+                    price_list_name: newPriceList.priceListName,
+                    price_list_code: newPriceList.priceListCode
+                  }
+                  this.priceListService.updatePriceList(updateData)
+                  .subscribe((res) => {
+                    const temp = this.priceListList.findIndex(x => {return x.id === selectedPriceListId});
+                    this.priceListList[temp].name = newPriceList.priceListName,
+                    this.priceListList[temp].code = newPriceList.priceListCode
+                    this.toastr.success('The price list is updated');
+                  },
+                  (error) => {
+                    this.toastr.error(error);
+                  })
                 }
               }
         });
@@ -119,17 +133,18 @@ export class PriceListComponent implements OnInit {
       .subscribe(res => {
         let data;
         data = res;
-        this.productList = data.map(({ id, code, name,price, category, description, category_id})=>{
+        this.productList = data.map(({ id, code, name,price, categoryName, description, category_id})=>{
           return {
             'productId': id,
             'productCode': code,
             'productName': name,
             'categoryId': category_id,
-            'categoryName': category,
+            'categoryName': categoryName,
             'price': price,
             'description': description
           }
         })
+        console.log(this.productList)
       })
   }
   onAddEmployee: () => void = () => {

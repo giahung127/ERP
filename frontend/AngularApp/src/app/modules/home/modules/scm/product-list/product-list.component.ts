@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Employee } from '../../shared/models/employee';
 import { Product } from '../../shared/models/product/product.model';
+import { ExcelService } from '../../shared/services/excel.service';
 import { ProductService } from '../services/product.service';
 
 @Component({
@@ -13,9 +14,18 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private excelService: ExcelService
   ) {}
   productList: Product[] = [];
+  excelTemplate = [{
+    'productCode':'',
+    'productName': '',
+    'price':'',
+    'categoryId': '',
+    'categoryName': '',
+    'description': ''
+  }];
   showProductList: Product[] = [];
   columnName: string[] = [
     'ProductCode',
@@ -41,13 +51,13 @@ export class ProductListComponent implements OnInit {
       .subscribe(res => {
         let data;
         data = res;
-        this.productList = data.map(({ id, code, name,price, category, description, category_id})=>{
+        this.productList = data.map(({ id, code, name,price, categoryName, description, category_id})=>{
           return {
             'productId': id,
             'productCode': code,
             'productName': name,
             'categoryId': category_id,
-            'categoryName': category,
+            'categoryName': categoryName,
             'price': price,
             'description': description
           }
@@ -80,5 +90,8 @@ export class ProductListComponent implements OnInit {
     } else {
       this.showProductList = this.productList
     }
+  }
+  exportExcelTemplate() {
+    this.excelService.exportExcel(this.excelTemplate, 'excelTemplate');
   }
 }

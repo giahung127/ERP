@@ -64,13 +64,13 @@
         
         <mat-tab [label]="'Transaction hitory'">
             <app-home-table-list
-            class="import-list"
+            class="order-list"
             [title]="'Order List'"
             [data]="orderList"
             [columnName]="orderColumnName"
             [columnToProperty]="orderColumnToProperty"
             [checkbox]="false"
-            [filter]="true"
+            [filter]="false"
             [select]="onViewClick"
             [key]="'orderId'"
             [add]="false"

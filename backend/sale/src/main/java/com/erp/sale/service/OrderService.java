@@ -2,6 +2,7 @@ package com.erp.sale.service;
 
 import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
+import com.erp.sale.controller.response.GetListOrderRes;
 import com.erp.sale.controller.response.GetOrderRes;
 import com.erp.sale.controller.response.NormalRes;
 import com.erp.sale.controller.response.OrderWithItems;
@@ -93,12 +94,12 @@ public class OrderService {
     }
 
 
-    public GetOrderRes getOrderByCustomerId(String customerId) throws Error{
-        Optional<Order> order = orderRepository.findByCustomerId(customerId);
+    public GetListOrderRes getOrderByCustomerId(String customerId) throws Error{
+        List<Order> order = orderRepository.findByCustomerId(customerId);
         if (order.isEmpty()){
-            return new GetOrderRes("404", "Not Found", null);
+            return new GetListOrderRes("404", "Not Found", null);
         }
-        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(order.get().getId().toString());
-        return new GetOrderRes("200", "Get Order By ID", new OrderWithItems(order.get(), orderItems) );
+//        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(order.get().getId().toString());
+        return new GetListOrderRes("200", "Get Order By ID", order );
     }
 }

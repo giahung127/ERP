@@ -3,6 +3,7 @@ package com.erp.sale.service;
 import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.NewPriceListReq;
 import com.erp.sale.controller.request.UpdatePriceListItemReq;
+import com.erp.sale.controller.request.UpdatePriceListReq;
 import com.erp.sale.controller.response.*;
 import com.erp.sale.entity.PriceList;
 import com.erp.sale.entity.PriceListItem;
@@ -90,5 +91,16 @@ public class PriceListService {
         temp.get().setPrice(itemReq.price);
         priceListItemRepository.save(temp.get());
         return new NormalRes("200", "Updated priceListItem", "");
+    }
+
+    public NormalRes updatePriceList(UpdatePriceListReq req) throws Error {
+        Optional<PriceList> priceList = priceListRepository.findById(UUID.fromString(req.id));
+        if (priceList.isEmpty()){
+            return new NormalRes("404", "Not found priceList", "");
+        }
+        priceList.get().setPriceListCode(req.price_list_code);
+        priceList.get().setPriceListName(req.price_list_name);
+        priceListRepository.save(priceList.get());
+        return new NormalRes("200", "Updated price list", "");
     }
 }
