@@ -3,7 +3,9 @@ package com.erp.scm.controller;
 
 import com.erp.scm.controller.request.GetInforReq;
 import com.erp.scm.controller.request.NewProductReq;
+import com.erp.scm.controller.request.UpdateAfterOrderReq;
 import com.erp.scm.controller.response.NewProductRes;
+import com.erp.scm.controller.response.NormalRes;
 import com.erp.scm.controller.response.ProductNameAndCodeRes;
 import com.erp.scm.controller.response.ProductWithCategoryName;
 import com.erp.scm.entity.Product;
@@ -63,6 +65,11 @@ public class ProductController {
     @GetMapping("/getProductNameAndCode/{productId}")
     public ProductNameAndCodeRes getProductNameAndCodeById(@PathVariable String productId){
         return productService.getProductNameAndCodeById(productId);
+    }
+
+    @PostMapping("updateAfterOrder")
+    public NormalRes updateAfterOrder(@RequestBody UpdateAfterOrderReq updateAfterOrderReq){
+        return productService.updateAfterOrder(updateAfterOrderReq);
     }
 
 

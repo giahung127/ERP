@@ -1,7 +1,9 @@
 package com.erp.scm.service;
 
 import com.erp.scm.controller.request.NewProductReq;
+import com.erp.scm.controller.request.UpdateAfterOrderReq;
 import com.erp.scm.controller.response.NewProductRes;
+import com.erp.scm.controller.response.NormalRes;
 import com.erp.scm.controller.response.ProductNameAndCodeRes;
 import com.erp.scm.controller.response.ProductWithCategoryName;
 import com.erp.scm.entity.Category;
@@ -17,10 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.Tuple;
 import javax.persistence.TupleElement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,28 +39,24 @@ public class ProductService {
         return new NewProductRes("200", "New product inserted", temp.getId().toString());
     }
 
-    public List<ProductWithCategoryName> loadAllProduct(){
-        try {
-            List<Product> productList = productRepository.findAll();
-            List<String> categoryList = productList.parallelStream().map(
-                    product -> {
-                        if (product.getCategory_id() != null){
-                            Optional<Category> temp = categoryRepository.findById(UUID.fromString(product.getCategory_id()));
-                            return temp.get().getName();
-                        }
-                        else{
-                            return "Non Category";
-                        }
+    public List<ProductWithCategoryName> loadAllProduct() throws Error{
+        List<Product> productList = productRepository.findAll();
+        List<String> categoryList = productList.parallelStream().map(
+                product -> {
+                    if (product.getCategory_id() != null){
+                        Optional<Category> temp = categoryRepository.findById(UUID.fromString(product.getCategory_id()));
+                        return temp.get().getName();
                     }
-            ).collect(Collectors.toList());
-            List<ProductWithCategoryName> resultList = new ArrayList<>();
-            for (int i = 0; i< categoryList.size(); i++){
-                resultList.add(new ProductWithCategoryName(productList.get(i), categoryList.get(i)));
-            }
-            return resultList;
-        }catch (Error e){
-            throw e;
+                    else{
+                        return "Non Category";
+                    }
+                }
+        ).collect(Collectors.toList());
+        List<ProductWithCategoryName> resultList = new ArrayList<>();
+        for (int i = 0; i< categoryList.size(); i++){
+            resultList.add(new ProductWithCategoryName(productList.get(i), categoryList.get(i)));
         }
+        return resultList;
     }
 
     public Page<Product> loadPageProduct(PageRequest sort) {
@@ -123,5 +118,25 @@ public class ProductService {
     public ProductNameAndCodeRes getProductNameAndCodeById(String productId) throws Error {
         Tuple productNameAndCode = productRepository.findProductNameAndCodeById(productId);
         return new ProductNameAndCodeRes((String) productNameAndCode.get(0), (String) productNameAndCode.get(1)) ;
+    }
+
+
+    public NormalRes updateAfterOrder(UpdateAfterOrderReq updateAfterOrderReq) throws Error {
+        Optional<Product> temp = productRepository.findById(UUID.fromString(updateAfterOrderReq.product_id));
+        if (temp.isEmpty()){
+            return new NormalRes("404", "Not found related product", "");
+        }
+        if (Objects.equals(updateAfterOrderReq.type, "NEW_ORDER")){
+            if (updateAfterOrderReq.amount > temp.get().getAmount()){
+                return new NormalRes("404", "Insufficient amount", "");
+            }
+            temp.get().setAmount(temp.get().getAmount() - updateAfterOrderReq.amount);
+            productRepository.save(temp.get());
+        }
+        if (Objects.equals(updateAfterOrderReq.type, "CANCEL_ORDER")){
+            temp.get().setAmount(temp.get().getAmount() + updateAfterOrderReq.amount);
+            productRepository.save(temp.get());
+        }
+        return new NormalRes("200", "Updated amount of Product", "" + temp.get().getAmount());
     }
 }

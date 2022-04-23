@@ -24,6 +24,7 @@ public class Product {
     private String      category_id;
     private Float       price;
     private String      description;
+    private int         amount;
 
     public Product(NewProductReq newProductReq) {
         this.code = newProductReq.code;
@@ -31,5 +32,6 @@ public class Product {
         this.category_id = newProductReq.category_id;
         this.price = newProductReq.price;
         this.description = newProductReq.description;
+        this.amount = 0;
     }
 }
