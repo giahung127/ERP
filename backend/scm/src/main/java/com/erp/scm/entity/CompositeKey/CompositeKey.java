@@ -1,4 +1,4 @@
-package com.erp.scm.entity;
+package com.erp.scm.entity.CompositeKey;
 
 import java.io.Serializable;
 

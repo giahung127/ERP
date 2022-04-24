@@ -8,6 +8,8 @@ import com.erp.sale.controller.response.NormalRes;
 import com.erp.sale.controller.response.OrderWithItems;
 import com.erp.sale.entity.*;
 import com.erp.sale.repository.*;
+import com.erp.sale.service.api.ProductService;
+import com.erp.sale.service.api.request.UpdateAfterOrderReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +33,8 @@ public class OrderService {
     private PriceListItemRepository priceListItemRepository;
     @Autowired
     private OrderToInvoiceRepository orderToInvoiceRepository;
+    @Autowired
+    private ProductService productService;
 
     public NormalRes newOrder(NewOrderReq newOrderReq) {
         Order newOrder;
@@ -41,6 +45,9 @@ public class OrderService {
                 ItemList.add(new OrderItem(newOrder.getId().toString(),newOrderReq.product_item_list.get(i)));
             }
             orderItemRepository.saveAll(ItemList);
+            List<NormalRes> temp = ItemList.parallelStream().map(
+                    orderItem -> productService.updateAfterOrder(new UpdateAfterOrderReq("NEW_ORDER", orderItem.getAmount(), orderItem.getProductId()))
+            ).collect(Collectors.toList());
         } catch (Exception e){
             throw e;
         }

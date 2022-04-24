@@ -41,6 +41,6 @@ public class CompanyInfoService {
         if (lst.isEmpty()){
             return null;
         }
-        return companyInfoRepository.findAll().get(0);
+        return lst.get(0);
     }
 }

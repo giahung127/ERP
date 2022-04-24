@@ -1,6 +1,7 @@
 package com.erp.scm.entity;
 
 import com.erp.scm.controller.request.ShipmentItemReqPart;
+import com.erp.scm.entity.CompositeKey.CompositeKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
