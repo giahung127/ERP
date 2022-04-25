@@ -8,19 +8,33 @@ import java.util.Date;
 import java.util.List;
 
 public class ShipmentWithItems {
-    public String transporter_id;
-    public String order_id;
-    public String to_address;
-    public String shipment_type;
-    public Date to_date;
+    public String id;
+    public String transporterId;
+    public String receiverName;
+    public String contactNumber;
+    public String contactAddress;
+    public String customerName;
+    public String orderId;
+    public float  totalPrice;
+    public String shipmentCode;
+    public Date   createdDate;
+    public String creatorName;
     public List<ShipmentItem> shipmen_item_list;
-    
+
+
+
     public ShipmentWithItems(Shipment shipment, List<ShipmentItem> itemList){
-        this.transporter_id = shipment.getTransporterId();
-        this.order_id = shipment.getOrderId();
-        this.to_address = shipment.getToAddress();
-        this.shipment_type = shipment.getShipmentType();
-        this.to_date = shipment.getToDate();
+        this.id = String.valueOf(shipment.getId());
+        this.transporterId = shipment.getTransporterId();
+        this.receiverName = shipment.getReceiverName();
+        this.contactNumber = shipment.getContactNumber();
+        this.contactAddress = shipment.getContactAddress();
+        this.customerName = shipment.getCustomerName();
+        this.orderId = shipment.getOrderId();
+        this.totalPrice = shipment.getTotalPrice();
+        this.shipmentCode = shipment.getShipmentCode();
+        this.createdDate = shipment.getCreatedDate();
+        this.creatorName = shipment.getCreatorName();
         this.shipmen_item_list = itemList;
     }
 }

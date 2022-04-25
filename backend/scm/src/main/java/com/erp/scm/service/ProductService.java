@@ -128,7 +128,7 @@ public class ProductService {
         }
         if (Objects.equals(updateAfterOrderReq.type, "NEW_ORDER")){
             if (updateAfterOrderReq.amount > temp.get().getAmount()){
-                return new NormalRes("404", "Insufficient amount", "");
+                return new NormalRes("404", "Insufficient amount", temp.get().getCode());
             }
             temp.get().setAmount(temp.get().getAmount() - updateAfterOrderReq.amount);
             productRepository.save(temp.get());

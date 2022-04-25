@@ -23,18 +23,27 @@ public class Shipment {
     @Type(type="uuid-char")
     private UUID id;
     private String transporterId;
+    private String receiverName;
+    private String contactNumber;
+    private String contactAddress;
+    private String customerName;
     private String orderId;
-    private String toAddress;
-    private String shipmentType;
-    private Date   toDate;
+    private float  totalPrice;
+    private String shipmentCode;
+    private Date   createdDate;
+    private String creatorName;
     private ShipmentStatus shipmentStatus;
 
     public Shipment(NewShipmentReq newShipmentReq){
         this.transporterId = newShipmentReq.transporter_id;
-        this.orderId = newShipmentReq.order_id;
-        this.toAddress = newShipmentReq.to_address;
-        this.shipmentType = newShipmentReq.shipment_type;
-        this.toDate = newShipmentReq.to_date;
-        this.shipmentStatus = ShipmentStatus.IN_STOCK;
+        this.receiverName = newShipmentReq.order_id;
+        this.contactNumber = newShipmentReq.order_id;
+        this.contactAddress = newShipmentReq.order_id;
+        this.customerName = newShipmentReq.order_id;
+        this.totalPrice = newShipmentReq.total_price;
+        this.shipmentCode = newShipmentReq.shipment_code;
+        this.createdDate = newShipmentReq.created_date;
+        this.creatorName = newShipmentReq.creator_name;
+        this.shipmentStatus = newShipmentReq.shipment_status;
     }
 }

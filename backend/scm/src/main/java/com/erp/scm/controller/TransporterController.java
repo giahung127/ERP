@@ -2,7 +2,6 @@ package com.erp.scm.controller;
 
 import com.erp.scm.controller.request.NewTransporterReq;
 import com.erp.scm.controller.response.NormalRes;
-import com.erp.scm.entity.Transporter;
 import com.erp.scm.service.TransporterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
