@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 26, 2022 at 06:11 PM
+-- Generation Time: Apr 26, 2022 at 06:32 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.28
 
@@ -255,6 +255,7 @@ CREATE TABLE IF NOT EXISTS `transporter` (
 --
 -- Constraints for dumped tables
 --
+
 
 --
 -- Database: `test_account`
@@ -545,7 +546,16 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Constraints for dumped tables
 --
 
+--
+-- Constraints for table `order_item`
+--
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `orderId_FK` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `productId2_FK` FOREIGN KEY (`product_id`) REFERENCES `test`.`product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+----xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx----------
 USE `test`;
+
 --
 -- Constraints for table `category`
 --
@@ -590,13 +600,6 @@ ALTER TABLE `supplement_item`
   ADD CONSTRAINT `productId2_FK` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `supplementID_FK` FOREIGN KEY (`supplement_id`) REFERENCES `supplement` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
-USE `test_sale`;
---
--- Constraints for table `order_item`
---
-ALTER TABLE `order_item`
-  ADD CONSTRAINT `orderId_FK` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `productId2_FK` FOREIGN KEY (`product_id`) REFERENCES `test`.`product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
