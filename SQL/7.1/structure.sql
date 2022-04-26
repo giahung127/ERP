@@ -545,7 +545,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Constraints for dumped tables
 --
 
-
+USE `test`;
 --
 -- Constraints for table `category`
 --
@@ -590,6 +590,7 @@ ALTER TABLE `supplement_item`
   ADD CONSTRAINT `productId2_FK` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `supplementID_FK` FOREIGN KEY (`supplement_id`) REFERENCES `supplement` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
+USE `test.sale`;
 --
 -- Constraints for table `order_item`
 --
