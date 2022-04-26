@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 26, 2022 at 05:46 PM
+-- Generation Time: Apr 26, 2022 at 06:49 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.28
 
@@ -18,17 +18,75 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
+-- Database: `test`
+--
+CREATE DATABASE IF NOT EXISTS `test` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `test`;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`id`, `level`, `name`, `parent_id`, `code`) VALUES
+('05556312-9593-4290-a6f8-bccf36069e3e', 0, 'Lipstick', NULL, NULL),
+('0a3dddb7-cb41-467d-88d3-7e8038ab6f59', 0, 'Tay Trang', NULL, NULL),
+('2a979943-5e89-4747-a3ad-a52ef3a13e8b', 1, 'sua de', '36d311a9-5996-4c79-bdb2-9c58c97037c5', NULL),
+('36d311a9-5996-4c79-bdb2-9c58c97037c5', 0, 'Sua tam', NULL, NULL),
+('853e554b-d3c8-4656-832a-158c3c032a2c', 1, 'Vim', '0a3dddb7-cb41-467d-88d3-7e8038ab6f59', NULL),
+('b1377d69-e266-475e-a01d-894e9bff7073', 1, 'Tay Trang', NULL, NULL),
+('c981b7a1-8d6a-4683-babf-d369d82e9bda', 1, '3CE', '05556312-9593-4290-a6f8-bccf36069e3e', NULL);
+
+--
+-- Dumping data for table `hibernate_sequence`
+--
+
+INSERT INTO `hibernate_sequence` (`next_val`) VALUES
+(21);
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`id`, `code`, `name`, `price`, `description`, `category_id`, `amount`) VALUES
+('3d222e59-23a7-47d5-b2ea-937ac950a66e', 'aa trang', 'tay trang chau phi', 123123, 'good onesdfsdf', '05556312-9593-4290-a6f8-bccf36069e3e', 20),
+('639311af-a31b-4c94-9da6-5d92dc140482', 'P001', 'Serum dưỡng ẩm p1p', 123.456, 'Dành cho da dễ tổn thương, da dầu và da cần mỹ phẩm có độ PH thấp', '2a979943-5e89-4747-a3ad-a52ef3a13e8b', 5);
+
+--
+-- Dumping data for table `supplement`
+--
+
+INSERT INTO `supplement` (`id`, `supplier_id`, `created_by`, `date`, `total`) VALUES
+('7b0a79ea-c255-4579-8457-64e9035027ec', 'cd798cd6-c218-11ec-be9c-966d57ddba56', 'giaHuz', '2022-04-22', 1992130),
+('d3d68a4b-4d90-4ff5-9bd9-2794bd8cdec3', 'cd798cd6-c218-11ec-be9c-966d57ddba56', 'giaHuz', '2022-04-22', 1992130);
+
+--
+-- Dumping data for table `supplement_item`
+--
+
+INSERT INTO `supplement_item` (`product_id`, `supplement_id`, `price`, `amount`) VALUES
+('3d222e59-23a7-47d5-b2ea-937ac950a66e', '7b0a79ea-c255-4579-8457-64e9035027ec', 123, 10),
+('3d222e59-23a7-47d5-b2ea-937ac950a66e', 'd3d68a4b-4d90-4ff5-9bd9-2794bd8cdec3', 13, 5),
+('639311af-a31b-4c94-9da6-5d92dc140482', '7b0a79ea-c255-4579-8457-64e9035027ec', 13, 5);
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`id`, `name`, `address`, `phone`, `email`) VALUES
+('cd798cd6-c218-11ec-be9c-966d57ddba56', 'nmt', 'Ba Dinh Q8', '090909090909', 'nmtakjsh@gmail.com');
+
+--
+-- Dumping data for table `transporter`
+--
+
+INSERT INTO `transporter` (`id`, `transporter_name`, `phone`, `address`, `description`) VALUES
+('8c35a097-ccf2-4a64-8974-f056d6008d85', 'sontungMTP', '012039801', 'hanoi', 'gojeck khang khuan x5');
+--
 -- Database: `test_account`
 --
-DROP DATABASE IF EXISTS `test_account`;
 CREATE DATABASE IF NOT EXISTS `test_account` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `test_account`;
 
---
--- Truncate table before insert `account`
---
-
-TRUNCATE TABLE `account`;
 --
 -- Dumping data for table `account`
 --
@@ -39,31 +97,14 @@ INSERT INTO `account` (`id`, `password`, `username`, `employee_id`, `employee_na
 --
 -- Database: `test_hrm`
 --
-DROP DATABASE IF EXISTS `test_hrm`;
 CREATE DATABASE IF NOT EXISTS `test_hrm` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `test_hrm`;
-
 --
--- Truncate table before insert `company_info`
---
-
-TRUNCATE TABLE `company_info`;
---
--- Truncate table before insert `employee`
---
-
-TRUNCATE TABLE `employee`;--
 -- Database: `test_sale`
 --
-DROP DATABASE IF EXISTS `test_sale`;
 CREATE DATABASE IF NOT EXISTS `test_sale` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `test_sale`;
 
---
--- Truncate table before insert `customer`
---
-
-TRUNCATE TABLE `customer`;
 --
 -- Dumping data for table `customer`
 --
@@ -72,27 +113,12 @@ INSERT INTO `customer` (`id`, `name`, `gender`, `age`, `email`, `phone`, `addres
 ('5d79065a-d4a1-4ce6-bb0c-d013c9d2a835', 'chu manh truong', 'female', 16, 'truongchu69@gmail.pon', '12309', 'hochiminh city');
 
 --
--- Truncate table before insert `hibernate_sequence`
---
-
-TRUNCATE TABLE `hibernate_sequence`;
---
 -- Dumping data for table `hibernate_sequence`
 --
 
 INSERT INTO `hibernate_sequence` (`next_val`) VALUES
 (1);
 
---
--- Truncate table before insert `invoice`
---
-
-TRUNCATE TABLE `invoice`;
---
--- Truncate table before insert `order`
---
-
-TRUNCATE TABLE `order`;
 --
 -- Dumping data for table `order`
 --
@@ -112,11 +138,6 @@ INSERT INTO `order` (`id`, `creator_name`, `price_list_id`, `total_include_tax`,
 ('fd54d9b2-fc84-4e12-80d6-9d0b5fe1f8db', 'nmt', '136db32b-5f88-473d-9d8a-a011a6113f1e', 123.133, 123, 21, 12, 1234, 'Badinh Thu Duc', 'WAITING', '2022-04-11', '5d79065a-d4a1-4ce6-bb0c-d013c9d2a835', 'Duc Adree', 0);
 
 --
--- Truncate table before insert `order_item`
---
-
-TRUNCATE TABLE `order_item`;
---
 -- Dumping data for table `order_item`
 --
 
@@ -134,16 +155,6 @@ INSERT INTO `order_item` (`id`, `order_id`, `amount`, `no_num`, `product_code`, 
 ('f5c70c8d-8163-47de-a58c-e2d09bb8cca4', 'c93c752c-8614-4d2d-b6dd-2599398b5fa9', 1, NULL, 'aa trang', '3d222e59-23a7-47d5-b2ea-937ac950a66e', 'tay trang chau phi');
 
 --
--- Truncate table before insert `order_to_invoice`
---
-
-TRUNCATE TABLE `order_to_invoice`;
---
--- Truncate table before insert `price_list`
---
-
-TRUNCATE TABLE `price_list`;
---
 -- Dumping data for table `price_list`
 --
 
@@ -151,22 +162,12 @@ INSERT INTO `price_list` (`id`, `price_list_code`, `price_list_name`) VALUES
 ('136db32b-5f88-473d-9d8a-a011a6113f1e', 'G001', 'General');
 
 --
--- Truncate table before insert `price_list_item`
---
-
-TRUNCATE TABLE `price_list_item`;
---
 -- Dumping data for table `price_list_item`
 --
 
 INSERT INTO `price_list_item` (`price_list_id`, `product_id`, `price`, `update_time`, `timestamp`) VALUES
 ('136db32b-5f88-473d-9d8a-a011a6113f1e', '3d222e59-23a7-47d5-b2ea-937ac950a66e', 122.121, '2022-03-28 07:42:58', '2022-03-28 14:42:58');
-
---
--- Truncate table before insert `user`
---
-
-TRUNCATE TABLE `user`;COMMIT;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
