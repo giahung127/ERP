@@ -553,7 +553,8 @@ ALTER TABLE `order_item`
   ADD CONSTRAINT `orderId_FK` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `productId2_FK` FOREIGN KEY (`product_id`) REFERENCES `test`.`product` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
-----xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx----------
+
+
 USE `test`;
 
 --
