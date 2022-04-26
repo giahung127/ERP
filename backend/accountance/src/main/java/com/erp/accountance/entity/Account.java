@@ -1,23 +1,40 @@
 package com.erp.accountance.entity;
 
+import com.erp.accountance.controller.request.NewAccountReq;
+import com.erp.accountance.entity.related.Role;
+import com.google.common.hash.Hashing;
 import jdk.jfr.DataAmount;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Type(type="uuid-char")
+    private UUID id;
+    @Column(unique=true, nullable = false)
     private String username;
     private String password;
+    private Role   role;
+    private String employeeId;
+    private String employeeName;
+    public Account(NewAccountReq req){
+        this.username = req.username;
+        this.password = Hashing.sha256()
+                .hashString(req.password, StandardCharsets.UTF_8)
+                .toString();
+        this.employeeId = req.employee_id;
+        this.employeeName = req.employee_name;
+        this.role = Role.SALE;
+    }
 }

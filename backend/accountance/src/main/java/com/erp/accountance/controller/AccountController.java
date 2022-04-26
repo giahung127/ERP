@@ -1,5 +1,7 @@
 package com.erp.accountance.controller;
 
+import com.erp.accountance.controller.request.LoginReq;
+import com.erp.accountance.controller.request.NewAccountReq;
 import com.erp.accountance.entity.Account;
 import com.erp.accountance.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,15 +19,13 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("/new")
-    public Account newAccount(@RequestBody Account account){
-        log.info("Inside newAccount - AccountController");
-        return accountService.newAccount(account);
+    @PostMapping("/newAccount")
+    public String newAccount(@RequestBody NewAccountReq req){
+        return accountService.newAccount(req);
     }
 
     @PostMapping("/login")
-    public Optional<String> loginAccount(@RequestBody LoginInfo loginInfo){
-        log.info("Inside loginAccount - AccountController");
+    public String loginAccount(@RequestBody LoginReq loginInfo){
         return accountService.loginAccount(loginInfo);
     }
 }

@@ -14,10 +14,7 @@ import com.erp.scm.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ShipmentService {
@@ -60,12 +57,9 @@ public class ShipmentService {
         if (temp.isEmpty()){
             return new NormalRes("404", "No record in DB", "");
         }
-        temp.get().setTransporterId(updateShipmentReq.transporter_id);
-        temp.get().setOrderId(updateShipmentReq.order_id);
-        temp.get().setToAddress(updateShipmentReq.to_address);
-        temp.get().setShipmentType(updateShipmentReq.shipment_type);
-        temp.get().setToDate(updateShipmentReq.to_date);
-        temp.get().setShipmentStatus(updateShipmentReq.status);
+        temp.get().setReceiverName(updateShipmentReq.receiver_name);
+        temp.get().setContactNumber(updateShipmentReq.contact_number);
+        temp.get().setContactAddress(updateShipmentReq.contact_address);
         shipmentRepository.save(temp.get());
         return new NormalRes("200", "Updated", "");
     }
