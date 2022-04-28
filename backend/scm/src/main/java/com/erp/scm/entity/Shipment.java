@@ -36,10 +36,10 @@ public class Shipment {
 
     public Shipment(NewShipmentReq newShipmentReq){
         this.transporterId = newShipmentReq.transporter_id;
-        this.receiverName = newShipmentReq.order_id;
-        this.contactNumber = newShipmentReq.order_id;
-        this.contactAddress = newShipmentReq.order_id;
-        this.customerName = newShipmentReq.order_id;
+        this.receiverName = newShipmentReq.receiver_name;
+        this.contactNumber = newShipmentReq.contact_number;
+        this.contactAddress = newShipmentReq.contact_address;
+        this.customerName = newShipmentReq.customer_name;
         this.totalPrice = newShipmentReq.total_price;
         this.shipmentCode = newShipmentReq.shipment_code;
         this.createdDate = newShipmentReq.created_date;
