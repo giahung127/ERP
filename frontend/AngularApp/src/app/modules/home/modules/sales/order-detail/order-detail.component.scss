@@ -432,9 +432,22 @@ app-home-table-list {
                     text-align: right;
                 }
                 .footer-content {
-                    min-width: 10%;
+                    width: 10%;
                     text-align: right;
+                    .custom-form-field {
+                        width: 100%;
+                        text-align: right;
+                        .tax {
+                            text-align: right;
+                          }
+                        input.tax::-webkit-outer-spin-button,
+                        input.tax::-webkit-inner-spin-button 
+                        {
+                            display: none;
+                        }
+                    }
                 }
+               
             }
         }
     }

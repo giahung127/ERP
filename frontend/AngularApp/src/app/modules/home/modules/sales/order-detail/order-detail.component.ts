@@ -7,11 +7,13 @@ import { nonAccentVietnamese } from 'src/app/common/functions/ultils';
 import { ProductService } from '../../scm/services/product.service';
 import { ShippingService } from '../../scm/services/shipping.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { Company } from '../../shared/models/company/company.model';
 import { Customer } from '../../shared/models/customer/customer.model';
 import { PriceList } from '../../shared/models/price-list/price-list.model';
 import { ImportProduct } from '../../shared/models/product/import-product.model';
 import { Product } from '../../shared/models/product/product.model';
 import { Shipment } from '../../shared/models/shipment/shipment.model';
+import { CompanyService } from '../../system-setting/services/company.service';
 import { CustomerService } from '../service/customer.service';
 import { OrderService } from '../service/order.service';
 import { PriceListService } from '../service/price-list.service';
@@ -23,9 +25,10 @@ import { PriceListService } from '../service/price-list.service';
 })
 export class OrderDetailComponent {
   viewModeCheck = true;
+  saveCheck = false;
   searchKeyword = '';
-  productList: Product[] = [
-  ];
+  company: Company | undefined;
+  productList: Product[] = [];
   totalPrice = 0;
   selectedOrder;
   priceListList: PriceList[] = [];
@@ -68,9 +71,11 @@ export class OrderDetailComponent {
     private toastr: ToastrService,
     private priceListService: PriceListService,
     private customerService: CustomerService,
-    private shipmentService: ShippingService
+    private shipmentService: ShippingService,
+    private companyService: CompanyService
   ) { 
     this.getCustomerList();
+    this.getCompanyInfo();
   }
 
   getProductList() {
@@ -136,7 +141,7 @@ export class OrderDetailComponent {
             this.viewModeCheck = true;
             this.selectedOrder = {
               orderId: "",
-              createdDate: new Date(),
+              createdDate: "",
               status: "",
               creatorName: "GiaHung",
               priceListId: this.priceListList[0].id,
@@ -213,6 +218,17 @@ export class OrderDetailComponent {
     })
   }
 
+  getCompanyInfo(){
+    this.companyService.getCompanyInfo()
+    .subscribe((res) => {
+      if(res){
+        console.log(res)
+        let temp
+        temp = res
+        this.company = new Company(temp.id, temp.companyName, temp.companyAddress, temp.contactName, temp.contactEmail, temp.contactPhone ,temp.contactAddress)
+      }
+    })
+  }
 
   onBack() {
     this._location.back();
@@ -238,6 +254,7 @@ export class OrderDetailComponent {
       this.orderProductList.push(new ImportProduct(this.orderProductList.length +1, product.productId, product.productCode, product.productName, 1, price? price : 0))
     }
     this.reCalculateTotal();
+    this.check();
   }
 
   reCalculateTotal(){
@@ -245,6 +262,8 @@ export class OrderDetailComponent {
     this.orderProductList.forEach((x)=> {
       this.totalPrice += x.amount*x.price;
     })
+    this.selectedOrder.totalExcludeTax = this.totalPrice 
+    this.selectedOrder.totalIncludeTax = this.totalPrice * (1 + this.selectedOrder.tax/100)
   }
   reIndexNo() {
     for (let i = 0; i < this.orderProductList.length; i++) {
@@ -257,6 +276,8 @@ export class OrderDetailComponent {
         return product.productId !== item;
     });
     this.reIndexNo();
+    this.reCalculateTotal()
+    this.check();
   }
 
   onSave(){
@@ -294,10 +315,16 @@ export class OrderDetailComponent {
                   temp = res
                   const shipmentData = {
                     'transporter_id': '',
+                    'receiver_name': data.customer_name,
+                    'contact_number': this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.phone,
+                    'contact_address': this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.address,
+                    'customer_name': data.customer_name,
                     'order_id': temp.data,
-                    'to_address': '',
-                    'shipment_type': '',
-                    'to_date': new Date(),
+                    'total_price': this.selectedOrder.totalIncludeTax,
+                    'shipment_code': '',
+                    'created_date': new Date(),
+                    'creator_name': 'Gia Hung',
+                    'shipment_status': 'IN_STOCK',
                     'shipmen_item_list':this.orderProductList.map(({productId, amount}) => {
                       return {
                         'product_id': productId,
@@ -308,7 +335,8 @@ export class OrderDetailComponent {
                   console.log(shipmentData)
                   this.shipmentService.addNewShipment(shipmentData)
                   .subscribe((res) => {
-                    this.toastr.success('New order is successfully created');
+                    this.toastr.success('New shipment is successfully created');
+                    this.onBack();
                   },
                   (err) => {
                     this.toastr.error(err);
@@ -336,6 +364,7 @@ export class OrderDetailComponent {
     } else {
       this.changePriceList(id);
     }
+    this.check();
   }
 
   changePriceList(priceListId: string){
@@ -347,10 +376,20 @@ export class OrderDetailComponent {
   }
 
   onConfirm(){
-    console.log(this.selectedOrder)
     this.orderService.updateOrderStatus({id: this.selectedOrder.orderId, orderStatus: 'CONFIRMED'})
     .subscribe((res) => {
       this.toastr.success('The order is confirmed');
+      this.onBack();
+    },
+    (err) => {
+      this.toastr.error(err);
+    })
+  }
+
+  onCancel(){
+    this.orderService.updateOrderStatus({id: this.selectedOrder.orderId, orderStatus: 'CANCELLED'})
+    .subscribe((res) => {
+      this.toastr.success('The order is cancelled');
       this.onBack();
     },
     (err) => {
@@ -405,13 +444,13 @@ export class OrderDetailComponent {
                 </td>
                 </tr>
                 <tr>
-                  <td style="font-size:11px; text-align:center"><strong style="font-size:11px">BK</strong></td>
+                  <td style="font-size:11px; text-align:center"><strong style="font-size:11px">${this.company?.name}</strong></td>
                 </tr>
                 <tr>
-                  <td style="font-size:11px; text-align:center">Address: 268 Ly Thuong Kiet, Ward 14, District 10, HCM City</td>
+                  <td style="font-size:11px; text-align:center">Address: ${this.company?.address}</td>
                 </tr>
                 <tr>
-                  <td style="font-size:11px; text-align:center">Phone: 0123456789</td>
+                  <td style="font-size:11px; text-align:center">Phone: ${this.company?.contactPhone}</td>
                 </tr>
               </tbody>
             </table>
@@ -428,7 +467,7 @@ export class OrderDetailComponent {
             <td style="font-size:11px; text-align:center">Order code: O0001</td>
           </tr>
           <tr>
-            <td style="font-size:11px; text-align:center">April 16th 2022</td>
+            <td style="font-size:11px; text-align:center">${this.selectedOrder.createdDate}</td>
           </tr>
         </tbody>
       </table>
@@ -507,5 +546,9 @@ export class OrderDetailComponent {
         `
     });
     return htmlString 
+  }
+
+  check(){
+    this.saveCheck = this.orderProductList.length > 0 && this.selectedOrder.priceListId !== '' && this.selectedOrder.customerId !== ''&& this.selectedOrder.createDate !== undefined;
   }
 }

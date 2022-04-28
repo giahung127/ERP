@@ -24,4 +24,8 @@ export class ShippingService {
   addNewShipment(data){
     return this.http.post('http://localhost:10003/scm/shipment/newShipment',data, { headers: this.headers })
   }
+
+  updateShipmentById(data){
+    return this.http.post('http://localhost:10003/scm/shipment/updateById',data, { headers: this.headers })
+  }
 }

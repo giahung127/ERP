@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Employee } from '../../shared/models/employee';
+import { ToastrService } from 'ngx-toastr';
 import { Product } from '../../shared/models/product/product.model';
-import { ExcelService } from '../../shared/services/excel.service';
 import { ProductService } from '../services/product.service';
+import { UploadFileDialogComponent } from '../upload-file-dialog/upload-file-dialog.component';
 
 @Component({
   selector: 'app-product-list',
@@ -15,17 +16,11 @@ export class ProductListComponent implements OnInit {
   constructor(
     private router: Router,
     private productService: ProductService,
-    private excelService: ExcelService
+    private dialog: MatDialog,
+    private toastr: ToastrService
   ) {}
   productList: Product[] = [];
-  excelTemplate = [{
-    'productCode':'',
-    'productName': '',
-    'price':'',
-    'categoryId': '',
-    'categoryName': '',
-    'description': ''
-  }];
+  
   showProductList: Product[] = [];
   columnName: string[] = [
     'ProductCode',
@@ -91,7 +86,17 @@ export class ProductListComponent implements OnInit {
       this.showProductList = this.productList
     }
   }
-  exportExcelTemplate() {
-    this.excelService.exportExcel(this.excelTemplate, 'excelTemplate');
+  
+
+  uploadExcelFile() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+    };
+    const dialogRef = this.dialog.open(UploadFileDialogComponent, dialogConfig);
+    dialogRef
+        .afterClosed()
+        .subscribe()
   }
 }

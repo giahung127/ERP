@@ -1,6 +1,6 @@
 package com.erp.scm.controller.response;
 
-import com.erp.scm.controller.request.ShipmentItemReqPart;
+import com.erp.scm.controller.status.ShipmentStatus;
 import com.erp.scm.entity.Shipment;
 import com.erp.scm.entity.ShipmentItem;
 
@@ -19,6 +19,7 @@ public class ShipmentWithItems {
     public String shipmentCode;
     public Date   createdDate;
     public String creatorName;
+    public ShipmentStatus status;
     public List<ShipmentItem> shipmen_item_list;
 
 
@@ -35,6 +36,7 @@ public class ShipmentWithItems {
         this.shipmentCode = shipment.getShipmentCode();
         this.createdDate = shipment.getCreatedDate();
         this.creatorName = shipment.getCreatorName();
+        this.status = shipment.getShipmentStatus();
         this.shipmen_item_list = itemList;
     }
 }

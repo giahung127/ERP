@@ -5,7 +5,7 @@
     </div>
     <div class="line"></div>
     
-    <form [formGroup]="editInformationForm">
+    <form [formGroup]="editInformationForm" *ngIf="company">
         <div class="partial-container">
             <div class="custom-field-mod">
                 <div class="label" for="name">Name<span class="required">*</span></div>

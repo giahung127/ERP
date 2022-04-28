@@ -3,16 +3,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding: 16px 32px;
     width: auto;
     height: auto;
     background: #FFFFFF;
     border-radius: 8px;
     gap: 16px;
-    .mat-tab-group {
-        flex-grow: 1;
-        width: 100%;
-    }
     .form-header{
         display: flex;
         flex-direction: column;
@@ -20,6 +15,7 @@
         align-items: flex-start;
         width: 100%;
         gap: 24px;
+        margin-bottom: 10px;
     }
     
     .form-header .title{
@@ -28,7 +24,6 @@
     }
     
     form {
-        padding-top: 16px;
         width: 100%;
     }
     
@@ -51,6 +46,13 @@
         justify-content: space-between;
         width: 100%;
         color:  #74BFFA;
+    }
+
+    .partial-container .link-button {
+        background: none;
+        border: none;
+        color: #004ae1;
+        text-decoration: underline;   
     }
     .row {
         display: flex;
@@ -85,19 +87,11 @@
     
     .custom-field-l{
         width: 100%;
-        padding: 10px 0px;
     }
     
     .label{
         font-size: 14px;
         font-weight: 500;
-    }
-
-    .content {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        padding-top: 8px;
     }
     
     mat-form-field {
@@ -111,12 +105,6 @@
     mat-radio-button{
         margin: 10px;
     }
-    .link-button {
-        background: none;
-        border: none;
-        color: #004ae1;
-        text-decoration: underline;   
-    }
 
     .green-custom-button {
         padding: 5px 10px;
@@ -129,6 +117,15 @@
         &:disabled{
             opacity: 0.6;
         }
+    }
+    label{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    input[type="file"] {
+        display: none;
     }
     .red-custom-button {
         padding: 5px 10px;

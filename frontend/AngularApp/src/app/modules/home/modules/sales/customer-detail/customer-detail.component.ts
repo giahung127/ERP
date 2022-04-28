@@ -1,9 +1,11 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { Order } from '../../shared/models/order/order.model';
 import { CustomerService } from '../service/customer.service';
 import { OrderService } from '../service/order.service';
@@ -16,7 +18,6 @@ import { OrderService } from '../service/order.service';
 export class CustomerDetailComponent {
   
   viewModeCheck = false;
-  editModeCheck = true;
   newEmployeeId = '';
   orderList: Order[] = [];
   addCustomerForm = new FormGroup({});
@@ -24,6 +25,7 @@ export class CustomerDetailComponent {
   constructor(
       private _location: Location,
       private dialog: MatDialog,
+      private toastr: ToastrService,
       private customerService: CustomerService,
       private route: ActivatedRoute,
       private fb: FormBuilder,
@@ -39,6 +41,7 @@ export class CustomerDetailComponent {
           address: new FormControl('', Validators.required)
         })
         if(params['employeeId']) {
+          this.viewModeCheck = true;
           this.getCustomer(params['employeeId']);
           this.getCustomerOrder(params['employeeId']);
         }
@@ -72,7 +75,7 @@ export class CustomerDetailComponent {
       let temp;
       temp = res;
       this.addCustomerForm = this.fb.group({
-        customerCode: new FormControl('', Validators.required),
+        customerCode: new FormControl(temp.customer.gender, Validators.required),
         customerName: new FormControl(temp.customer.name, Validators.required),
         phone: new FormControl(temp.customer.phone, Validators.required),
         email: new FormControl(temp.customer.email, Validators.required),
@@ -90,16 +93,44 @@ export class CustomerDetailComponent {
     .subscribe((res)=> {
       let data;
       data = res;
-      console.log(data.data.order)
-      this.orderList = data.data.map(({ id, creatorName, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
-        return {
-          'orderId': id,
-          'createdDate': createDate,
-          'status': orderStatus,
-          'totalIncludeTax': totalIncludeTax
-        }
-      })
-      console.log(this.orderList)
+      if(data.data){
+        this.orderList = data.data.map(({ id, creatorName, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
+          return {
+            'orderId': id,
+            'createdDate': createDate,
+            'status': orderStatus,
+            'totalIncludeTax': totalIncludeTax
+          }
+        })
+      }
     })
+  }
+
+  onSave(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      message: "Add new customer with these information",
+      title: "Add a new customer"
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    dialogRef
+      .afterClosed()
+      .subscribe((submit) => {
+        const data = {
+          'name': this.addCustomerForm.value.customerName,
+          'gender': this.addCustomerForm.value.customerCode,
+          'age': 0,
+          'email': this.addCustomerForm.value.email,
+          'phone': this.addCustomerForm.value.phone,
+          'address': this.addCustomerForm.value.address
+        }
+        this.customerService.createNewCustomer(data)
+        .subscribe(res => {
+          this.toastr.success('New customer is successfully added');
+          this.onBack();
+        })
+      })
   }
 }

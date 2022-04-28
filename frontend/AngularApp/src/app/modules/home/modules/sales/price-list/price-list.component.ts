@@ -40,9 +40,10 @@ export class PriceListComponent implements OnInit {
             'item': price_list_items !== null ? price_list_items: []
           }
         })
-        console.log(this.priceListList)
-        this.productPriceList = this.priceListList[0].item
-        this.currentPriceListId = this.priceListList[0].id
+        if(this.priceListList.length > 0){
+          this.productPriceList = this.priceListList[0].item
+          this.currentPriceListId = this.priceListList[0].id
+        }
         // this.priceListService.getPriceListById(this.priceListList[0].id)
         // .subscribe((res) => {
         //   let temp;
