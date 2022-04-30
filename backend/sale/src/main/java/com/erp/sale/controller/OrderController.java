@@ -25,11 +25,6 @@ public class OrderController {
         return orderService.newOrder(newCategoryReq);
     }
 
-    @PostMapping("/toInvoice")
-    public NormalRes toInvoice(@RequestBody String id){
-        return orderService.toInvoice(id);
-    }
-
     @GetMapping("/loadAll")
     public List<Order> getAllProduct(){
         return orderService.loadAllOrder();
