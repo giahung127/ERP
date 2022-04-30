@@ -34,7 +34,7 @@ public class InvoiceService {
                 return new NormalRes("404", "Found no record while transfer to invoice", "");
             }
             totalPrice += order.get().getTotalExcludeTax();
-            totalDiscount += order.get().getTotalIncludeTax();
+            totalDiscount += order.get().getDiscount();
             totalTax += order.get().getTax();
         }
         Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax, totalPrice));
