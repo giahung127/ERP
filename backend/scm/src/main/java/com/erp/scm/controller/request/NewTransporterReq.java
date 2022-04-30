@@ -5,4 +5,5 @@ public class NewTransporterReq {
     public String  phone;
     public String  address;
     public String  description;
+    public String code;
 }

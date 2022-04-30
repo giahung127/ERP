@@ -24,11 +24,13 @@ public class Supplier {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type="uuid-char")
     private UUID id;
+    private String code;
     private String name;
     private String address;
     private String phone;
     private String email;
     public Supplier(NewSupplierReq newSupplierReq){
+        this.code = newSupplierReq.code;
         this.name = newSupplierReq.name;
         this.address = newSupplierReq.address;
         this.phone = newSupplierReq.phone;

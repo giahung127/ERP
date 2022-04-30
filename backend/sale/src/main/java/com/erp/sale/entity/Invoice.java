@@ -23,21 +23,14 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type="uuid-char")
     private UUID id;
+    private String code;
     private double totalTax;
     private double totalDiscount;
     private double totalPrice;
 
-    // single order to invoice
     public Invoice(double totalDiscount, double totalTax, double totalPrice){
         this.totalDiscount = totalDiscount;
         this.totalTax = totalTax;
-        this.totalPrice = totalPrice;
-    }
-
-    // multiple order to invoice
-    public Invoice(List<Order> orders, float totalPrice){
-        this.totalTax = orders.parallelStream().mapToDouble(i -> i.getTotalIncludeTax()).sum() + orders.parallelStream().mapToDouble(i -> i.getTotalExcludeTax()).sum() ;
-        this.totalDiscount = orders.parallelStream().mapToDouble(i -> i.getDiscount()).sum();
         this.totalPrice = totalPrice;
     }
 }

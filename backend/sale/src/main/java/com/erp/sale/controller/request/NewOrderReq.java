@@ -16,4 +16,5 @@ public class NewOrderReq {
     public String          customer_id;
     public String          customer_name;
     public List<OrderItemReq> product_item_list;
+    public String code;
 }

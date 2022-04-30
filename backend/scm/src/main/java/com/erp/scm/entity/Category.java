@@ -20,11 +20,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type="uuid-char")
     private UUID id;
+    private String code;
     private Integer level;
     private String  parentId;
     private String  name;
 
     public Category(NewCategoryReq newCategoryReq) {
+        this.code = newCategoryReq.code;
         this.level = newCategoryReq.level;
         this.parentId = newCategoryReq.parentId;
         this.name = newCategoryReq.name;

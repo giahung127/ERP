@@ -60,6 +60,8 @@ public class ShipmentService {
         temp.get().setContactNumber(updateShipmentReq.contact_number);
         temp.get().setContactAddress(updateShipmentReq.contact_address);
         temp.get().setShipmentStatus(updateShipmentReq.shipment_status);
+        temp.get().setCode(updateShipmentReq.code);
+
         shipmentRepository.save(temp.get());
         return new NormalRes("200", "Updated", "");
     }

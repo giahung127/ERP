@@ -38,6 +38,7 @@ public class CustomerService {
         temp.get().setGender(updateCustomerReq.gender);
         temp.get().setPhone(updateCustomerReq.phone);
         temp.get().setName(updateCustomerReq.name);
+        temp.get().setCode(updateCustomerReq.code);
         customerRepository.save(temp.get());
         return new NormalRes("200", "Updated", "");
     }
