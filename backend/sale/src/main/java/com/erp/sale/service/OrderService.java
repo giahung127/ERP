@@ -3,6 +3,7 @@ package com.erp.sale.service;
 import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
 import com.erp.sale.controller.response.GetOrderRes;
+import com.erp.sale.controller.response.GetOrdersRes;
 import com.erp.sale.controller.response.NormalRes;
 import com.erp.sale.controller.response.OrderWithItems;
 import com.erp.sale.entity.*;
@@ -73,12 +74,18 @@ public class OrderService {
         return new NormalRes("200", "Updated", item.get().getOrderStatus().toString());
     }
 
-    public GetOrderRes getOrderByCustomerId(String customerId) throws Error{
-        Optional<Order> order = orderRepository.findByCustomerId(customerId);
-        if (order.isEmpty()){
-            return new GetOrderRes("404", "Not Found", null);
+    public GetOrdersRes getOrderByCustomerId(String customerId) throws Error{
+        List<Order> orders = orderRepository.findAllByCustomerId(customerId);
+        if (orders.isEmpty()){
+            return new GetOrdersRes("404", "Not Found", null);
         }
-        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(order.get().getId().toString());
-        return new GetOrderRes("200", "Get Order By ID", new OrderWithItems(order.get(), orderItems) );
+        List<OrderWithItems> result = orders.parallelStream().map(
+                order -> {
+                    Order temp = orderRepository.findById(order.getId()).get();
+                    List<OrderItem> items = orderItemRepository.findAllByOrderId(String.valueOf(order.getId()));
+                    return new OrderWithItems(temp, items);
+                }
+        ).collect(Collectors.toList());
+        return new GetOrdersRes("200", "Get Order By ID", result);
     }
 }

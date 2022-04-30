@@ -1,11 +1,13 @@
 package com.erp.sale.controller.response;
 
-public class GetOrderRes {
+import java.util.List;
+
+public class GetOrdersRes {
     public String code;
     public String message;
-    public OrderWithItems data;
+    public List<OrderWithItems> data;
 
-    public GetOrderRes(String code, String message, OrderWithItems data){
+    public GetOrdersRes(String code, String message, List<OrderWithItems> data){
         this.code = code;
         this.message = message;
         this.data = data;

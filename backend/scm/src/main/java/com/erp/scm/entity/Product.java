@@ -1,17 +1,14 @@
 package com.erp.scm.entity;
 
-
 import com.erp.scm.controller.request.NewProductReq;
 import lombok.*;
 import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
