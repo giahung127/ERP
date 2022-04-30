@@ -2,7 +2,6 @@ package com.erp.sale.service;
 
 import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
-import com.erp.sale.controller.response.GetListOrderRes;
 import com.erp.sale.controller.response.GetOrderRes;
 import com.erp.sale.controller.response.NormalRes;
 import com.erp.sale.controller.response.OrderWithItems;
@@ -11,8 +10,6 @@ import com.erp.sale.repository.*;
 import com.erp.sale.service.api.ProductService;
 import com.erp.sale.service.api.request.UpdateAfterOrderReq;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -76,37 +73,12 @@ public class OrderService {
         return new NormalRes("200", "Updated", item.get().getOrderStatus().toString());
     }
 
-    public NormalRes toInvoice(String id) throws Error {
-        Optional<Order> order = orderRepository.findById(UUID.fromString(id));
+    public GetOrderRes getOrderByCustomerId(String customerId) throws Error{
+        Optional<Order> order = orderRepository.findByCustomerId(customerId);
         if (order.isEmpty()){
-            return new NormalRes("404", "Found no record while transfer to invoice", "");
+            return new GetOrderRes("404", "Not Found", null);
         }
-        // Get PriceList
-        String priceListId = order.get().getPriceListId();
-        // Get all item to find out list of productId
-        List<OrderItem> itemList = orderItemRepository.findAllByOrderId(order.get().getId().toString());
-        List<PriceListItem> priceListItems = itemList.parallelStream().map(
-                orderItem -> (priceListItemRepository.findPriceListItemByPriceListIdAndProductId(priceListId, orderItem.getProductId())).get()
-        ).collect(Collectors.toList());
-        // From productIdList get priceList
-        double totalPrice = 0;
-        for (PriceListItem priceListItem : priceListItems) {
-            totalPrice += priceListItem.getPrice();
-        }
-        double totalDiscount = totalPrice*(order.get().getDiscount())/100.0f;
-        double totalTax = totalPrice*(order.get().getTax())/100.0f;
-        Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax, totalPrice));
-        orderToInvoiceRepository.save(new OrderToInvoice(order.get().getId().toString(), newInvoice.getId().toString()));
-        return new NormalRes("200", "New Invoice is made", "");
-    }
-
-
-    public GetListOrderRes getOrderByCustomerId(String customerId) throws Error{
-        List<Order> order = orderRepository.findByCustomerId(customerId);
-        if (order.isEmpty()){
-            return new GetListOrderRes("404", "Not Found", null);
-        }
-//        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(order.get().getId().toString());
-        return new GetListOrderRes("200", "Get Order By ID", order );
+        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(order.get().getId().toString());
+        return new GetOrderRes("200", "Get Order By ID", new OrderWithItems(order.get(), orderItems) );
     }
 }

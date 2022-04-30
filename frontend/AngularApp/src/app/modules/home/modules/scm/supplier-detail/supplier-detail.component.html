@@ -1,1 +1,105 @@
-<p>supplier-detail works!</p>
+<div class="main-container">
+    <div class="form-header">
+        <button mat-button class="title" (click)="onBack()"><mat-icon>arrow_back_ios
+        </mat-icon> Supplier Detail </button>
+    </div>
+    <mat-tab-group mat-align-tabs="left" dynamicHeight>
+        <mat-tab [label]="'Information'">
+            <ng-template mat-tab-label>
+                <span>Information</span>
+            </ng-template>
+            <form [formGroup]="addSupplierForm">
+                <div class="partial-container">
+                    <div class="title">
+                        <p>General Information</p>
+                    </div>
+                    <div class="line"></div>
+                    <div class="row">
+                    <div class="custom-field-s">
+                        <div class="label">Code</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="textarea" formControlName="code">
+                        </mat-form-field>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Name</div>
+                        <mat-form-field  appearance="outline" required>
+                            <input matInput type="text" formControlName="name">
+                        </mat-form-field>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Phone</div>
+                        <mat-form-field  appearance="outline">
+                            <input matInput type="text" formControlName="phone">
+                        </mat-form-field>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Email</div>
+                        <mat-form-field  appearance="outline">
+                            <input matInput type="text" formControlName="email">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="custom-field-m">
+                        <div class="label">Address</div>
+                        <mat-form-field  appearance="outline">
+                            <input matInput type="text" formControlName="address">
+                        </mat-form-field>
+                    </div>
+                </div>
+                </div>
+            
+                <div class="form-footer">
+                    <button class="red-custom-button" mat-button  (click)="onBack()">
+                        <mat-icon>delete_outline</mat-icon> Cancel
+                    </button>
+                    <button mat-button class="green-custom-button" (click)="onSave()" [disabled]="!addSupplierForm.valid">
+                        <mat-icon>save</mat-icon> Save
+                    </button>
+                </div>
+            </form>
+            
+        </mat-tab>
+        
+        <mat-tab [label]="'Order history'"  *ngIf="viewModeCheck">
+            <!-- <app-home-table-list
+            class="order-list"
+            [title]="'Order List'"
+            [header]="false"
+            [data]="orderList"
+            [columnName]="orderColumnName"
+            [columnToProperty]="orderColumnToProperty"
+            [checkbox]="false"
+            [filter]="false"
+            [select]="onViewClick"
+            [key]="'orderId'"
+            [add]="false"
+            [more]="false"
+            >
+            </app-home-table-list> -->
+        </mat-tab>
+
+        <mat-tab [label]="'Invoice history'"  *ngIf="viewModeCheck">
+            
+        </mat-tab>
+
+        <mat-tab [label]="'Uninvoiced Orders'"  *ngIf="viewModeCheck">
+            <!-- <app-home-table-list
+            class="order-list"
+            [title]="'Order List'"
+            [data]="orderList"
+            [columnName]="orderColumnName"
+            [columnToProperty]="orderColumnToProperty"
+            [checkbox]="true"
+            [filter]="false"
+            [select]="onViewClick"
+            [key]="'orderId'"
+            [add]="false"
+            [more]="false"
+            >
+            </app-home-table-list> -->
+        </mat-tab>
+    </mat-tab-group>
+    
+</div>

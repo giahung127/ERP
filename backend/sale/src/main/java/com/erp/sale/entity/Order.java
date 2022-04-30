@@ -19,7 +19,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type="uuid-char")
-    private UUID             id;
+    private  UUID            id;
+    private  String          code;
     private  String          creatorName;
     private  String          priceListId;
     private  Float           totalIncludeTax;
@@ -34,6 +35,7 @@ public class Order {
     private  String          customerName;
 
     public Order(NewOrderReq newOrderReq) {
+        this.code = newOrderReq.code;
         this.creatorName = newOrderReq.creator_name;
         this.priceListId = newOrderReq.price_list_id;
         this.totalIncludeTax = newOrderReq.total_include_tax;

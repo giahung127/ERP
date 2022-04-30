@@ -15,6 +15,7 @@ import { Product } from '../../shared/models/product/product.model';
 import { Shipment } from '../../shared/models/shipment/shipment.model';
 import { CompanyService } from '../../system-setting/services/company.service';
 import { CustomerService } from '../service/customer.service';
+import { InvoiceService } from '../service/invoice.service';
 import { OrderService } from '../service/order.service';
 import { PriceListService } from '../service/price-list.service';
 
@@ -72,7 +73,8 @@ export class OrderDetailComponent {
     private priceListService: PriceListService,
     private customerService: CustomerService,
     private shipmentService: ShippingService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private invoiceService: InvoiceService
   ) { 
     this.getCustomerList();
     this.getCompanyInfo();
@@ -550,5 +552,29 @@ export class OrderDetailComponent {
 
   check(){
     this.saveCheck = this.orderProductList.length > 0 && this.selectedOrder.priceListId !== '' && this.selectedOrder.customerId !== ''&& this.selectedOrder.createDate !== undefined;
+  }
+
+  toInvoice(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      message: "Create a new order with these information",
+      title: "Create a new order"
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    dialogRef
+      .afterClosed()
+      .subscribe((submit) => {
+        if (submit) {
+          const data = {
+            'orderIdList': [this.selectedOrder.orderId]
+          }
+          this.invoiceService.createNewInvoice(data)
+          .subscribe((res) => {
+
+          })
+        }
+      });
   }
 }

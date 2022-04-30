@@ -41,6 +41,7 @@ public class SupplierService {
         curItem.setAddress(updateSupplierReq.address);
         curItem.setPhone(updateSupplierReq.phone);
         curItem.setEmail(updateSupplierReq.email);
+        curItem.setCode(updateSupplierReq.code);
         supplierRepository.save(curItem);
         return new NormalRes("200", "Updated supplier information", "");
     }

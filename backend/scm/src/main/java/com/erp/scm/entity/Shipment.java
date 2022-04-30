@@ -22,6 +22,7 @@ public class Shipment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type="uuid-char")
     private UUID id;
+    private String code;
     private String transporterId;
     private String receiverName;
     private String contactNumber;
@@ -35,6 +36,7 @@ public class Shipment {
     private ShipmentStatus shipmentStatus;
 
     public Shipment(NewShipmentReq newShipmentReq){
+        this.code = newShipmentReq.code;
         this.transporterId = newShipmentReq.transporter_id;
         this.receiverName = newShipmentReq.receiver_name;
         this.contactNumber = newShipmentReq.contact_number;

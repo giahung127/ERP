@@ -91,7 +91,7 @@
             </div>
         </div>
         <div class="line"></div>
-        <div class="form-footer">
+        <div class="form-footer" *ngIf="shipmentForm.value.status !== 'DELIVERED' && shipmentForm.value.status !== 'CANCELLED'">
             <button class="red-custom-button" mat-button  (click)="onBack()">
                 <mat-icon>delete_outline</mat-icon> Cancel
             </button>

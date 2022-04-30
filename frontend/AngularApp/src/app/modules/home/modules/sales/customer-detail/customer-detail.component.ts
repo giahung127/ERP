@@ -18,7 +18,7 @@ import { OrderService } from '../service/order.service';
 export class CustomerDetailComponent {
   
   viewModeCheck = false;
-  newEmployeeId = '';
+  selectedEmployeeId = '';
   orderList: Order[] = [];
   addCustomerForm = new FormGroup({});
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -42,6 +42,7 @@ export class CustomerDetailComponent {
         })
         if(params['employeeId']) {
           this.viewModeCheck = true;
+          this.selectedEmployeeId = params['employeeId'];
           this.getCustomer(params['employeeId']);
           this.getCustomerOrder(params['employeeId']);
         }
@@ -111,26 +112,43 @@ export class CustomerDetailComponent {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      message: "Add new customer with these information",
-      title: "Add a new customer"
+      message: "Add/Update customer with these information",
+      title: "Add/Update customer"
     };
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
     dialogRef
       .afterClosed()
       .subscribe((submit) => {
-        const data = {
-          'name': this.addCustomerForm.value.customerName,
-          'gender': this.addCustomerForm.value.customerCode,
-          'age': 0,
-          'email': this.addCustomerForm.value.email,
-          'phone': this.addCustomerForm.value.phone,
-          'address': this.addCustomerForm.value.address
+        if(this.selectedEmployeeId === ''){
+          const data = {
+            'name': this.addCustomerForm.value.customerName,
+            'gender': this.addCustomerForm.value.customerCode,
+            'age': 0,
+            'email': this.addCustomerForm.value.email,
+            'phone': this.addCustomerForm.value.phone,
+            'address': this.addCustomerForm.value.address
+          }
+          this.customerService.createNewCustomer(data)
+          .subscribe(res => {
+            this.toastr.success('New customer is successfully added');
+            this.onBack();
+          })
+        } else {
+          const data = {
+            'id' : this.selectedEmployeeId,
+            'name': this.addCustomerForm.value.customerName,
+            'gender': this.addCustomerForm.value.customerCode,
+            'age': 0,
+            'email': this.addCustomerForm.value.email,
+            'phone': this.addCustomerForm.value.phone,
+            'address': this.addCustomerForm.value.address
+          }
+          this.customerService.updateCustomerById(data)
+          .subscribe(res => {
+            this.toastr.success('Information is successfully updated');
+            this.onBack();
+          })
         }
-        this.customerService.createNewCustomer(data)
-        .subscribe(res => {
-          this.toastr.success('New customer is successfully added');
-          this.onBack();
-        })
       })
   }
 }

@@ -60,7 +60,7 @@ const routes: Routes = [
                 component: SupplierDetailComponent
             },
             {
-                path: 'supplier-detail/',
+                path: 'supplier-detail',
                 component: SupplierDetailComponent
             },
         ]

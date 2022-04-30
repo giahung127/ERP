@@ -7,4 +7,5 @@ public class NewCustomerReq {
     public String email;
     public String phone;
     public String address;
+    public String code;
 }

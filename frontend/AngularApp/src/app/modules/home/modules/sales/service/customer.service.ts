@@ -20,4 +20,8 @@ export class CustomerService {
   createNewCustomer(data){
     return this.http.post(`http://localhost:9004/sale/customer/newCustomer`,data, { headers: this.headers })
   }
+
+  updateCustomerById(data){
+    return this.http.post(`http://localhost:9004/sale/customer/updateById`,data, { headers: this.headers })
+  }
 }
