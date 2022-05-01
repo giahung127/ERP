@@ -92,6 +92,13 @@
         font-size: 14px;
         font-weight: 500;
     }
+
+    .content {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding-top: 8px;
+    }
     
     mat-form-field {
         width: 100%;
@@ -103,6 +110,12 @@
 
     mat-radio-button{
         margin: 10px;
+    }
+    .link-button {
+        background: none;
+        border: none;
+        color: #004ae1;
+        text-decoration: underline;   
     }
 
     .green-custom-button {

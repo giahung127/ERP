@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Invoice } from '../../shared/models/invoice/invoice.model';
 import { Order } from '../../shared/models/order/order.model';
 import { Product } from '../../shared/models/product/product.model';
+import { InvoiceService } from '../service/invoice.service';
 import { OrderService } from '../service/order.service';
 
 @Component({
@@ -10,36 +12,27 @@ import { OrderService } from '../service/order.service';
   styleUrls: ['./invoice-list.component.scss']
 })
 export class InvoiceListComponent implements OnInit {
-  orderList: Order[] = [];
+  invoiceList: Invoice[] = [];
   constructor(
     private router: Router,
-    private orderService: OrderService
+    private invoiceService: InvoiceService
   ) {}
 
   ngOnInit(): void {
-    this.getAllOrderList();
+    this.getAllInvoiceList();
   }
 
-  getAllOrderList(){
-    this.orderService.getAllOrdersList()
+  getAllInvoiceList(){
+    this.invoiceService.getAllInvoiceList()
     .subscribe((res)=> {
-      let data;
-      data = res;
-      this.orderList = data.map(({ id, creatorName, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
-        return {
-          'orderId': id,
-          'createdDate': createDate,
-          'customer': customerName,
-          'status': orderStatus
-        }
-      })
+     
     })
   }
 
   productList: Product[] = [
   ];
   columnName: string[] = [
-    'Order Id',
+    'Invoice Code',
     'Date',
     'Customer',
     'Status'

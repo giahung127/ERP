@@ -16,8 +16,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { TableListComponent } from './table-list/table-list.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { ExcelComponent } from './excel/excel.component';
 @NgModule({
-    declarations: [TableListComponent, ConfirmDialogComponent],
+    declarations: [TableListComponent, ConfirmDialogComponent, ExcelComponent],
     imports: [
         CommonModule,
         MatIconModule,

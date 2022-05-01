@@ -96,6 +96,7 @@ export class TableListComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     getValue(obj, columnName) {
+
         if (obj[columnName] === undefined) {
             // Use custom column name (column name != property name)
             if (this.columnToProperty[columnName]) {

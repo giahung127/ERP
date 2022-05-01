@@ -3,6 +3,7 @@ package com.erp.sale.controller;
 import com.erp.sale.controller.request.AddProductToPriceListReq;
 import com.erp.sale.controller.request.NewPriceListReq;
 import com.erp.sale.controller.request.UpdatePriceListItemReq;
+import com.erp.sale.controller.request.UpdatePriceListReq;
 import com.erp.sale.controller.response.AddNewProductToPriceListRes;
 import com.erp.sale.controller.response.GetByIdPriceList;
 import com.erp.sale.controller.response.GetPriceListByIdRes;
@@ -46,6 +47,11 @@ public class PriceListController {
     @PostMapping("updatePriceListItem")
     public NormalRes updatePriceListItem(@RequestBody UpdatePriceListItemReq itemReq){
         return priceListService.updatePriceListItem(itemReq);
+    }
+
+    @PostMapping("updatePriceList")
+    public NormalRes updatePriceList(@RequestBody UpdatePriceListReq req){
+        return priceListService.updatePriceList(req);
     }
 }
 

@@ -1,6 +1,6 @@
 <div class="main-container">
     <app-home-table-list
-    class="import-list"
+    class="order-list"
     [title]="'Order List'"
     [data]="orderList"
     [columnName]="columnName"
@@ -12,6 +12,7 @@
     [add]="true"
     [onAdd]="onAddEmployee"
     [more]="false"
+    [useDefaultStatusColumn]="false"
     >
     </app-home-table-list>
 </div>

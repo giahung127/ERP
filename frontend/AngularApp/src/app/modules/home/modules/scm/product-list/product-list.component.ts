@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Employee } from '../../shared/models/employee';
+import { ToastrService } from 'ngx-toastr';
 import { Product } from '../../shared/models/product/product.model';
 import { ProductService } from '../services/product.service';
+import { UploadFileDialogComponent } from '../upload-file-dialog/upload-file-dialog.component';
 
 @Component({
   selector: 'app-product-list',
@@ -13,9 +15,12 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private dialog: MatDialog,
+    private toastr: ToastrService
   ) {}
   productList: Product[] = [];
+  
   showProductList: Product[] = [];
   columnName: string[] = [
     'ProductCode',
@@ -41,13 +46,13 @@ export class ProductListComponent implements OnInit {
       .subscribe(res => {
         let data;
         data = res;
-        this.productList = data.map(({ id, code, name,price, category, description, category_id})=>{
+        this.productList = data.map(({ id, code, name,price, categoryName, description, category_id})=>{
           return {
             'productId': id,
             'productCode': code,
             'productName': name,
             'categoryId': category_id,
-            'categoryName': category,
+            'categoryName': categoryName,
             'price': price,
             'description': description
           }
@@ -80,5 +85,18 @@ export class ProductListComponent implements OnInit {
     } else {
       this.showProductList = this.productList
     }
+  }
+  
+
+  uploadExcelFile() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+    };
+    const dialogRef = this.dialog.open(UploadFileDialogComponent, dialogConfig);
+    dialogRef
+        .afterClosed()
+        .subscribe()
   }
 }

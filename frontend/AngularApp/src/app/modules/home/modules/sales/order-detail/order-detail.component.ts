@@ -7,10 +7,13 @@ import { nonAccentVietnamese } from 'src/app/common/functions/ultils';
 import { ProductService } from '../../scm/services/product.service';
 import { ShippingService } from '../../scm/services/shipping.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { Company } from '../../shared/models/company/company.model';
 import { Customer } from '../../shared/models/customer/customer.model';
 import { PriceList } from '../../shared/models/price-list/price-list.model';
 import { ImportProduct } from '../../shared/models/product/import-product.model';
 import { Product } from '../../shared/models/product/product.model';
+import { Shipment } from '../../shared/models/shipment/shipment.model';
+import { CompanyService } from '../../system-setting/services/company.service';
 import { CustomerService } from '../service/customer.service';
 import { OrderService } from '../service/order.service';
 import { PriceListService } from '../service/price-list.service';
@@ -22,28 +25,45 @@ import { PriceListService } from '../service/price-list.service';
 })
 export class OrderDetailComponent {
   viewModeCheck = true;
+  saveCheck = false;
   searchKeyword = '';
-  productList: Product[] = [
-  ];
+  company: Company | undefined;
+  productList: Product[] = [];
   totalPrice = 0;
   selectedOrder;
   priceListList: PriceList[] = [];
   showProductList: Product[] = [];
   customerList: Customer[] = [];
-  columnName: string[] = [
+  shipmentList: Shipment[] = [];
+  productColumnName: string[] = [
     'Code',
     'Name',
     'Category',
   ];
-  columnToProperty = {
+  productColumnToProperty = {
     'Code': 'productCode',
     'Name': 'productName',
     'Category': 'categoryName',
   };
+  shipmentColumnName: string[] = [
+    'Shipment id',
+    // 'Created date',
+    'Order id',
+    // 'Customer',
+    'Status'
+  ];
+  shipmentColumnToProperty = {
+    'Shipment id': 'shipmentId',
+    // 'Created date': 'createdDate',
+    'Order id': 'orderId',
+    // 'Customer': 'customerName',
+    'Status' : 'status'
+  };
   orderProductList: ImportProduct[] = [];
-
+  logoPath = `../../../../assets/logo/HCMUT_official_logo.png`;
   constructor(
     private _location: Location,
+    private router: Router,
     private route: ActivatedRoute,
     private productService: ProductService,
     private orderService: OrderService,
@@ -51,9 +71,11 @@ export class OrderDetailComponent {
     private toastr: ToastrService,
     private priceListService: PriceListService,
     private customerService: CustomerService,
-    private shipmentService: ShippingService
+    private shipmentService: ShippingService,
+    private companyService: CompanyService
   ) { 
     this.getCustomerList();
+    this.getCompanyInfo();
   }
 
   getProductList() {
@@ -61,18 +83,39 @@ export class OrderDetailComponent {
       .subscribe(res => {
         let data;
         data = res;
-        this.productList = data.map(({ id, code, name, price, category, description})=>{
+        this.productList = data.map(({ id, code, name, price, categoryName, description})=>{
           return {
             'productId': id,
             'productCode': code,
             'productName': name,
-            'categoryName': category,
+            'categoryName': categoryName,
             'price': price,
             'description': description
           }
         })
         this.showProductList = this.productList;
       })
+  }
+
+  getShipmentList(orderId: string){
+    this.shipmentService.getShipmentByOrderId(orderId)
+    .subscribe(res => {
+      let temp;
+      temp = res;
+      if(temp.data !== null){
+        this.shipmentList = temp.data.map(({id, orderId, shipmentStatus, toAddress}) => {
+          return {
+            shipmentId: id,
+            orderId: orderId,
+            createdDate: new Date(),
+            creatorName: 'Gia Hung',
+            shippingAddress: toAddress,
+            contactNumber: '0000',
+            status: shipmentStatus
+          }
+        })
+      }
+    })
   }
 
   getPriceListList(){
@@ -93,11 +136,12 @@ export class OrderDetailComponent {
           if (params['id']) {
             this.viewModeCheck = false;
             this.getSelectedOrder(params['id']);
+            this.getShipmentList(params['id']);
           } else {
             this.viewModeCheck = true;
             this.selectedOrder = {
               orderId: "",
-              createdDate: new Date(),
+              createdDate: "",
               status: "",
               creatorName: "GiaHung",
               priceListId: this.priceListList[0].id,
@@ -109,6 +153,7 @@ export class OrderDetailComponent {
               shippingFee: 0,
               customerId: "",
               customerName: "",
+              shipping: false
             }
             this.getProductList();  
           } 
@@ -173,6 +218,17 @@ export class OrderDetailComponent {
     })
   }
 
+  getCompanyInfo(){
+    this.companyService.getCompanyInfo()
+    .subscribe((res) => {
+      if(res){
+        console.log(res)
+        let temp
+        temp = res
+        this.company = new Company(temp.id, temp.companyName, temp.companyAddress, temp.contactName, temp.contactEmail, temp.contactPhone ,temp.contactAddress)
+      }
+    })
+  }
 
   onBack() {
     this._location.back();
@@ -198,6 +254,7 @@ export class OrderDetailComponent {
       this.orderProductList.push(new ImportProduct(this.orderProductList.length +1, product.productId, product.productCode, product.productName, 1, price? price : 0))
     }
     this.reCalculateTotal();
+    this.check();
   }
 
   reCalculateTotal(){
@@ -205,6 +262,8 @@ export class OrderDetailComponent {
     this.orderProductList.forEach((x)=> {
       this.totalPrice += x.amount*x.price;
     })
+    this.selectedOrder.totalExcludeTax = this.totalPrice 
+    this.selectedOrder.totalIncludeTax = this.totalPrice * (1 + this.selectedOrder.tax/100)
   }
   reIndexNo() {
     for (let i = 0; i < this.orderProductList.length; i++) {
@@ -217,6 +276,8 @@ export class OrderDetailComponent {
         return product.productId !== item;
     });
     this.reIndexNo();
+    this.reCalculateTotal()
+    this.check();
   }
 
   onSave(){
@@ -229,35 +290,61 @@ export class OrderDetailComponent {
     };
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
     dialogRef
-            .afterClosed()
-            .subscribe((submit) => {
-                if (submit) {
-                  const data = {
-                    creator_name: "giahung",
-                    price_list_id: this.selectedOrder.priceListId,
-                    total_include_tax: this.totalPrice,
-                    total_exclude_tax: this.totalPrice,
-                    tax: 0,
-                    discount: 0,
-                    shipping_fee: 0,
-                    address: 'abc',
-                    create_date: this.selectedOrder.createDate,
-                    customer_id: this.selectedOrder.customerId,
-                    customer_name: this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.name,
-                    product_item_list: this.orderProductList,
-                  }
-                  console.log(this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.name )
-                  this.orderService.createNewOrder(data)
-                    .subscribe((res) => {
-                      this.toastr.success('New order is successfully created');
-                      console.log(res);
-                      this.onBack()
-                      const temp = {}
-                      // this.shipmentService.addNewShipment(temp)
-                      // .subscribe()
+      .afterClosed()
+      .subscribe((submit) => {
+          if (submit) {
+            const data = {
+              creator_name: "giahung",
+              price_list_id: this.selectedOrder.priceListId,
+              total_include_tax: this.totalPrice,
+              total_exclude_tax: this.totalPrice,
+              tax: 0,
+              discount: 0,
+              shipping_fee: 0,
+              address: 'abc',
+              create_date: this.selectedOrder.createDate,
+              customer_id: this.selectedOrder.customerId,
+              customer_name: this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.name,
+              product_item_list: this.orderProductList,
+            }
+            this.orderService.createNewOrder(data)
+              .subscribe((res) => {
+                this.toastr.success('New order is successfully created');
+                if(this.selectedOrder.shipping){
+                  let temp;
+                  temp = res
+                  const shipmentData = {
+                    'transporter_id': '',
+                    'receiver_name': data.customer_name,
+                    'contact_number': this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.phone,
+                    'contact_address': this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.address,
+                    'customer_name': data.customer_name,
+                    'order_id': temp.data,
+                    'total_price': this.selectedOrder.totalIncludeTax,
+                    'shipment_code': '',
+                    'created_date': new Date(),
+                    'creator_name': 'Gia Hung',
+                    'shipment_status': 'IN_STOCK',
+                    'shipmen_item_list':this.orderProductList.map(({productId, amount}) => {
+                      return {
+                        'product_id': productId,
+                        'amount': amount
+                      }
                     })
+                  }
+                  console.log(shipmentData)
+                  this.shipmentService.addNewShipment(shipmentData)
+                  .subscribe((res) => {
+                    this.toastr.success('New shipment is successfully created');
+                    this.onBack();
+                  },
+                  (err) => {
+                    this.toastr.error(err);
+                  })
                 }
-            });
+              })
+          }
+      });
   }
 
   getProductPriceList(id: string){
@@ -277,6 +364,7 @@ export class OrderDetailComponent {
     } else {
       this.changePriceList(id);
     }
+    this.check();
   }
 
   changePriceList(priceListId: string){
@@ -288,12 +376,179 @@ export class OrderDetailComponent {
   }
 
   onConfirm(){
-    this.orderService.updateOrderStatus({id: this.selectedOrder.id, orderStatus: 'CONFIRMED'})
+    this.orderService.updateOrderStatus({id: this.selectedOrder.orderId, orderStatus: 'CONFIRMED'})
     .subscribe((res) => {
       this.toastr.success('The order is confirmed');
+      this.onBack();
     },
     (err) => {
       this.toastr.error(err);
     })
+  }
+
+  onCancel(){
+    this.orderService.updateOrderStatus({id: this.selectedOrder.orderId, orderStatus: 'CANCELLED'})
+    .subscribe((res) => {
+      this.toastr.success('The order is cancelled');
+      this.onBack();
+    },
+    (err) => {
+      this.toastr.error(err);
+    })
+  }
+
+  onViewClick: (id: string) => void = (id: string) => {
+    // console.log("On View Click: ", id);
+    this.router.navigate(['/home/scm/shipping-detail'],{
+        queryParams: { shipment: id }
+      }
+    );
+    
+  };
+
+  printPage(){
+    let mywindow = window.open('', 'PRINT');
+    mywindow?.document.write(`
+      <div id="kv-cke-temp">
+      <style type="text/css">
+          .printBox {
+              font-family: Arial, sans-serif;
+              font-size: 11px;
+          }
+
+          table {
+              page-break-inside: auto;
+              border-collapse: collapse;
+          }
+
+          tr {
+              page-break-inside: avoid;
+              page-break-after: auto
+          }
+
+          img {
+              max-width: 100%;
+              height: auto;
+          }
+      </style>
+      <div class="printBox">
+      <table style="width:100%">
+        <tbody>
+          <tr>
+            <td style="text-align:center">
+            <table style="width:100%">
+              <tbody>
+                <tr>
+                <td style="font-size:11px; text-align:center">
+                <img alt="" src="${this.logoPath}" style="height:50px; width:50px; " />
+                </td>
+                </tr>
+                <tr>
+                  <td style="font-size:11px; text-align:center"><strong style="font-size:11px">${this.company?.name}</strong></td>
+                </tr>
+                <tr>
+                  <td style="font-size:11px; text-align:center">Address: ${this.company?.address}</td>
+                </tr>
+                <tr>
+                  <td style="font-size:11px; text-align:center">Phone: ${this.company?.contactPhone}</td>
+                </tr>
+              </tbody>
+            </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="padding:10px 0 0; text-align:center"><strong style="font-size:12px">SALE ORDER</strong></div>
+
+      <table style="width:100%">
+        <tbody>
+          <tr>
+            <td style="font-size:11px; text-align:center">Order code: O0001</td>
+          </tr>
+          <tr>
+            <td style="font-size:11px; text-align:center">${this.selectedOrder.createdDate}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table style="margin:10px 0 15px; width:100%">
+        <tbody>
+          <tr>
+            <td style="font-size:11px">Customer: ${this.selectedOrder.customerName}</td>
+          </tr>
+          <tr>
+            <td style="font-size:11px">Phone: ${this.customerList.find(x => {return x.customerId === this.selectedOrder.customerId})?.phone}</td>
+          </tr>
+          <tr>
+            <td style="font-size:11px">Address: ${this.customerList.find(x => {return x.customerId === this.selectedOrder.customerId})?.address}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table cellpadding="3" style="width:98%">
+        <tbody>
+          <tr>
+            <td style="border-bottom:1px solid black; border-top:1px solid black; width:30%"><strong><span style="font-size:11px">Product</span></strong></td>
+            <td style="border-bottom:1px solid black; border-top:1px solid black; width:20%"><strong><span style="font-size:11px">Price</span></strong></td>
+            <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right; width:20%"><strong><span style="font-size:11px">Amount</span></strong></td>
+            <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right"><strong><span style="font-size:11px">Total</span></strong></td>
+          </tr>
+          ${ 
+            this.printProductList()
+          }
+        </tbody>
+      </table>
+
+      <table border="0" cellpadding="3" cellspacing="0" style="border-collapse:collapse; margin-top:20px; width:98%">
+        <tfoot>
+          <tr>
+            <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Subtotal</td>
+            <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.totalExcludeTax}</td>
+          </tr>
+          <tr>
+            <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Discount(%):</td>
+            <td style="font-size:11px; font-weight:bold; text-align:right">0</td>
+          </tr>
+          <tr>
+            <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Total:</td>
+            <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.totalExcludeTax}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <table style="margin-top:20px; width:100%">
+        <tbody>
+          <tr>
+            <td style="font-size:11px; font-style:italic; text-align:center">Thank you for your order!</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      </div>`
+      )
+    setTimeout(function() {
+      mywindow?.print();
+      mywindow?.close();
+    }, 100);
+  }
+
+  printProductList(): string{
+    let htmlString = '';
+    this.orderProductList.forEach(x => {
+      htmlString +=`
+        <tr>
+          <td style="border-bottom:1px dashed black"><span style="font-size:12px">${x.productName}</span></td>
+          <td style="border-bottom:1px dashed black"><span style="font-size:11px">${x.price}</span></td>
+          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${x.amount}</span></td>
+          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${x.amount*x.price}</span></td>
+        </tr>
+        `
+    });
+    return htmlString 
+  }
+
+  check(){
+    this.saveCheck = this.orderProductList.length > 0 && this.selectedOrder.priceListId !== '' && this.selectedOrder.customerId !== ''&& this.selectedOrder.createDate !== undefined;
   }
 }

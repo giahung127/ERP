@@ -1,0 +1,60 @@
+<div class="main-container">
+    
+    <div class="title">
+        <p>Company Information</p>
+    </div>
+    <div class="line"></div>
+    
+    <form [formGroup]="editInformationForm" *ngIf="company">
+        <div class="partial-container">
+            <div class="custom-field-mod">
+                <div class="label" for="name">Name<span class="required">*</span></div>
+                <mat-form-field  appearance="fill">
+                    <input matInput type="text" formControlName="name">
+                </mat-form-field>
+            </div>
+            <div class="custom-field-mod">
+                <div class="label" for="location">Address <span class="required">*</span></div>
+                <mat-form-field appearance="fill">
+                    <input matInput type="text" formControlName="address" >
+                </mat-form-field>
+            </div>
+        </div>
+        
+        <div class="title">
+            <p>Contact</p>
+        </div>
+        <div class="line"></div>
+        <div class="partial-container">
+            <div class="custom-field-mod">
+                <div class="label" for="name">Name</div>
+                <mat-form-field  appearance="fill">
+                    <input id="name" matInput type="text" formControlName="contactName" >
+                </mat-form-field>
+            </div>
+            <div class="custom-field-mod">
+                <div class="label" for="country">Email </div> 
+                <mat-form-field  appearance="fill">
+                    <input id="country" matInput type="text" formControlName="contactMail" >
+                </mat-form-field>
+            </div>
+            <div class="custom-field-mod">
+                <div class="label" for="location">Phone </div>
+                <mat-form-field appearance="fill" >
+                    <input id="location" matInput type="text" formControlName="contactPhone" >
+                </mat-form-field>
+            </div>
+            <div class="custom-field-mod">
+                <div class="label" for="location">Adress</div>
+                <mat-form-field appearance="fill" >
+                    <input id="location" matInput type="text" formControlName="contactAddress">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-footer">
+        <button class="green-custom-button" mat-button [disabled]="!editInformationForm.valid" (click)="updateCompanyInfo()">
+            <mat-icon>save</mat-icon> Save
+        </button>
+        </div>
+    </form>
+</div>

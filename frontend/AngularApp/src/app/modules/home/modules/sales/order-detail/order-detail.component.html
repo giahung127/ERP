@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="main-container" >
     <div class="left-content" *ngIf="selectedOrder">
         <div class="header">
             <div (click)="onBack()">
@@ -39,12 +39,29 @@
                 <div class="partial-container">
                     <div class="title">Shipping information</div>
                     <div class="row">
-                        abc
+                        <app-home-table-list
+                        *ngIf="shipmentList.length > 0"
+                        class="shipping-list"
+                        [title]="'Shipping List'"
+                        [data]="shipmentList"
+                        [columnName]="shipmentColumnName"
+                        [columnToProperty]="shipmentColumnToProperty"
+                        [checkbox]="false"
+                        [select]="onViewClick"
+                        [more]="false"
+                        [paginating]="false"
+                        [key]="'shipmentId'"
+                        [header]="false"
+                        >
+                        </app-home-table-list>
+                        <div *ngIf="shipmentList.length === 0">
+                            There is no shipment
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="line"></div>
-            <div class="partial-container">
+            <div class="partial-container"  id="test">
                 <div class="title">Product list</div>
                 <div class="row">
                     <div class="import-product-list custom-field-l">
@@ -72,7 +89,7 @@
             <div class="partial-container">
                 <div class="order-footer">
                     <div class="row">
-                        <div class="footer-title"> Total (Exclude Tax):</div>
+                        <div class="footer-title"> Total (Exc. Tax):</div>
                         <div class="footer-content"> {{selectedOrder.totalExcludeTax}}</div>
                     </div>
                     <div class="row">
@@ -84,21 +101,23 @@
                         <div class="footer-content"> {{selectedOrder.tax * selectedOrder.totalExcludeTax}} </div>
                     </div>
                     <div class="row">
-                        <div class="footer-title"> Shipping:</div>
-                        <div class="footer-content">{{selectedOrder.shippingFee}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="footer-title"> Total (Include Tax):</div>
+                        <div class="footer-title"> Total (Inc. Tax):</div>
                         <div class="footer-content"> {{selectedOrder.totalIncludeTax}}</div>
                     </div>
                 </div>
             </div>
 
-            <div class="form-footer" *ngIf="selectedOrder.status === 'WAITING'">
-                <button mat-button class="green-custom-button" (click)="onConfirm()" >
+            <div class="form-footer">
+                <button mat-button *ngIf="selectedOrder.status === 'WAITING'" class="green-custom-button" (click)="onConfirm()" >
                     <mat-icon>check</mat-icon> Confirm
                 </button>
-                <button class="red-custom-button" mat-button  (click)="onBack()"> 
+                <button mat-button class="green-custom-button" (click)="printPage()">
+                    <mat-icon>receipt</mat-icon> Invoice
+                </button>
+                <button mat-button class="green-custom-button" (click)="printPage()">
+                    <mat-icon>print</mat-icon> Print
+                </button>
+                <button class="red-custom-button" mat-button  (click)="onCancel()"> 
                     <mat-icon>delete_outline</mat-icon> Cancel
                 </button>
             </div>
@@ -117,13 +136,13 @@
                 <div class="custom-field-s">
                     <div class="label">Created Date:</div>
                     <mat-form-field  appearance="outline" required>
-                        <input matInput type="date" [(ngModel)]="selectedOrder.createDate">
+                        <input matInput type="date" [(ngModel)]="selectedOrder.createDate" (ngModelChange)="check()">
                     </mat-form-field>
                 </div>
                 <div class="custom-field-s">
                     <div class="label">Customer:</div>
                     <mat-form-field  appearance="outline" required>
-                        <mat-select [(ngModel)]="selectedOrder.customerId">
+                        <mat-select [(ngModel)]="selectedOrder.customerId" (ngModelChange)="check()">
                             <mat-option *ngFor="let customer of customerList" [value]="customer.customerId">
                             {{customer.name}}
                             </mat-option>
@@ -143,7 +162,7 @@
                         </mat-form-field>
                     </div>
                     <div class="custom-field-s">
-                        <mat-checkbox>Shipping</mat-checkbox>
+                        <mat-checkbox [(ngModel)]="selectedOrder.shipping">Shipping</mat-checkbox>
                     </div>
                 </div>
             </div>
@@ -152,7 +171,19 @@
                 <div class="partial-container">
                     <div class="title">Shipping information</div>
                     <div class="row">
-                        abc
+                        <app-home-table-list
+                        class="shipping-list"
+                        [title]="'Shipping List'"
+                        [data]="shipmentList"
+                        [columnName]="shipmentColumnName"
+                        [columnToProperty]="shipmentColumnToProperty"
+                        [checkbox]="false"
+                        [select]="onViewClick"
+                        [more]="false"
+                        [key]="'shipmentId'"
+                        [header]="false"
+                      >
+                      </app-home-table-list>
                     </div>
                 </div>
             </div>
@@ -187,34 +218,38 @@
                 <div class="order-footer">
                     <div class="row">
                         <div class="footer-title"> Subtotal:</div>
-                        <div class="footer-content"> {{totalPrice}}</div>
+                        <div class="footer-content"> {{selectedOrder.totalExcludeTax}}</div>
                     </div>
                     <div class="row">
-                        <div class="footer-title"> Tax rate:</div>
-                        <div class="footer-content"> 0</div>
+                        <div class="footer-title"> Tax rate(%):</div>
+                        <div class="footer-content">
+                            <div class="custom-form-field">
+                                <mat-form-field appearance="legacy">
+                                    <input type="number" class="tax" [(ngModel)]="selectedOrder.tax" (ngModelChange)="reCalculateTotal()" matInput>
+                                    <span matSuffix>%</span>
+                                </mat-form-field>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total tax:</div>
-                        <div class="footer-content">0</div>
-                    </div>
-                    <div class="row">
-                        <div class="footer-title"> Shipping:</div>
-                        <div class="footer-content">0</div>
+                        <div class="footer-content">{{selectedOrder.tax * selectedOrder.totalExcludeTax}}</div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total:</div>
-                        <div class="footer-content"> 0</div>
+                        <div class="footer-content"> {{selectedOrder.totalIncludeTax.toFixed(2)}} </div>
                     </div>
                 </div>
             </div>
 
             <div class="form-footer">
-                <button mat-button class="green-custom-button" (click)="onSave()" >
+                <button mat-button class="green-custom-button" [disabled]="!saveCheck" (click)="onSave()" >
                     <mat-icon>save</mat-icon> Save
                 </button>
                 <button class="red-custom-button" mat-button  (click)="onBack()"> 
                     <mat-icon>delete_outline</mat-icon> Cancel
                 </button>
+                
             </div>
         </div>
     </div>
@@ -231,8 +266,8 @@
         <app-home-table-list
         class="product-list"
         [data]="showProductList"
-        [columnName]="columnName"
-        [columnToProperty]="columnToProperty"
+        [columnName]="productColumnName"
+        [columnToProperty]="productColumnToProperty"
         [checkbox]="false"
         [header]="false"
         [more]="false"

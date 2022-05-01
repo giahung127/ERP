@@ -12,6 +12,10 @@
                 <mat-icon class="custom-mat-icon">settings</mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item (click)="goCompanySetting()">
+                <mat-icon>room_preferences</mat-icon>
+                <span>Company Setting</span>
+              </button>
               <button mat-menu-item>
                 <mat-icon>autorenew</mat-icon>
                 <span>Change Password</span>

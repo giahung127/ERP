@@ -2,21 +2,34 @@
     <div class="body" >
         <app-category-list (childrenChanged)="childrenChangedHandler($event)"></app-category-list>
         <div class="line"></div>
-        <app-home-table-list
-        class="product-list"
-        [title]="'Product List'"
-        [data]="showProductList"
-        [columnName]="columnName"
-        [columnToProperty]="columnToProperty"
-        [checkbox]="false"
-        [filter]="false"
-        [select]="onViewClick"
-        [more]="false"
-        [key]="'productId'"
-        [add]="true"
-        [onAdd]="onAddEmployee"
-        >
-        </app-home-table-list>
+        <div class="table">
+            <div class="table-header">
+                <div class="content-left">Product list</div>
+                <div class="content-right">
+                    <div class="custom-button" (click)="uploadExcelFile()">
+                        <mat-icon>upload_file</mat-icon><div>Import</div>
+                    </div>
+                    <div class="custom-button" (click)="onAddEmployee()">
+                        <mat-icon>add</mat-icon><div> Add</div>
+                    </div>
+                </div>
+            </div>
+            <div class="line"> </div>     
+            <app-home-table-list
+                class="product-list"
+                [title]="'Product List'"
+                [data]="showProductList"
+                [columnName]="columnName"
+                [columnToProperty]="columnToProperty"
+                [checkbox]="false"
+                [filter]="false"
+                [select]="onViewClick"
+                [more]="false"
+                [key]="'productId'"
+                [header]="false"
+            >
+            </app-home-table-list>
+        </div>
     </div>
   </div>
   

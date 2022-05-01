@@ -1,0 +1,28 @@
+<div class="main-container">
+
+    <mat-dialog-content>
+        <form [formGroup]="addCategoryForm">
+            <div class="partial-container">
+                <div class="title">
+                    <p>Import product from Excel file</p>
+                </div>
+                <div>
+                    ( Download<button class="link-button" (click)="downloadExcelTemp()">Excel template</button>)
+                </div>
+                <div class="line"></div>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <div *ngIf="!file"> No files currently selected for upload </div>
+    <div *ngIf="file"> File name: {{file.name}} </div>
+    <mat-dialog-actions>
+        
+        <button class="green-custom-button" mat-button >
+            <label>
+                <input type="file" (change)="addfile($event)" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                <mat-icon>upload_file</mat-icon> Upload
+            </label>
+        </button>
+    </mat-dialog-actions>
+    
+    </div>

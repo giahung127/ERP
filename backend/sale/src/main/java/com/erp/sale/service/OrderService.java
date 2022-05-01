@@ -2,6 +2,7 @@ package com.erp.sale.service;
 
 import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
+import com.erp.sale.controller.response.GetListOrderRes;
 import com.erp.sale.controller.response.GetOrderRes;
 import com.erp.sale.controller.response.GetOrdersRes;
 import com.erp.sale.controller.response.NormalRes;

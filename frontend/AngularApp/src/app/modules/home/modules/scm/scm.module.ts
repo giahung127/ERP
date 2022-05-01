@@ -29,6 +29,7 @@ import { SupplierListComponent } from './supplier-list/supplier-list.component';
 import { SupplierDetailComponent } from './supplier-detail/supplier-detail.component';
 import { ShippingListComponent } from './shipping-list/shipping-list.component';
 import { ShippingDetailComponent } from './shipping-detail/shipping-detail.component';
+import { UploadFileDialogComponent } from './upload-file-dialog/upload-file-dialog.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { ShippingDetailComponent } from './shipping-detail/shipping-detail.compo
     SupplierListComponent,
     SupplierDetailComponent,
     ShippingListComponent,
-    ShippingDetailComponent
+    ShippingDetailComponent,
+    UploadFileDialogComponent
   ],
   imports: [
     CommonModule,
