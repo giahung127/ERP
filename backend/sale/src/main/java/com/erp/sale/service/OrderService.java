@@ -34,21 +34,17 @@ public class OrderService {
     @Autowired
     private ProductService productService;
 
-    public NormalRes newOrder(NewOrderReq newOrderReq) {
+    public NormalRes newOrder(NewOrderReq newOrderReq) throws Error {
         Order newOrder;
-        try {
-            newOrder = orderRepository.save(new Order(newOrderReq));
-            List<OrderItem> ItemList = new ArrayList<>();
-            for (int i = 0; i < newOrderReq.product_item_list.stream().count(); i++) {
-                ItemList.add(new OrderItem(newOrder.getId().toString(),newOrderReq.product_item_list.get(i)));
-            }
-            orderItemRepository.saveAll(ItemList);
-            List<NormalRes> temp = ItemList.parallelStream().map(
-                    orderItem -> productService.updateAfterOrder(new UpdateAfterOrderReq("NEW_ORDER", orderItem.getAmount(), orderItem.getProductId()))
-            ).collect(Collectors.toList());
-        } catch (Exception e){
-            throw e;
+        newOrder = orderRepository.save(new Order(newOrderReq));
+        List<OrderItem> ItemList = new ArrayList<>();
+        for (int i = 0; i < newOrderReq.product_item_list.stream().count(); i++) {
+            ItemList.add(new OrderItem(newOrder.getId().toString(),newOrderReq.product_item_list.get(i)));
         }
+        orderItemRepository.saveAll(ItemList);
+        ItemList.parallelStream().map(
+                orderItem -> productService.updateAfterOrder(new UpdateAfterOrderReq("NEW_ORDER", orderItem.getAmount(), orderItem.getProductId()))
+        );
         return new NormalRes("200", "New Order Inserted",  newOrder.getId().toString());
     }
     public List<Order> loadAllOrder(){
