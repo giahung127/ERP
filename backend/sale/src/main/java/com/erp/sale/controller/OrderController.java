@@ -4,7 +4,6 @@ import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
 import com.erp.sale.controller.response.GetListOrderRes;
 import com.erp.sale.controller.response.GetOrderRes;
-import com.erp.sale.controller.response.GetOrdersRes;
 import com.erp.sale.controller.response.NormalRes;
 import com.erp.sale.entity.Order;
 import com.erp.sale.service.OrderService;
@@ -27,6 +26,11 @@ public class OrderController {
         return orderService.newOrder(newCategoryReq);
     }
 
+    @PostMapping("/toInvoice")
+    public NormalRes toInvoice(@RequestBody String id){
+        return orderService.toInvoice(id);
+    }
+
     @GetMapping("/loadAll")
     public List<Order> getAllProduct(){
         return orderService.loadAllOrder();
@@ -42,9 +46,10 @@ public class OrderController {
         return orderService.updateStatus(updateStatusReq);
     }
 
-    @GetMapping("/getOrdersByCustomerId/{customerId}")
-    public GetOrdersRes getOrderByCustomerId(@PathVariable String customerId){
+    @GetMapping("/getOrderByCustomerId/{customerId}")
+    public GetListOrderRes getOrderByCustomerId(@PathVariable String customerId){
         return orderService.getOrderByCustomerId(customerId);
     }
+
 
 }

@@ -10,5 +10,4 @@ public class NewSupplementReq {
     public Date   date;
     public float  total;
     public List<SupplementItemReq> supplement_item_list;
-    public String code;
 }

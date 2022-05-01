@@ -9,5 +9,4 @@ public class UpdateShipmentReq {
     public String contact_number;
     public String contact_address;
     public ShipmentStatus shipment_status;
-    public String code;
 }

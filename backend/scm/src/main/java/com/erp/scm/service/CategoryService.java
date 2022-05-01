@@ -58,8 +58,6 @@ public class CategoryService {
         result.get().setLevel(updateCategory.getLevel());
         result.get().setParentId(updateCategory.getParentId());
         result.get().setName(updateCategory.getName());
-        result.get().setCode(updateCategory.getCode());
-
         try {
             categoryRepository.save(result.get());
         } catch (Error e){

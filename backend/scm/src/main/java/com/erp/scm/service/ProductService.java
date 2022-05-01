@@ -97,7 +97,6 @@ public class ProductService {
         result.get().setDescription(updateProductReq.getDescription());
         result.get().setPrice(updateProductReq.getPrice());
         result.get().setCategory_id(updateProductReq.getCategory_id());
-        result.get().setCode(updateProductReq.getCode());
         try {
             productRepository.save(result.get());
         } catch (Error e){

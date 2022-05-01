@@ -17,5 +17,4 @@ public class NewShipmentReq {
     public String creator_name;
     public ShipmentStatus shipment_status;
     public List<ShipmentItemReqPart> shipmen_item_list;
-    public String code;
 }
