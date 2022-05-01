@@ -24,7 +24,6 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type="uuid-char")
     private UUID id;
-    private String code;
     private String name;
     private String gender;
     private Integer age;
@@ -32,7 +31,6 @@ public class Customer {
     private String phone;
     private String address;
     public Customer(NewCustomerReq newCustomerReq){
-        this.code = newCustomerReq.code;
         this.name = newCustomerReq.name;
         this.gender= newCustomerReq.gender;
         this.age = newCustomerReq.age;

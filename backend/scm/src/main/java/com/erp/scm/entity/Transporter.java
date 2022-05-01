@@ -23,14 +23,12 @@ public class Transporter {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type="uuid-char")
     private UUID    id;
-    private String code;
     private String 	transporterName;
     private String  phone;
     private String  address;
     private String  description;
 
     public Transporter(NewTransporterReq newTransporterReq){
-        this.code = newTransporterReq.code;
         this.transporterName = newTransporterReq.transporterName;
         this.phone = newTransporterReq.phone;
         this.address = newTransporterReq.address;

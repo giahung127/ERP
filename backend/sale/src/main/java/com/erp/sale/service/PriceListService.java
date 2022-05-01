@@ -30,6 +30,7 @@ public class PriceListService {
     @Autowired
     private ProductService productService;
 
+
     public List<GetPriceListByIdRes> loadAllPriceList(){
         // Take all priceList out
         List<PriceList> priceLists = priceListRepository.findAll();
