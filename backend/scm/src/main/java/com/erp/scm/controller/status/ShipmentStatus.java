@@ -4,5 +4,6 @@ public enum ShipmentStatus {
     IN_STOCK,
     DELIVERING,
     DELIVERED,
-    RETURNING,
+    RETURN,
+    CANCEL
 }

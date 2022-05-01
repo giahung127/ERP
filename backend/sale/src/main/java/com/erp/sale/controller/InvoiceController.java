@@ -27,7 +27,7 @@ public class InvoiceController {
         return invoiceService.newInvoice(newInvoiceReq);
     }
 
-    @GetMapping("getAll")
+    @GetMapping("/getAll")
     public InvoicesWithItemRes getAll(){
         return invoiceService.getAll();
     }
