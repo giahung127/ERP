@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -7,20 +7,24 @@ import { nonAccentVietnamese } from 'src/app/common/functions/ultils';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { ImportProduct } from '../../shared/models/product/import-product.model';
 import { Product } from '../../shared/models/product/product.model';
+import { Supplier } from '../../shared/models/supplier/shipment.model';
 import { ProductService } from '../services/product.service';
+import { SupplementService } from '../services/supplement.service';
+import { SupplierService } from '../services/supplier.service';
 
 @Component({
-  selector: 'app-import-detail',
-  templateUrl: './import-detail.component.html',
-  styleUrls: ['./import-detail.component.scss']
+  selector: 'app-supplement-detail',
+  templateUrl: './supplement-detail.component.html',
+  styleUrls: ['./supplement-detail.component.scss']
 })
-export class ImportDetailComponent {
+export class SupplementDetailComponent {
+
   viewModeCheck = true;
   searchKeyword = '';
   totalPrice = 0;
   tax = 0;
   productList: Product[] = [];
-  
+  supplierList: Supplier[] = [];
   showProductList: Product[] = [];
   columnName: string[] = [
     'Code',
@@ -38,10 +42,13 @@ export class ImportDetailComponent {
     private _location: Location,
     private route: ActivatedRoute,
     private productService: ProductService,
+    private supplementService: SupplementService,
+    private supplierService: SupplierService,
     private dialog: MatDialog,
     private toastr: ToastrService
   ) { 
     this.getProductList();
+    this.getListSupplier();
     this.route.queryParams.subscribe((params) => {
       if (params['id'] && params['id'] == 'i001') {
         this.viewModeCheck = false;
@@ -55,7 +62,6 @@ export class ImportDetailComponent {
     this._location.back();
   }
 
-  
   getProductList() {
     this.productService.getAllProduct()
       .subscribe(res => {
@@ -73,6 +79,24 @@ export class ImportDetailComponent {
         })
         this.showProductList = this.productList;
       })
+  }
+
+  getListSupplier(){
+    this.supplierService.getAllSupplier()
+    .subscribe((res) => {
+      let temp;
+      temp = res;
+      this.supplierList = temp.suppliers.map(({id, name, address, phone, email}) => {
+        return {
+          'supplierId': id,
+          'name': name,
+          'address': address,
+          'phone': phone,
+          'email': email,
+          'code': ''
+        }
+      })
+    })
   }
 
   applyFilter(filterValue: string) {

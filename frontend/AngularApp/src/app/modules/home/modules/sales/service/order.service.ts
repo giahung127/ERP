@@ -22,11 +22,11 @@ export class OrderService {
     return this.http.post(`http://localhost:9004/sale/order/newOrder`,data, { headers: this.headers })
   }
   
- updateOrderStatus(data){
-    return this.http.post(`http://localhost:9004/sale/order/updateStatus`,data, { headers: this.headers })
- } 
+  updateOrderStatus(data){
+      return this.http.post(`http://localhost:9004/sale/order/updateStatus`,data, { headers: this.headers })
+  } 
 
- getOrderByCustomerId(customerId: string){
-  return this.http.get(`http://localhost:9004/sale/order/getOrderByCustomerId/${customerId}`, { headers: this.headers })
- }
+  getOrderByCustomerId(customerId: string){
+    return this.http.get(`http://localhost:9004/sale/order/getOrdersByCustomerId/${customerId}`, { headers: this.headers })
+  }
 }

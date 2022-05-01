@@ -10,7 +10,7 @@ export class InvoiceService {
   constructor(public http: HttpClient) { }
 
   getAllInvoiceList (){
-    return this.http.get('http://localhost:9004/sale/invoice/loadAll', { headers: this.headers })
+    return this.http.get('http://localhost:9004/sale/invoice/getAll', { headers: this.headers })
   }
 
   getInvoiceById(orderId: string){

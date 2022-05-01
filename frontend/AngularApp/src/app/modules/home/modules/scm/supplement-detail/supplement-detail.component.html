@@ -27,9 +27,8 @@
                 <div class="label">Supplier:</div>
                 <mat-form-field  appearance="outline" required>
                     <mat-select>
-                        <mat-option>None</mat-option>
-                        <mat-option>
-                          A
+                        <mat-option *ngFor="let supplier of supplierList" [value]="supplier.supplierId">
+                            {{supplier.name}}
                         </mat-option>
                       </mat-select>
                 </mat-form-field>

@@ -62,7 +62,7 @@
             
         </mat-tab>
         
-        <mat-tab [label]="'Order history'"  *ngIf="viewModeCheck">
+        <mat-tab [label]="'Supplement history'"  *ngIf="viewModeCheck">
             <!-- <app-home-table-list
             class="order-list"
             [title]="'Order List'"
@@ -80,26 +80,6 @@
             </app-home-table-list> -->
         </mat-tab>
 
-        <mat-tab [label]="'Invoice history'"  *ngIf="viewModeCheck">
-            
-        </mat-tab>
-
-        <mat-tab [label]="'Uninvoiced Orders'"  *ngIf="viewModeCheck">
-            <!-- <app-home-table-list
-            class="order-list"
-            [title]="'Order List'"
-            [data]="orderList"
-            [columnName]="orderColumnName"
-            [columnToProperty]="orderColumnToProperty"
-            [checkbox]="true"
-            [filter]="false"
-            [select]="onViewClick"
-            [key]="'orderId'"
-            [add]="false"
-            [more]="false"
-            >
-            </app-home-table-list> -->
-        </mat-tab>
     </mat-tab-group>
     
 </div>

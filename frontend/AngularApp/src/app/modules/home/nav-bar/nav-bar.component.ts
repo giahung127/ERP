@@ -80,8 +80,8 @@ export class NavBarComponent {
               icon: 'category'
           },
           {
-              name: 'Import',
-              href: '/home/scm/import-list',
+              name: 'Supplement',
+              href: '/home/scm/supplement-list',
               icon: 'input'
           },
           {

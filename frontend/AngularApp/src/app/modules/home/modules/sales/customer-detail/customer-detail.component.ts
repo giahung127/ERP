@@ -95,6 +95,7 @@ export class CustomerDetailComponent {
       let data;
       data = res;
       if(data.data){
+        data.data = data.data.map((x)=>{return x.order})
         this.orderList = data.data.map(({ id, creatorName, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
           return {
             'orderId': id,

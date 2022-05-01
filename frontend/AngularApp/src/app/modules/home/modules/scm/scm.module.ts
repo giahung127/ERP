@@ -23,13 +23,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { SharedModule } from '../shared/shared.module';
 import { AddCategoryModalComponent } from './add-category-modal/add-category-modal.component';
-import { ImportListComponent } from './import-list/import-list.component';
-import { ImportDetailComponent } from './import-detail/import-detail.component';
 import { SupplierListComponent } from './supplier-list/supplier-list.component';
 import { SupplierDetailComponent } from './supplier-detail/supplier-detail.component';
 import { ShippingListComponent } from './shipping-list/shipping-list.component';
 import { ShippingDetailComponent } from './shipping-detail/shipping-detail.component';
 import { UploadFileDialogComponent } from './upload-file-dialog/upload-file-dialog.component';
+import { SupplementListComponent } from './supplement-list/supplement-list.component';
+import { SupplementDetailComponent } from './supplement-detail/supplement-detail.component';
 
 
 @NgModule({
@@ -39,13 +39,13 @@ import { UploadFileDialogComponent } from './upload-file-dialog/upload-file-dial
     ProductListComponent,
     CategoryListComponent,
     AddCategoryModalComponent,
-    ImportListComponent,
-    ImportDetailComponent,
     SupplierListComponent,
     SupplierDetailComponent,
     ShippingListComponent,
     ShippingDetailComponent,
-    UploadFileDialogComponent
+    UploadFileDialogComponent,
+    SupplementListComponent,
+    SupplementDetailComponent
   ],
   imports: [
     CommonModule,
