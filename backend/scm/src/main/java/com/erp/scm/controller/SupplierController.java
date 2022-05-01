@@ -4,6 +4,7 @@ import com.erp.scm.controller.request.NewSupplierReq;
 import com.erp.scm.controller.request.UpdateSupplierReq;
 import com.erp.scm.controller.response.GetSupplierByIdRes;
 import com.erp.scm.controller.response.NormalRes;
+import com.erp.scm.controller.response.SuppliersRes;
 import com.erp.scm.service.SupplierService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class SupplierController {
     @PostMapping("/newSupplier")
     public NormalRes newSupplier(@RequestBody NewSupplierReq supplierReq){
         return supplierService.newSupplier(supplierReq);
+    }
+
+    @GetMapping("getAll")
+    public SuppliersRes getAll(){
+        return supplierService.getAll();
     }
 
     @GetMapping("/getById/{id}")

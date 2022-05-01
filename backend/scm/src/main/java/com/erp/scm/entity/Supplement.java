@@ -24,12 +24,14 @@ public class Supplement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type="uuid-char")
     private UUID id;
+    private String code;
     private String supplierId;
     private String createdBy;
     private Date date;
     private float total;
 
     public Supplement(NewSupplementReq supplement){
+        this.code = supplement.code;
         this.supplierId = supplement.supplier_id;
         this.createdBy = supplement.created_by;
         this.date = supplement.date;

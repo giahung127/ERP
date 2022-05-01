@@ -4,11 +4,13 @@ import com.erp.scm.controller.request.NewSupplierReq;
 import com.erp.scm.controller.request.UpdateSupplierReq;
 import com.erp.scm.controller.response.GetSupplierByIdRes;
 import com.erp.scm.controller.response.NormalRes;
+import com.erp.scm.controller.response.SuppliersRes;
 import com.erp.scm.entity.Supplier;
 import com.erp.scm.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,6 +41,7 @@ public class SupplierService {
         curItem.setAddress(updateSupplierReq.address);
         curItem.setPhone(updateSupplierReq.phone);
         curItem.setEmail(updateSupplierReq.email);
+        curItem.setCode(updateSupplierReq.code);
         supplierRepository.save(curItem);
         return new NormalRes("200", "Updated supplier information", "");
     }
@@ -46,5 +49,10 @@ public class SupplierService {
     public NormalRes delete(String id) throws Error {
         supplierRepository.deleteById(UUID.fromString(id));
         return new NormalRes("200", "Deleted Supplier: " + id, "");
+    }
+
+    public SuppliersRes getAll() throws Error{
+        List<Supplier> result = supplierRepository.findAll();
+        return new SuppliersRes("200", "Found all Suppliers", result);
     }
 }
