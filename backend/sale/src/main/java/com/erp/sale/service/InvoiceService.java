@@ -51,7 +51,7 @@ public class InvoiceService {
         }
         List<InvoiceWithItem> result = new ArrayList<>();
         for (Invoice invoice:invoiceList){
-            List<OrderToInvoice> curItems = orderToInvoiceRepository.findAllByInvoiceId(String.valueOf(invoice.getId()));
+            List<String> curItems = orderToInvoiceRepository.findOrderIdList(String.valueOf(invoice.getId()));
             if (curItems.isEmpty()){
                 return new InvoicesWithItemRes("404", "found no items in Invoice Id: " + invoice.getId(), null);
             }
@@ -67,10 +67,10 @@ public class InvoiceService {
         if (invoice.isEmpty()){
             return new InvoiceWithItemRes("404", "cannot found Invoice Id: " + invoice.get().getId(), null);
         }
-        List<OrderToInvoice> curItems = orderToInvoiceRepository.findAllByInvoiceId(String.valueOf(invoice.get().getId()));
+        List<String> curItems = orderToInvoiceRepository.findOrderIdList(String.valueOf(invoice.get().getId()));
         if (curItems.isEmpty()){
             return new InvoiceWithItemRes("404", "found no items in Invoice Id: " + invoice.get().getId(), null);
         }
-        return new InvoiceWithItemRes("200", "Found all invoices", new InvoiceWithItem(invoice.get(), curItems));
+        return new InvoiceWithItemRes("200", "Found invoice", new InvoiceWithItem(invoice.get(), curItems));
     }
 }
