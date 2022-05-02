@@ -1,5 +1,6 @@
 package com.erp.sale.service;
 
+import com.erp.sale.controller.OrderStatus;
 import com.erp.sale.controller.request.NewOrderReq;
 import com.erp.sale.controller.request.UpdateStatusReq;
 import com.erp.sale.controller.response.GetOrderRes;
@@ -9,14 +10,12 @@ import com.erp.sale.controller.response.OrderWithItems;
 import com.erp.sale.entity.*;
 import com.erp.sale.repository.*;
 import com.erp.sale.service.api.ProductService;
+import com.erp.sale.service.api.ShipmentService;
 import com.erp.sale.service.api.request.UpdateAfterOrderReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,11 +25,7 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
     @Autowired
-    private InvoiceRepository invoiceRepository;
-    @Autowired
-    private PriceListItemRepository priceListItemRepository;
-    @Autowired
-    private OrderToInvoiceRepository orderToInvoiceRepository;
+    private ShipmentService shipmentService;
     @Autowired
     private ProductService productService;
 
@@ -83,5 +78,24 @@ public class OrderService {
                 }
         ).collect(Collectors.toList());
         return new GetOrdersRes("200", "Get Order By ID", result);
+    }
+
+    public NormalRes cancelOrder(String id) throws Error {
+        Optional<Order> order = orderRepository.findById(UUID.fromString(id));
+        if(order.isEmpty()){
+            return new NormalRes("404", "Not found order with given Id: " + id, "");
+        }
+        if (order.get().getOrderStatus() == OrderStatus.CANCEL){
+            return new NormalRes("404", "Already canceled order Id: " + id, "");
+        }
+
+        shipmentService.cancelShipmentByOrderId(id);
+        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(id);
+        orderItems.parallelStream().map(
+                orderItem -> productService.updateAfterOrder(new UpdateAfterOrderReq("CANCEL_ORDER", orderItem.getAmount(), orderItem.getProductId()))
+        );
+        order.get().setOrderStatus(OrderStatus.CANCEL);
+        orderRepository.save(order.get());
+        return new NormalRes("200", "successfully cancel rder Id: " + id, "");
     }
 }
