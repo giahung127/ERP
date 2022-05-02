@@ -6,7 +6,6 @@ import com.erp.scm.controller.request.UpdateShipmentReq;
 import com.erp.scm.controller.response.GetShipmentByIdRes;
 import com.erp.scm.controller.response.NormalRes;
 import com.erp.scm.controller.response.ShipmentWithItems;
-import com.erp.scm.controller.status.ShipmentStatus;
 import com.erp.scm.entity.Shipment;
 import com.erp.scm.entity.ShipmentItem;
 import com.erp.scm.repository.ShipmentItemRepository;
@@ -87,16 +86,5 @@ public class ShipmentService {
         List<ShipmentItem> items = shipmentItemRepository.findAllByShipmentId(temp.get().getId().toString());
         ShipmentWithItems result = new ShipmentWithItems(temp.get(), items);
         return new GetShipmentByIdRes("200", "Found record of Shipment", result);
-    }
-
-    public String cancel(String id) throws Error {
-        Optional<Shipment> shipment = shipmentRepository.findShipmentByOrderId(id);
-        if (shipment.isEmpty()){
-            return "not found";
-        }
-        System.out.println("good here");
-        shipment.get().setShipmentStatus(ShipmentStatus.CANCEL);
-        shipmentRepository.save(shipment.get());
-        return "ok";
     }
 }
