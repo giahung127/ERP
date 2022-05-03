@@ -75,10 +75,10 @@
             </div>
             <div *ngIf="i === 'Status'">
               <td mat-cell *matCellDef="let item">
-                <div class="success-status" *ngIf="getValue(item, i) === 'FINISHED' || getValue(item, i) === 'DELIVERED'"> {{ getValue(item, i) }} </div>
-                <div class="error-status" *ngIf="getValue(item, i) === 'RETURN' || getValue(item, i) === 'RETURNED'"> {{ getValue(item, i) }} </div>
+                <div class="success-status" *ngIf="getValue(item, i) === 'FINISHED' || getValue(item, i) === 'DELIVERED' || getValue(item, i) === 'PAID'"> {{ getValue(item, i) }} </div>
+                <div class="error-status" *ngIf="getValue(item, i) === 'RETURN' || getValue(item, i) === 'RETURNED' || getValue(item, i) === 'UNPAID'"> {{ getValue(item, i) }} </div>
                 <div class="pending-status" *ngIf="getValue(item, i) === 'CONFIRMED' || getValue(item, i) === 'DELIVERING'"> {{ getValue(item, i) }} </div>
-                <div class="canceled-status" *ngIf="getValue(item, i) === 'CANCELLED'"> {{ getValue(item, i) }} </div>
+                <div class="canceled-status" *ngIf="getValue(item, i) === 'CANCELLED'|| getValue(item, i) === 'CANCEL'"> {{ getValue(item, i) }} </div>
                 <div class="warning-status" *ngIf="getValue(item, i) === 'WAITING' || getValue(item, i) === 'IN_STOCK'"> {{ getValue(item, i) }} </div>
               </td>
             </div>

@@ -36,14 +36,14 @@ export class SupplierListComponent {
     .subscribe((res) => {
       let temp;
       temp = res;
-      this.supplierList = temp.suppliers.map(({id, name, address, phone, email}) => {
+      this.supplierList = temp.suppliers.map(({id, name,code, address, phone, email}) => {
         return {
           'supplierId': id,
           'name': name,
           'address': address,
           'phone': phone,
           'email': email,
-          'code': ''
+          'code': code
         }
       })
     })

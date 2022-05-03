@@ -13,6 +13,10 @@
                 <div class="title">General information</div>
                 <div class="row">
                     <div class="custom-field-s">
+                        <div class="label">Code:</div>
+                        <div class="content">{{selectedOrder.orderCode}}</div>
+                    </div>
+                    <div class="custom-field-s">
                         <div class="label">Created By:</div>
                         <div class="content">{{selectedOrder.creatorName}}</div>
                     </div>
@@ -20,6 +24,8 @@
                         <div class="label">Created Date:</div>
                         <div class="content">{{selectedOrder.createdDate}}</div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="custom-field-s">
                         <div class="label">Customer:</div>
                         <div class="content">{{selectedOrder.customerName}}</div>
@@ -93,8 +99,8 @@
                         <div class="footer-content"> {{selectedOrder.totalExcludeTax}}</div>
                     </div>
                     <div class="row">
-                        <div class="footer-title"> Tax rate:</div>
-                        <div class="footer-content"> {{selectedOrder.tax}}</div>
+                        <div class="footer-title"> Tax rate (%):</div>
+                        <div class="footer-content"> {{selectedOrder.tax}}%</div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total tax:</div>
@@ -126,11 +132,17 @@
         <div *ngIf="viewModeCheck">
             <div class="partial-container">
                 <div class="title">General information</div>
-                <div class="row">
+                <!-- <div class="row">
                 <div class="custom-field-s">
                     <div class="label">Created By: </div>
                     <mat-form-field  appearance="outline" required>
                         <input disabled matInput type="text" [(ngModel)]="selectedOrder.creatorName">
+                    </mat-form-field>
+                </div>
+                <div class="custom-field-s">
+                    <div class="label">Order Code: </div>
+                    <mat-form-field  appearance="outline" required>
+                        <input  matInput type="text" [(ngModel)]="selectedOrder.orderCode" readonly>
                     </mat-form-field>
                 </div>
                 <div class="custom-field-s">
@@ -139,6 +151,8 @@
                         <input matInput type="date" [(ngModel)]="selectedOrder.createDate" (ngModelChange)="check()">
                     </mat-form-field>
                 </div>
+                </div> -->
+                <div class="row">
                 <div class="custom-field-s">
                     <div class="label">Customer:</div>
                     <mat-form-field  appearance="outline" required>
@@ -149,8 +163,6 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                </div>
-                <div class="row">
                     <div class="custom-field-s">
                         <div class="label">Price List:</div>
                         <mat-form-field  appearance="outline" required>

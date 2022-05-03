@@ -1,14 +1,28 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Order } from '../../shared/models/order/order.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
+  orderList: Order[] | undefined
 
   headers = new HttpHeaders();
 
   constructor(public http: HttpClient) { }
+
+  getLocalList(){
+    return this.orderList
+  }
+
+  setLocalList(orderList: Order[]){
+    this.orderList = orderList;
+  }
+
+  getLocalById(orderId: string){
+    return this.orderList?.find((order) => {return order.orderId === orderId})
+  }
 
   getAllOrdersList (){
     return this.http.get('http://localhost:9004/sale/order/loadAll', { headers: this.headers })

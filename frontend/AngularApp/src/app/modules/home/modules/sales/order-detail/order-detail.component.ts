@@ -31,6 +31,7 @@ export class OrderDetailComponent {
   company: Company | undefined;
   productList: Product[] = [];
   totalPrice = 0;
+  autoCode = '';
   selectedOrder;
   priceListList: PriceList[] = [];
   showProductList: Product[] = [];
@@ -47,17 +48,17 @@ export class OrderDetailComponent {
     'Category': 'categoryName',
   };
   shipmentColumnName: string[] = [
-    'Shipment id',
-    // 'Created date',
-    'Order id',
-    // 'Customer',
+    'Code',
+    'Receiver',
+    'Contact number',
+    'Created date',
     'Status'
   ];
   shipmentColumnToProperty = {
-    'Shipment id': 'shipmentId',
-    // 'Created date': 'createdDate',
-    'Order id': 'orderId',
-    // 'Customer': 'customerName',
+    'Code': 'shipmentCode',
+    'Receiver': 'contactName',
+    'Contact number': 'contactNumber',
+    'Created date': 'createdDate',
     'Status' : 'status'
   };
   orderProductList: ImportProduct[] = [];
@@ -105,14 +106,16 @@ export class OrderDetailComponent {
       let temp;
       temp = res;
       if(temp.data !== null){
-        this.shipmentList = temp.data.map(({id, orderId, shipmentStatus, toAddress}) => {
+        this.shipmentList = temp.data.map(({id, code, orderId, createdDate, receiverName, contactAddress, contactNumber, shipmentStatus}) => {
           return {
             shipmentId: id,
+            shipmentCode: code,
             orderId: orderId,
-            createdDate: new Date(),
+            createdDate: new Date(createdDate).toDateString(),
             creatorName: 'Gia Hung',
-            shippingAddress: toAddress,
-            contactNumber: '0000',
+            contactName: receiverName, 
+            contactAddress: contactAddress,
+            contactNumber: contactNumber,
             status: shipmentStatus
           }
         })
@@ -143,6 +146,7 @@ export class OrderDetailComponent {
             this.viewModeCheck = true;
             this.selectedOrder = {
               orderId: "",
+              orderCode: "",
               createdDate: "",
               status: "",
               creatorName: "GiaHung",
@@ -171,6 +175,7 @@ export class OrderDetailComponent {
       console.log(this.priceListList, temp.data.order.priceListId, this.priceListList.filter(x => {return x.id === temp.data.order.priceListId}))
       this.selectedOrder = {
         orderId: temp.data.order.id,
+        orderCode: temp.data.order.code,
         createdDate: new Date(temp.data.order.createDate).toDateString(),
         status: temp.data.order.orderStatus,
         creatorName: temp.data.order.creatorName,
@@ -267,6 +272,7 @@ export class OrderDetailComponent {
     this.selectedOrder.totalExcludeTax = this.totalPrice 
     this.selectedOrder.totalIncludeTax = this.totalPrice * (1 + this.selectedOrder.tax/100)
   }
+  
   reIndexNo() {
     for (let i = 0; i < this.orderProductList.length; i++) {
         this.orderProductList[i].no = i + 1;
@@ -296,15 +302,16 @@ export class OrderDetailComponent {
       .subscribe((submit) => {
           if (submit) {
             const data = {
+              code: this.selectedOrder.orderCode,
               creator_name: "giahung",
               price_list_id: this.selectedOrder.priceListId,
               total_include_tax: this.totalPrice,
               total_exclude_tax: this.totalPrice,
-              tax: 0,
+              tax: this.selectedOrder.tax,
               discount: 0,
               shipping_fee: 0,
               address: 'abc',
-              create_date: this.selectedOrder.createDate,
+              create_date: new Date(),
               customer_id: this.selectedOrder.customerId,
               customer_name: this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.name,
               product_item_list: this.orderProductList,
@@ -323,7 +330,7 @@ export class OrderDetailComponent {
                     'customer_name': data.customer_name,
                     'order_id': temp.data,
                     'total_price': this.selectedOrder.totalIncludeTax,
-                    'shipment_code': '',
+                    'code': '',
                     'created_date': new Date(),
                     'creator_name': 'Gia Hung',
                     'shipment_status': 'IN_STOCK',
@@ -334,16 +341,15 @@ export class OrderDetailComponent {
                       }
                     })
                   }
-                  console.log(shipmentData)
                   this.shipmentService.addNewShipment(shipmentData)
                   .subscribe((res) => {
                     this.toastr.success('New shipment is successfully created');
-                    this.onBack();
                   },
                   (err) => {
                     this.toastr.error(err);
                   })
                 }
+                this.onBack();
               })
           }
       });
@@ -466,7 +472,7 @@ export class OrderDetailComponent {
       <table style="width:100%">
         <tbody>
           <tr>
-            <td style="font-size:11px; text-align:center">Order code: O0001</td>
+            <td style="font-size:11px; text-align:center">Order code: ${this.selectedOrder.orderCode}</td>
           </tr>
           <tr>
             <td style="font-size:11px; text-align:center">${this.selectedOrder.createdDate}</td>
@@ -509,8 +515,8 @@ export class OrderDetailComponent {
             <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.totalExcludeTax}</td>
           </tr>
           <tr>
-            <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Discount(%):</td>
-            <td style="font-size:11px; font-weight:bold; text-align:right">0</td>
+            <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Tax rate(%):</td>
+            <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.tax}%</td>
           </tr>
           <tr>
             <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Total:</td>
@@ -551,7 +557,7 @@ export class OrderDetailComponent {
   }
 
   check(){
-    this.saveCheck = this.orderProductList.length > 0 && this.selectedOrder.priceListId !== '' && this.selectedOrder.customerId !== ''&& this.selectedOrder.createDate !== undefined;
+    this.saveCheck = this.orderProductList.length > 0 && this.selectedOrder.priceListId !== '' && this.selectedOrder.customerId !== '';
   }
 
   toInvoice(){
@@ -559,8 +565,8 @@ export class OrderDetailComponent {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      message: "Create a new order with these information",
-      title: "Create a new order"
+      message: "Create a new invoice for this order",
+      title: "Create a new invoice"
     };
     const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
     dialogRef
@@ -572,9 +578,10 @@ export class OrderDetailComponent {
           }
           this.invoiceService.createNewInvoice(data)
           .subscribe((res) => {
-
+            this.toastr.success('The new invoice is created');
           })
         }
       });
   }
+
 }

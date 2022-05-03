@@ -29,10 +29,11 @@ public class Invoice {
     private double totalPrice;
     private InvoiceStatus invoiceStatus;
 
-    public Invoice(double totalDiscount, double totalTax, double totalPrice){
+    public Invoice(double totalDiscount, double totalTax, double totalPrice, String code){
         this.totalDiscount = totalDiscount;
         this.totalTax = totalTax;
         this.totalPrice = totalPrice;
         this.invoiceStatus = InvoiceStatus.UNPAID;
+        this.code = code;
     }
 }

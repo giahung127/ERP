@@ -3,6 +3,7 @@ package com.erp.scm.service;
 import com.erp.scm.controller.request.NewShipmentReq;
 import com.erp.scm.controller.request.UpdateShipmentItemReq;
 import com.erp.scm.controller.request.UpdateShipmentReq;
+import com.erp.scm.controller.request.UpdateShipmentStatusReq;
 import com.erp.scm.controller.response.GetListShipment;
 import com.erp.scm.controller.response.GetShipmentByIdRes;
 import com.erp.scm.controller.response.NormalRes;
@@ -24,6 +25,10 @@ public class ShipmentService {
     private ShipmentItemRepository shipmentItemRepository;
 
     public NormalRes newShipment(NewShipmentReq newShipmentReq) throws Error{
+        List<Shipment> shipmentList = shipmentRepository.findAll();
+        String sequencePart = ("000000" + (shipmentList.size() + 1));
+        String newShiCode = "SHP" + sequencePart.substring(sequencePart.length() - 6);
+        newShipmentReq.code = newShiCode;
         Shipment temp =  shipmentRepository.save(new Shipment(newShipmentReq));
         if (!newShipmentReq.shipmen_item_list.isEmpty()){
             List<ShipmentItem> ItemList = new ArrayList<>();
@@ -87,5 +92,15 @@ public class ShipmentService {
 //        List<ShipmentItem> items = shipmentItemRepository.findAllByShipmentId(temp.get().getId().toString());
 //        ShipmentWithItems result = new ShipmentWithItems(temp.get(), items);
         return new GetListShipment("200", "Found record of Shipment", temp);
+    }
+
+    public NormalRes updateStatus(UpdateShipmentStatusReq updateStatusReq) throws Error{
+        Optional<Shipment> item = shipmentRepository.findById(UUID.fromString(updateStatusReq.id));
+        if (item.isEmpty()){
+            return new  NormalRes("404", "Not found", "");
+        }
+        item.get().setShipmentStatus(updateStatusReq.shipmentStatus);
+        shipmentRepository.save(item.get());
+        return new NormalRes("200", "Updated","");
     }
 }

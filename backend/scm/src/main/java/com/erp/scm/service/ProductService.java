@@ -8,6 +8,7 @@ import com.erp.scm.controller.response.ProductNameAndCodeRes;
 import com.erp.scm.controller.response.ProductWithCategoryName;
 import com.erp.scm.entity.Category;
 import com.erp.scm.entity.Product;
+import com.erp.scm.entity.Shipment;
 import com.erp.scm.repository.CategoryRepository;
 import com.erp.scm.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     public NewProductRes newProduct(NewProductReq newProductReq) {
+        if(Objects.equals(newProductReq.code, "")) {
+            List<Product> productList = productRepository.findAll();
+            String sequencePart = ("000000" + (productList.size() + 1));
+            newProductReq.code = "PRD" + sequencePart.substring(sequencePart.length() - 6);
+        }
         Product temp;
         try {
             temp = productRepository.save(new Product(newProductReq));

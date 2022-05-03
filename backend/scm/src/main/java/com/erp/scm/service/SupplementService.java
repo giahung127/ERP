@@ -6,6 +6,7 @@ import com.erp.scm.controller.response.NormalRes;
 import com.erp.scm.entity.Product;
 import com.erp.scm.entity.Supplement;
 import com.erp.scm.entity.SupplementItem;
+import com.erp.scm.entity.Supplier;
 import com.erp.scm.repository.ProductRepository;
 import com.erp.scm.repository.SupplementItemRepository;
 import com.erp.scm.repository.SupplementRepository;
@@ -30,6 +31,9 @@ public class SupplementService {
         if (newSupplementReq == null){
             return  new NormalRes("404", "Null data", "");
         }
+        List<Supplement> supplementList = supplementRepository.findAll();
+        String sequencePart = ("000000" + (supplementList.size() + 1));
+        newSupplementReq.code = "SLM" + sequencePart.substring(sequencePart.length() - 6);
         Supplement newSupplement = supplementRepository.save(new Supplement(newSupplementReq));
         List<SupplementItem> items = new ArrayList<>();
         List<SupplementItemReq> itemListReq = newSupplementReq.supplement_item_list;

@@ -5,6 +5,7 @@ import com.erp.scm.controller.request.UpdateSupplierReq;
 import com.erp.scm.controller.response.GetSupplierByIdRes;
 import com.erp.scm.controller.response.NormalRes;
 import com.erp.scm.controller.response.SuppliersRes;
+import com.erp.scm.entity.Shipment;
 import com.erp.scm.entity.Supplier;
 import com.erp.scm.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class SupplierService {
     private SupplierRepository supplierRepository;
 
     public NormalRes newSupplier(NewSupplierReq supplierReq) throws Error {
+        if(supplierReq.code.equals("")) {
+            List<Supplier> supplierList = supplierRepository.findAll();
+            String sequencePart = ("000000" + (supplierList.size() + 1));
+            supplierReq.code = "SPR" + sequencePart.substring(sequencePart.length() - 6);
+        }
         Supplier temp = supplierRepository.save(new Supplier(supplierReq));
         return new NormalRes("200", "New supplier has been created", temp.getId().toString());
     }

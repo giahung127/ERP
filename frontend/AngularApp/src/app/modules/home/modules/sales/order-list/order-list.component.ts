@@ -25,35 +25,36 @@ export class OrderListComponent implements OnInit {
     .subscribe((res)=> {
       let data;
       data = res;
-      this.orderList = data.map(({ id, creatorName, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
+      this.orderList = data.map(({ id, creatorName,code, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
         return {
           'orderId': id,
+          'orderCode': code,
           'createdDate': createDate,
           'customerName': customerName,
           'status': orderStatus
         }
       })
-      console.log(this.orderList)
+      this.orderService.setLocalList(this.orderList);
     })
   }
 
   productList: Product[] = [
   ];
   columnName: string[] = [
-    'Order Id',
+    'Order Code',
     'Date',
     'Customer',
     'Status'
   ];
   columnToProperty = {
-    'Order Id': 'orderId',
+    'Order Code': 'orderCode',
     'Date': 'createdDate',
     'Customer': 'customerName',
     'Status': 'status'
   };
   onAddEmployee: () => void = () => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/sales/order-detail']);
+    this.router.navigate(['/home/sales/order-detail'],{state:{code: this.orderList.length}});
   };
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);

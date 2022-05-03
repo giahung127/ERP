@@ -23,11 +23,13 @@ export class AddCategoryModalComponent {
       const tempCategory = this.categoryList.filter(x=> {return x.categoryId === data.selectedCategoryId})[0];
       this.addCategoryForm = this.fb.group({
         categoryName: new FormControl(tempCategory.categoryName, Validators.required),
+        code: new FormControl(tempCategory.code, Validators.required),
         parentCategory: new FormControl(tempCategory.parentId)
       })
     } else{
       this.addCategoryForm = this.fb.group({
         categoryName: new FormControl('', Validators.required),
+        code: new FormControl('', Validators.required),
         parentCategory: new FormControl('')
       })
     }

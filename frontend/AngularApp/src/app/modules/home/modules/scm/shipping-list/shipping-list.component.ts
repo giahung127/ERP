@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { OrderService } from '../../sales/service/order.service';
 import { Customer } from '../../shared/models/customer/customer.model';
+import { Order } from '../../shared/models/order/order.model';
 import { Shipment } from '../../shared/models/shipment/shipment.model';
 import { ShippingService } from '../services/shipping.service';
 
@@ -10,26 +12,29 @@ import { ShippingService } from '../services/shipping.service';
   styleUrls: ['./shipping-list.component.scss']
 })
 export class ShippingListComponent {
-
   constructor(
     private router: Router,
-    private shippingService: ShippingService
+    private shippingService: ShippingService,
+    private orderService: OrderService
   ) {
-    this.getShipmentList();
+    this.getAllOrderList()
   }
   shipmentList: Shipment[] = [];
+  orderList: Order[] = [];
   columnName: string[] = [
-    'Shipment id',
-    // 'Created date',
-    'Order id',
-    // 'Customer',
+    'Code',
+    'Order code',
+    'Receiver',
+    'Contact number',
+    'Created date',
     'Status'
   ];
   columnToProperty = {
-    'Shipment id': 'shipmentId',
-    // 'Created date': 'createdDate',
-    'Order id': 'orderId',
-    // 'Customer': 'customerName',
+    'Code': 'shipmentCode',
+    'Order code': 'orderCode',
+    'Receiver': 'contactName',
+    'Contact number': 'contactNumber',
+    'Created date': 'createdDate',
     'Status' : 'status'
   };
 
@@ -38,14 +43,17 @@ export class ShippingListComponent {
     .subscribe(res => {
       let temp;
       temp = res;
-      this.shipmentList = temp.map(({id, orderId, shipmentStatus, toAddress}) => {
+      this.shipmentList = temp.map(({id, code, orderId, createdDate, receiverName, contactAddress, contactNumber, shipmentStatus}) => {
         return {
           shipmentId: id,
+          shipmentCode: code,
+          orderCode: this.orderList.find(order => {return order.orderId === orderId})?.orderCode,
           orderId: orderId,
-          createdDate: new Date(),
+          createdDate: new Date(createdDate).toDateString(),
           creatorName: 'Gia Hung',
-          shippingAddress: toAddress,
-          contactNumber: '0000',
+          contactName: receiverName, 
+          contactAddress: contactAddress,
+          contactNumber: contactNumber,
           status: shipmentStatus
         }
       })
@@ -71,4 +79,27 @@ export class ShippingListComponent {
 
   onDeleteClick: (id: string) => void = (id: string) => {
   };
+
+  getAllOrderList(){
+    if(this.orderService.getLocalList() === undefined){
+      this.orderService.getAllOrdersList()
+      .subscribe((res)=> {
+        let data;
+        data = res;
+        this.orderList = data.map(({ id, creatorName,code, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
+          return {
+            'orderId': id,
+            'orderCode': code,
+            'createdDate': createDate,
+            'customerName': customerName,
+            'status': orderStatus
+          }
+        })
+        this.getShipmentList();
+      })
+    } else {
+      this.orderList = <Order[]>this.orderService.getLocalList()
+      this.getShipmentList();
+    }
+  }
 }

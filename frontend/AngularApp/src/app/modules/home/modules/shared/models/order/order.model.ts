@@ -11,6 +11,7 @@ export class Order {
     shippingFee?: number;
     customerId: string;
     customerName?: string;
+    orderCode? : string;
 
     constructor(
         orderId: string,

@@ -59,7 +59,7 @@ export class ProductDetailComponent implements OnInit {
     )
     this.route.queryParams.subscribe((params) => {
       this.addProductForm = this.fb.group({
-        productCode: new FormControl('', Validators.required),
+        productCode: new FormControl(''),
         productName: new FormControl('', Validators.required),
         category: new FormControl('', Validators.required),
         price: new FormControl(0, Validators.required),
@@ -71,9 +71,8 @@ export class ProductDetailComponent implements OnInit {
           .subscribe(res => {
             let data;
             data = res;
-            console.log(res)
             this.addProductForm = this.fb.group({
-              productCode: new FormControl(data.code, Validators.required),
+              productCode: new FormControl(data.code),
               productName: new FormControl(data.name, Validators.required),
               category: new FormControl(data.category_id, Validators.required),
               price: new FormControl(data.price, Validators.required),

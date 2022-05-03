@@ -37,6 +37,10 @@ public class OrderService {
 
     public NormalRes newOrder(NewOrderReq newOrderReq) throws Error {
         Order newOrder;
+        List<Order> orderList = orderRepository.findAll();
+        String sequencePart = ("000000" + (orderList.size() + 1));
+        String newOrdCode = "ORD" + sequencePart.substring(sequencePart.length() - 6);
+        newOrderReq.code = newOrdCode;
         newOrder = orderRepository.save(new Order(newOrderReq));
         List<OrderItem> ItemList = new ArrayList<>();
         for (int i = 0; i < newOrderReq.product_item_list.stream().count(); i++) {

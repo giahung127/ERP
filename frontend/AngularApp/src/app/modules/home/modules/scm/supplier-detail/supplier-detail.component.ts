@@ -88,31 +88,35 @@ export class SupplierDetailComponent {
     dialogRef
       .afterClosed()
       .subscribe((submit) => {
-        if(this.selectedSupplierId === ''){
-          const data = {
-            'name': this.addSupplierForm.value.name,
-            'address': this.addSupplierForm.value.address,
-            'phone': this.addSupplierForm.value.phone,
-            'email': this.addSupplierForm.value.email
+        if(submit){
+          if(this.selectedSupplierId === ''){
+            const data = {
+              'code': this.addSupplierForm.value.code,
+              'name': this.addSupplierForm.value.name,
+              'address': this.addSupplierForm.value.address,
+              'phone': this.addSupplierForm.value.phone,
+              'email': this.addSupplierForm.value.email
+            }
+            this.supplierService.addNewSupplier(data)
+            .subscribe(res => {
+              this.toastr.success('New supplier is successfully added');
+              this.onBack();
+            })
+          } else {
+            const data = {
+              'id': this.selectedSupplierId, 
+              'code': this.addSupplierForm.value.code,
+              'name': this.addSupplierForm.value.name,
+              'address': this.addSupplierForm.value.address,
+              'phone': this.addSupplierForm.value.phone,
+              'email': this.addSupplierForm.value.email
+            }
+            this.supplierService.updateSupplierById(data)
+            .subscribe(res => {
+              this.toastr.success('The supplier is updated successfully');
+              this.onBack();
+            })
           }
-          this.supplierService.addNewSupplier(data)
-          .subscribe(res => {
-            this.toastr.success('New customer is successfully added');
-            this.onBack();
-          })
-        } else {
-          const data = {
-            'id': this.selectedSupplierId, 
-            'name': this.addSupplierForm.value.name,
-            'address': this.addSupplierForm.value.address,
-            'phone': this.addSupplierForm.value.phone,
-            'email': this.addSupplierForm.value.email
-          }
-          this.supplierService.addNewSupplier(data)
-          .subscribe(res => {
-            this.toastr.success('New customer is successfully added');
-            this.onBack();
-          })
         }
       })
   }

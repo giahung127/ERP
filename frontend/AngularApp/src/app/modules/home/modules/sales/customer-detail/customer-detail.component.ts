@@ -50,13 +50,13 @@ export class CustomerDetailComponent {
   }
 
   orderColumnName: string[] = [
-    'Order Id',
+    'Order code',
     'Date',
     'Total',
     'Status'
   ];
   orderColumnToProperty = {
-    'Order Id': 'orderId',
+    'Order code': 'orderCode',
     'Date': 'createdDate',
     'Total': 'totalIncludeTax',
     'Status': 'status'
@@ -76,7 +76,7 @@ export class CustomerDetailComponent {
       let temp;
       temp = res;
       this.addCustomerForm = this.fb.group({
-        customerCode: new FormControl(temp.customer.gender, Validators.required),
+        customerCode: new FormControl(temp.customer.code, Validators.required),
         customerName: new FormControl(temp.customer.name, Validators.required),
         phone: new FormControl(temp.customer.phone, Validators.required),
         email: new FormControl(temp.customer.email, Validators.required),
@@ -95,13 +95,14 @@ export class CustomerDetailComponent {
       let data;
       data = res;
       if(data.data){
-        data.data = data.data.map((x)=>{return x.order})
-        this.orderList = data.data.map(({ id, creatorName, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
+        data.data = data.data.map(data => {return data.order})
+        this.orderList = data.data.map(({ id, creatorName,code, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
           return {
             'orderId': id,
+            'orderCode': code,
             'createdDate': createDate,
-            'status': orderStatus,
-            'totalIncludeTax': totalIncludeTax
+            'totalIncludeTax': totalIncludeTax,
+            'status': orderStatus
           }
         })
       }
@@ -120,35 +121,39 @@ export class CustomerDetailComponent {
     dialogRef
       .afterClosed()
       .subscribe((submit) => {
-        if(this.selectedEmployeeId === ''){
-          const data = {
-            'name': this.addCustomerForm.value.customerName,
-            'gender': this.addCustomerForm.value.customerCode,
-            'age': 0,
-            'email': this.addCustomerForm.value.email,
-            'phone': this.addCustomerForm.value.phone,
-            'address': this.addCustomerForm.value.address
+        if(submit){
+          if(this.selectedEmployeeId === ''){
+            const data = {
+              'name': this.addCustomerForm.value.customerName,
+              'code': this.addCustomerForm.value.customerCode,
+              'gender': '',
+              'age': 0,
+              'email': this.addCustomerForm.value.email,
+              'phone': this.addCustomerForm.value.phone,
+              'address': this.addCustomerForm.value.address
+            }
+            this.customerService.createNewCustomer(data)
+            .subscribe(res => {
+              this.toastr.success('New customer is successfully added');
+              this.onBack();
+            })
+          } else {
+            const data = {
+              'id' : this.selectedEmployeeId,
+              'name': this.addCustomerForm.value.customerName,
+              'code': this.addCustomerForm.value.customerCode,
+              'gender': '',
+              'age': 0,
+              'email': this.addCustomerForm.value.email,
+              'phone': this.addCustomerForm.value.phone,
+              'address': this.addCustomerForm.value.address
+            }
+            this.customerService.updateCustomerById(data)
+            .subscribe(res => {
+              this.toastr.success('Information is successfully updated');
+              this.onBack();
+            })
           }
-          this.customerService.createNewCustomer(data)
-          .subscribe(res => {
-            this.toastr.success('New customer is successfully added');
-            this.onBack();
-          })
-        } else {
-          const data = {
-            'id' : this.selectedEmployeeId,
-            'name': this.addCustomerForm.value.customerName,
-            'gender': this.addCustomerForm.value.customerCode,
-            'age': 0,
-            'email': this.addCustomerForm.value.email,
-            'phone': this.addCustomerForm.value.phone,
-            'address': this.addCustomerForm.value.address
-          }
-          this.customerService.updateCustomerById(data)
-          .subscribe(res => {
-            this.toastr.success('Information is successfully updated');
-            this.onBack();
-          })
         }
       })
   }

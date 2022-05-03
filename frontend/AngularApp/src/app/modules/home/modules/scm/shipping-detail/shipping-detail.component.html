@@ -43,9 +43,9 @@
                     <div class="content">{{shipmentForm.value.customerName}}</div>
                 </div>
                 <div class="custom-field-m">
-                    <div class="label">Order Id</div>
+                    <div class="label">Order Code</div>
                     <div class="content">
-                        <button class="link-button" (click)="goToOrder()">{{shipmentForm.value.orderId}}</button>
+                        <button class="link-button" (click)="goToOrder()">{{shipmentForm.value.orderCode}}</button>
                     </div>
                 </div>
                 <div class="custom-field-m">
@@ -82,6 +82,10 @@
                     <div class="label">Status</div>
                     <mat-form-field  appearance="outline" required>
                         <mat-select formControlName="status">
+                            
+                            <mat-option *ngIf="shipmentForm.value.status === 'CANCEL'">
+                                CANCEL
+                            </mat-option>
                             <mat-option *ngFor="let status of shipmentStatusList" [value]="status">
                             {{status}}
                             </mat-option>
@@ -91,8 +95,8 @@
             </div>
         </div>
         <div class="line"></div>
-        <div class="form-footer" *ngIf="shipmentForm.value.status !== 'DELIVERED' && shipmentForm.value.status !== 'CANCELLED'">
-            <button class="red-custom-button" mat-button  (click)="onBack()">
+        <div class="form-footer" *ngIf="shipmentForm.value.status !== 'DELIVERED' && shipmentForm.value.status !== 'CANCEL'">
+            <button class="red-custom-button" mat-button  (click)="onCancelShipment()" *ngIf="shipmentId !== ''">
                 <mat-icon>delete_outline</mat-icon> Cancel
             </button>
             <button mat-button class="green-custom-button"(click)="onUpdateShipment()" [disabled]="!shipmentForm.valid">

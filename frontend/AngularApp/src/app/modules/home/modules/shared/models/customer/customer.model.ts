@@ -4,6 +4,7 @@ export class Customer {
     phone: string;
     address: string;
     dateOfBirth: string;
+    customerCode?: string;
 
     constructor(
         customerId: string,

@@ -28,6 +28,9 @@ public class InvoiceService {
         double totalPrice = 0;
         double totalDiscount = 0;
         double totalTax = 0;
+        List<Invoice> invoiceList = invoiceRepository.findAll();
+        String sequencePart = ("000000" + (invoiceList.size() + 1));
+        String newInvCode = "INV" + sequencePart.substring(sequencePart.length() - 6);
         for (String orderId:newInvoiceReq.orderIdList){
             Optional<Order> order = orderRepository.findById(UUID.fromString(orderId));
             if (order.isEmpty()){
@@ -37,7 +40,7 @@ public class InvoiceService {
             totalDiscount += order.get().getDiscount();
             totalTax += order.get().getTax();
         }
-        Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax, totalPrice));
+        Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax, totalPrice, newInvCode));
         for (String orderId:newInvoiceReq.orderIdList){
             orderToInvoiceRepository.save(new OrderToInvoice(orderId, newInvoice.getId().toString()));
         }

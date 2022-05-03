@@ -44,10 +44,11 @@ export class CategoryListComponent {
       .subscribe((res) => {
         let data;
         data = res
-        this.categoryList = data.map(({ id, name, level, parentId})=>{
+        this.categoryList = data.map(({ id,code,  name, level, parentId})=>{
           return {
             'categoryId': id,
             'categoryName': name,
+            'code': code,
             'description': '',
             'level': level,
             'parentId': parentId !== null ? parentId : ''
@@ -155,6 +156,7 @@ export class CategoryListComponent {
               const data = {
                 id: selectedCategoryId,
                 name: newCategory.categoryName,
+                code: newCategory.code,
                 parentId: newCategory.parentCategory ? newCategory.parentCategory : null,
                 level: newCategory.parentCategory ? this.categoryList.filter(x=> {return x.categoryId === newCategory.parentCategory})[0].level + 1 : 0
               }
@@ -168,20 +170,22 @@ export class CategoryListComponent {
                     const temp: Category = {
                       'categoryId': tempRes.data,
                       'categoryName': data.name,
+                      'code': data.code,
                       'description': '',
                       'level': data.level,
                       'parentId': newCategory.parentCategory
                     }
-                    this.categoryList.push(temp);
-                    this.maxLevel = Math.max(...this.categoryList.map((category) => {return category.level}))
-                    this.dataSource.data = [{ name: 'All', id: '',children: this.constructData(0, '')}]
-                    this.treeControl.dataNodes
-                            .filter((node) => {
-                                return node.name === 'All';
-                            })
-                            .forEach((node) => {
-                                this.treeControl.expand(node);
-                            });
+                    this.initData()
+                    // this.categoryList.push(temp);
+                    // this.maxLevel = Math.max(...this.categoryList.map((category) => {return category.level}))
+                    // this.dataSource.data = [{ name: 'All', id: '',children: this.constructData(0, '')}]
+                    // this.treeControl.dataNodes
+                    //         .filter((node) => {
+                    //             return node.name === 'All';
+                    //         })
+                    //         .forEach((node) => {
+                    //             this.treeControl.expand(node);
+                    //         });
                   })
                 } else {
                   this.categoryService.updateCategoryById(data)
@@ -191,21 +195,23 @@ export class CategoryListComponent {
                       const temp = {
                         'categoryId': data.id,
                         'categoryName': data.name,
+                        'code': data.code,
                         'description': '',
                         'level': data.level,
                         'parentId': data.parentId
                       } 
-                      this.categoryList = [...this.categoryList.filter(x => {return x.categoryId !== selectedCategoryId}), temp];
+                      this.initData()
+                      // this.categoryList = [...this.categoryList.filter(x => {return x.categoryId !== selectedCategoryId}), temp];
                       
-                      this.maxLevel = Math.max(...this.categoryList.map((category) => {return category.level}))
-                      this.dataSource.data = [{ name: 'All', id: '',children: this.constructData(0, '')}]
-                      this.treeControl.dataNodes
-                              .filter((node) => {
-                                  return node.name === 'All';
-                              })
-                              .forEach((node) => {
-                                  this.treeControl.expand(node);
-                              });
+                      // this.maxLevel = Math.max(...this.categoryList.map((category) => {return category.level}))
+                      // this.dataSource.data = [{ name: 'All', id: '',children: this.constructData(0, '')}]
+                      // this.treeControl.dataNodes
+                      //         .filter((node) => {
+                      //             return node.name === 'All';
+                      //         })
+                      //         .forEach((node) => {
+                      //             this.treeControl.expand(node);
+                      //         });
                     }
                   )
                 }

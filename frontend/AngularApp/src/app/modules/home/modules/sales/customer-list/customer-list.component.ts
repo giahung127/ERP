@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Customer } from '../../shared/models/customer/customer.model';
-import { Employee } from '../../shared/models/employee';
 import { CustomerService } from '../service/customer.service';
 
 @Component({
@@ -23,9 +22,10 @@ export class CustomerListComponent  {
     .subscribe((res) => {
       let data;
       data = res
-      this.customerList = data.map(({ id, name, phone, address})=>{
+      this.customerList = data.map(({ id,code, name, phone, address})=>{
         return {
           'customerId': id,
+          'customerCode': code,
           'name': name,
           'phone': phone,
           'address': address
@@ -36,13 +36,13 @@ export class CustomerListComponent  {
 
   customerList: Customer[] = [];
   columnName: string[] = [
-    'Customer Id',
+    'Code',
     'Name',
     'Phone',
     'Address'
   ];
   columnToProperty = {
-    'Customer Id': 'customerId',
+    'Code': 'customerCode',
     'Name': 'name',
     'Phone': 'phone',
     'Address': 'address'

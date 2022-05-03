@@ -33,7 +33,7 @@ public class ShipmentWithItems {
         this.customerName = shipment.getCustomerName();
         this.orderId = shipment.getOrderId();
         this.totalPrice = shipment.getTotalPrice();
-        this.shipmentCode = shipment.getShipmentCode();
+        this.shipmentCode = shipment.getCode();
         this.createdDate = shipment.getCreatedDate();
         this.creatorName = shipment.getCreatorName();
         this.status = shipment.getShipmentStatus();
