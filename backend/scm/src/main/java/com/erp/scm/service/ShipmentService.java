@@ -8,6 +8,7 @@ import com.erp.scm.controller.response.GetListShipment;
 import com.erp.scm.controller.response.GetShipmentByIdRes;
 import com.erp.scm.controller.response.NormalRes;
 import com.erp.scm.controller.response.ShipmentWithItems;
+import com.erp.scm.controller.status.ShipmentStatus;
 import com.erp.scm.entity.Shipment;
 import com.erp.scm.entity.ShipmentItem;
 import com.erp.scm.repository.ShipmentItemRepository;
@@ -15,6 +16,7 @@ import com.erp.scm.repository.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 @Service
@@ -84,14 +86,14 @@ public class ShipmentService {
     }
 
 
-    public GetListShipment getByOrderId(String orderId) throws Error {
-        List<Shipment> temp =  shipmentRepository.findShipmentByOrderId(orderId);
+    public GetShipmentByIdRes getByOrderId(String orderId) throws Error {
+        Optional<Shipment> temp =  shipmentRepository.findShipmentByOrderId(orderId);
         if (temp.isEmpty()){
-            return new GetListShipment("404", "No record in DB", null);
+            return new GetShipmentByIdRes("404", "No record in DB", null);
         }
-//        List<ShipmentItem> items = shipmentItemRepository.findAllByShipmentId(temp.get().getId().toString());
-//        ShipmentWithItems result = new ShipmentWithItems(temp.get(), items);
-        return new GetListShipment("200", "Found record of Shipment", temp);
+        List<ShipmentItem> items = shipmentItemRepository.findAllByShipmentId(temp.get().getId().toString());
+        ShipmentWithItems result = new ShipmentWithItems(temp.get(), items);
+        return new GetShipmentByIdRes("200", "Found record of Shipment", result);
     }
 
     public NormalRes updateStatus(UpdateShipmentStatusReq updateStatusReq) throws Error{
@@ -102,5 +104,16 @@ public class ShipmentService {
         item.get().setShipmentStatus(updateStatusReq.shipmentStatus);
         shipmentRepository.save(item.get());
         return new NormalRes("200", "Updated","");
+    }
+
+    public String cancel(String id) throws Error {
+        Optional<Shipment> shipment = shipmentRepository.findShipmentByOrderId(id);
+        if (shipment.isEmpty()){
+            return "not found";
+        }
+        System.out.println("good here");
+        shipment.get().setShipmentStatus(ShipmentStatus.CANCEL);
+        shipmentRepository.save(shipment.get());
+        return "ok";
     }
 }

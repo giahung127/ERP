@@ -23,34 +23,39 @@ public class ShipmentController {
     @Autowired
     private ShipmentService shipmentService;
 
-    @PostMapping("newShipment")
+    @PostMapping("/newShipment")
     public NormalRes newShipment (@RequestBody NewShipmentReq newShipmentReq){
         return shipmentService.newShipment(newShipmentReq);
     }
 
-    @GetMapping("loadAll")
+    @GetMapping("/loadAll")
     public List<Shipment> loadAll(){
         return shipmentService.loadAll();
     }
 
-    @GetMapping("getById/{id}")
+    @GetMapping("/getById/{id}")
     public GetShipmentByIdRes getByID(@PathVariable String id){
         return shipmentService.getById(id);
     }
 
-    @PostMapping("updateById")
+    @PostMapping("/updateById")
     public NormalRes UpdateById(@RequestBody UpdateShipmentReq updateShipmentReq) {
         return shipmentService.updateById(updateShipmentReq);
     }
 
-    @PostMapping("updateShipmentItem")
+    @PostMapping("/updateShipmentItem")
     public NormalRes updateShipmentItem(@RequestBody UpdateShipmentItemReq updateShipmentItemReq){
         return shipmentService.updateShipmentItem(updateShipmentItemReq);
     }
 
-    @GetMapping("getByOrderId/{orderId}")
-    public GetListShipment getByOrderId(@PathVariable String orderId){
+    @GetMapping("/getByOrderId/{orderId}")
+    public GetShipmentByIdRes getByOrderId(@PathVariable String orderId){
         return shipmentService.getByOrderId(orderId);
+    }
+
+    @GetMapping("/cancel/{id}")
+    public String cancel(@PathVariable String id){
+        return shipmentService.cancel(id);
     }
 
     @PostMapping("/updateStatus")

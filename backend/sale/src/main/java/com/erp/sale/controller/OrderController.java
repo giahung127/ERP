@@ -47,4 +47,8 @@ public class OrderController {
         return orderService.getOrderByCustomerId(customerId);
     }
 
+    @GetMapping("cancelOrder/{id}")
+    public NormalRes cancelOrder(@PathVariable String id){
+        return orderService.cancelOrder(id);
+    }
 }

@@ -2,9 +2,9 @@ package com.erp.sale.controller;
 
 public enum OrderStatus {
     WAITING,
-    CANCELLED,
+    CANCEL,
     CONFIRMED,
-    FINISHED,
+    EDITED,
     SHIPPED_OUT,
     DELIVERING,
     DELIVERED,

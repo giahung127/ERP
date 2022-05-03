@@ -10,15 +10,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.net.http.HttpClient;
-
 
 @Service
 public class ProductService {
@@ -36,20 +29,9 @@ public class ProductService {
                 .bodyToMono(ProductNameAndCodeRes.class)
                 .block();
     }
-//    public NormalRes updateAfterOrder(UpdateAfterOrderReq updateAfterOrderReq){
-//        return webClientBuilder.build()
-//                .post()
-//                .uri("http://localhost:10003/scm/product/updateAfterOrder")
-//                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .bodyValue(updateAfterOrderReq)
-//                .retrieve()
-//                .bodyToFlux(NormalRes.class)
-//                .blockFirst();
-//    }
+
     @SneakyThrows
     public NormalRes updateAfterOrder(UpdateAfterOrderReq updateAfterOrderReq){
-        System.out.println("ok right here");
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://localhost:10003/scm/product/updateAfterOrder");
 
