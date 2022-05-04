@@ -95,6 +95,7 @@ export class ShippingListComponent {
             'status': orderStatus
           }
         })
+        this.orderService.setLocalList(this.orderList);
         this.getShipmentList();
       })
     } else {

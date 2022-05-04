@@ -33,6 +33,7 @@ public class Order {
     private  Date            createDate;
     private  String          customerId;
     private  String          customerName;
+    private  String          invoiceId;
 
     public Order(NewOrderReq newOrderReq) {
         this.code = newOrderReq.code;

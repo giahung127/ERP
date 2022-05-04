@@ -72,7 +72,7 @@
             [columnToProperty]="orderColumnToProperty"
             [checkbox]="false"
             [filter]="false"
-            [select]="onViewClick"
+            [select]="onOrderViewClick"
             [key]="'orderId'"
             [add]="false"
             [more]="false"
@@ -81,19 +81,49 @@
         </mat-tab>
 
         <mat-tab [label]="'Invoice history'"  *ngIf="viewModeCheck">
-            
+            <div class="table-header">
+                <div class="content-left"></div>
+                <div class="content-right">
+                    <div>Total unpaid: {{invoiceTotal}}</div>
+                    <div>Total invoice: {{invoiceTotal}}</div>
+                </div>
+            </div>
+            <app-home-table-list
+            class="invoice-list"
+            [title]="'Invoice List'"
+            [header]="false"
+            [data]="invoiceList"
+            [columnName]="invoiceColumnName"
+            [columnToProperty]="invoiceColumnToProperty"
+            [checkbox]="false"[filter]="false"
+            [select]="onInvoiceViewClick"
+            [key]="'invoiceId'"
+            [add]="false"
+            [more]="false"
+            >
+            </app-home-table-list>
         </mat-tab>
 
         <mat-tab [label]="'Uninvoiced Orders'"  *ngIf="viewModeCheck">
+            <div class="table-header">
+                <div class="content-left"></div>
+                <div class="content-right">
+                    <div class="custom-button" (click)="createInvoice()">
+                        <mat-icon>add</mat-icon><div> To Invoice</div>
+                    </div>
+                </div>
+            </div>
+            <div class="line"> </div> 
             <app-home-table-list
             class="order-list"
             [title]="'Order List'"
-            [data]="orderList"
+            [header]="false"
+            [data]="uninvoiceOrderList"
             [columnName]="orderColumnName"
             [columnToProperty]="orderColumnToProperty"
             [checkbox]="true"
             [filter]="false"
-            [select]="onViewClick"
+            [select]="onOrderViewClick"
             [key]="'orderId'"
             [add]="false"
             [more]="false"

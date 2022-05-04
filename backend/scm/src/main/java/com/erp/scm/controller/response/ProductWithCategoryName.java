@@ -12,6 +12,7 @@ public class ProductWithCategoryName {
     public Float       price;
     public String      description;
     public String      categoryName;
+    public Integer     amount;
     public ProductWithCategoryName(Product product, String categoryName){
         this.id = product.getId().toString();
         this.code = product.getCode();
@@ -20,6 +21,7 @@ public class ProductWithCategoryName {
         this.price = product.getPrice();
         this.description = product.getDescription();
         this.categoryName = categoryName;
+        this.amount = product.getAmount();
     }
 
     public ProductWithCategoryName(Optional<Product> product, String categoryName){

@@ -2,10 +2,7 @@ package com.erp.sale.controller;
 
 
 import com.erp.sale.controller.request.NewInvoiceReq;
-import com.erp.sale.controller.response.InvoiceWithItem;
-import com.erp.sale.controller.response.InvoiceWithItemRes;
-import com.erp.sale.controller.response.InvoicesWithItemRes;
-import com.erp.sale.controller.response.NormalRes;
+import com.erp.sale.controller.response.*;
 import com.erp.sale.entity.Invoice;
 import com.erp.sale.service.InvoiceService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,4 +33,7 @@ public class InvoiceController {
     public InvoiceWithItemRes getById(@PathVariable String id){
         return invoiceService.getById(id);
     }
+
+    @GetMapping("/getListInvoiceByIds")
+    public InvoicesWithItemRes getInvoiceByIds(@RequestParam List<String> ids){ return invoiceService.getInvoicesByIds((ids));}
 }

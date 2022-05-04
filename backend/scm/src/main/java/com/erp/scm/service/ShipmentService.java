@@ -86,14 +86,14 @@ public class ShipmentService {
     }
 
 
-    public GetShipmentByIdRes getByOrderId(String orderId) throws Error {
-        Optional<Shipment> temp =  shipmentRepository.findShipmentByOrderId(orderId);
+    public GetListShipment getByOrderId(String orderId) throws Error {
+        List<Shipment> temp =  shipmentRepository.findShipmentByOrderId(orderId);
         if (temp.isEmpty()){
-            return new GetShipmentByIdRes("404", "No record in DB", null);
+            return new GetListShipment("404", "No record in DB", null);
         }
-        List<ShipmentItem> items = shipmentItemRepository.findAllByShipmentId(temp.get().getId().toString());
-        ShipmentWithItems result = new ShipmentWithItems(temp.get(), items);
-        return new GetShipmentByIdRes("200", "Found record of Shipment", result);
+//        List<ShipmentItem> items = shipmentItemRepository.findAllByShipmentId(temp.get().getId().toString());
+//        ShipmentWithItems result = new ShipmentWithItems(temp.get(), items);
+        return new GetListShipment("200", "Found record of Shipment", temp);
     }
 
     public NormalRes updateStatus(UpdateShipmentStatusReq updateStatusReq) throws Error{
@@ -107,13 +107,16 @@ public class ShipmentService {
     }
 
     public String cancel(String id) throws Error {
-        Optional<Shipment> shipment = shipmentRepository.findShipmentByOrderId(id);
+        List<Shipment> shipment = shipmentRepository.findShipmentByOrderId(id);
         if (shipment.isEmpty()){
             return "not found";
         }
         System.out.println("good here");
-        shipment.get().setShipmentStatus(ShipmentStatus.CANCEL);
-        shipmentRepository.save(shipment.get());
+        shipment.forEach((x) -> {
+            x.setShipmentStatus(ShipmentStatus.CANCEL);
+            shipmentRepository.save(x);
+        });
+
         return "ok";
     }
 }

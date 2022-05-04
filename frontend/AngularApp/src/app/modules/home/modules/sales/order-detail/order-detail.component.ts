@@ -27,6 +27,8 @@ import { PriceListService } from '../service/price-list.service';
 export class OrderDetailComponent {
   viewModeCheck = true;
   saveCheck = false;
+  confirmCheck = true;
+  toolTip = 'Insufficient amount: '
   searchKeyword = '';
   company: Company | undefined;
   productList: Product[] = [];
@@ -86,17 +88,20 @@ export class OrderDetailComponent {
       .subscribe(res => {
         let data;
         data = res;
-        this.productList = data.map(({ id, code, name, price, categoryName, description})=>{
+        this.productList = data.map(({ id, code, name, price, categoryName, description, amount})=>{
           return {
             'productId': id,
             'productCode': code,
             'productName': name,
             'categoryName': categoryName,
             'price': price,
-            'description': description
+            'description': description,
+            'amount': amount
           }
         })
         this.showProductList = this.productList;
+        
+        this.confirmCheck = this.checkConfirm();
       })
   }
 
@@ -160,9 +165,9 @@ export class OrderDetailComponent {
               customerId: "",
               customerName: "",
               shipping: false
-            }
-            this.getProductList();  
+            } 
           } 
+          this.getProductList(); 
         })
     })
   }
@@ -188,6 +193,7 @@ export class OrderDetailComponent {
         shippingFee: temp.data.order.shippingFee,
         customerId: temp.data.order.customerId,
         customerName: temp.data.order.customerName,
+        invoiceId: temp.data.order.invoiceId
       }
       const selectedPricelist = this.priceListList.find(x => {return x.id === this.selectedOrder.priceListId})
       this.orderProductList = temp.data.orderItems.map(({ noNum, productId, productCode, productName, amount})=>{
@@ -200,10 +206,8 @@ export class OrderDetailComponent {
           'price': selectedPricelist?.item?.find(x => {return x.productId === productId})?.price || 0
         }
       })
-      console.log(selectedPricelist, this.orderProductList)
       this.reIndexNo();
       // this.shipmentService.getShipmentById()
-      console.log(this.selectedOrder)
     })
   }
 
@@ -390,12 +394,12 @@ export class OrderDetailComponent {
       this.onBack();
     },
     (err) => {
-      this.toastr.error(err);
+      this.toastr.error(err.message);
     })
   }
 
   onCancel(){
-    this.orderService.updateOrderStatus({id: this.selectedOrder.orderId, orderStatus: 'CANCELLED'})
+    this.orderService.cancelOrderById(this.selectedOrder.orderId)
     .subscribe((res) => {
       this.toastr.success('The order is cancelled');
       this.onBack();
@@ -564,13 +568,13 @@ export class OrderDetailComponent {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      message: "Create a new invoice for this order",
-      title: "Create a new invoice"
-    };
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-    dialogRef
-      .afterClosed()
+    if(this.selectedOrder.invoiceId === null){
+      dialogConfig.data = {
+        message: "Create a new invoice for this order",
+        title: "Create a new invoice"
+      };
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+      dialogRef.afterClosed()
       .subscribe((submit) => {
         if (submit) {
           const data = {
@@ -582,6 +586,57 @@ export class OrderDetailComponent {
           })
         }
       });
+    } else {
+      dialogConfig.data = {
+        message: "The order already has an invoice. Go to invoice details?",
+        title: "Invoice already exists"
+      };
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+      dialogRef.afterClosed()
+      .subscribe((submit) => {
+        if (submit) {
+          this.router.navigate(['/home/sales/invoice-detail'],
+          {
+            queryParams: { invoiceId: this.selectedOrder.invoiceId }
+          });
+        }
+      });
+    }
   }
 
+  // getNeedItemList(){
+  //   const check = this.productService.getLocalNeedItem()
+  //   if(!check){
+  //     this.orderService.getOrderByStatus('WAITING')
+  //     .subscribe((res) => {
+  //       const tempList: {productId: string, amount: number}[] = [];
+  //       let temp;
+  //       temp = res
+  //       temp.data = temp.data.map((x) => {return x.orderItems})
+  //       temp.data = [].concat(...temp.data)
+  //       temp.data.forEach((x) => {
+  //         if(tempList.find(item => {return item.productId === x.productId})){
+  //           tempList.filter(item => {return item.productId === x.productId})[0].amount += x.amount;
+  //         } else {
+  //           tempList.push({productId: x.productId, amount: x.amount})
+  //         }
+  //       })
+  //       console.log(tempList)
+  //       this.confirmCheck =this.checkConfirm(tempList)
+  //     })
+  //   }
+  // }
+
+  checkConfirm(){
+    let check = true;
+    console.log(this.orderProductList)
+    this.orderProductList.forEach(x => {
+      const temp = this.productList.find(y => {return y.productId === x.productId})
+      if(temp && temp.amount < x.amount){
+        check = false;
+        this.toolTip += temp.productCode + ', ' 
+      }
+    })
+    return check;
+  }
 }

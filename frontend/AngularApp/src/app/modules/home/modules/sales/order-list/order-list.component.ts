@@ -54,14 +54,13 @@ export class OrderListComponent implements OnInit {
   };
   onAddEmployee: () => void = () => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/sales/order-detail'],{state:{code: this.orderList.length}});
+    this.router.navigate(['/home/sales/order-detail']);
   };
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/sales/order-detail'],
-    {
+    this.router.navigate(['/home/sales/order-detail'],{
       queryParams: { id: id }
-  });
+    });
   };
 
   onDeleteClick: (id: string) => void = (id: string) => {

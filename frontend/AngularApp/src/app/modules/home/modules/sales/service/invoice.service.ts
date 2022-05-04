@@ -25,7 +25,12 @@ export class InvoiceService {
     return this.http.post(`http://localhost:9004/sale/invoice/updateStatus`,data, { headers: this.headers })
   } 
 
-  getInvoiceByCustomerId(customerId: string){
-    return this.http.get(`http://localhost:9004/sale/invoice/getOrderByCustomerId/${customerId}`, { headers: this.headers })
+  getInvoiceByListIds(ids: string[]){
+    return this.http.get(`http://localhost:9004/sale/invoice/getListInvoiceByIds`,{
+      headers: this.headers,
+      params: {
+        ids: ids
+      }
+    })
   }
 }

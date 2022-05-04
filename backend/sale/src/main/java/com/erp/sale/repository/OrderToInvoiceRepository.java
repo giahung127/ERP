@@ -16,4 +16,8 @@ public interface OrderToInvoiceRepository extends JpaRepository<OrderToInvoice, 
     String FIND_ORDER_ID = "SELECT order_id FROM order_to_invoice p WHERE p.invoice_id =:invoiceId";
     @Query(value = FIND_ORDER_ID, nativeQuery = true)
     List<String> findOrderIdList(String invoiceId);
+
+    String FIND_INVOICE_ID = "SELECT invoice_id FROM order_to_invoice p, invoice i  WHERE p.order_id =:orderId AND p.invoice_id = i.id AND i.invoice_status != 2" ;
+    @Query(value = FIND_INVOICE_ID, nativeQuery = true)
+    String findInvoiceId(String orderId);
 }

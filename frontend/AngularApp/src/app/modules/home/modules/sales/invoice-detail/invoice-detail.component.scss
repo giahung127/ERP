@@ -481,4 +481,16 @@
     app-home-table-list {
         flex-grow: 1;
     }
-    
+:host ::ng-deep app-home-table-list.order-list{
+    table {
+        tbody {
+            tr {
+                &:hover,
+                &.active {
+                    background-color: #a8b2e685;
+                }
+                cursor: pointer;
+            }
+        }
+    }
+}   

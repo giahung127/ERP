@@ -6,6 +6,26 @@
     <form [formGroup]="shipmentForm">
         <div class="partial-container">
             <div class="title">
+                <p>Shipment Information</p>
+            </div>
+            <div class="line"></div>
+            <div class="row">
+                <div class="custom-field-m">
+                    <div class="label">Creator name</div>
+                    <div class="content">{{shipmentForm.value.creator}}</div>
+                </div>
+                <div class="custom-field-m">
+                    <div class="label">Shipment Code</div>
+                    <div class="content">{{shipmentForm.value.shipmentCode}}</div>
+                </div>
+                <div class="custom-field-m">
+                    <div class="label">Created date</div>
+                    <div class="content">{{shipmentForm.value.createdDate}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="partial-container">
+            <div class="title">
                 <p>Receiver's information</p>
             </div>
             <div class="line"></div>
@@ -24,10 +44,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class="custom-field-l">
+                <div class="custom-field-m">
                     <div class="label">Contact Address</div>
                     <mat-form-field  appearance="outline" required>
                         <input matInput type="text" formControlName="contactAddress">
+                    </mat-form-field>
+                </div>
+                <div class="custom-field-m">
+                    <div class="label">Status</div>
+                    <mat-form-field  appearance="outline" required >
+                        <mat-select formControlName="status" [disabled]="orderStatus ==='WAITING'">
+                            <mat-option *ngFor="let status of shipmentStatusList" [value]="status">
+                            {{status}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
             </div>
@@ -54,48 +84,8 @@
                 </div>
             </div>
         </div>
-        <div class="partial-container">
-            <div class="title">
-                <p>Shipment Information</p>
-            </div>
-            <div class="line"></div>
-            <div class="row">
-                <div class="custom-field-m">
-                    <div class="label">Creator name</div>
-                    <mat-form-field  appearance="outline" required>
-                        <input matInput type="textarea" formControlName="creator" readonly>
-                    </mat-form-field>
-                </div>
-                <div class="custom-field-m">
-                    <div class="label">Created date</div>
-                    <div class="content">{{shipmentForm.value.createdDate}}</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="custom-field-m">
-                    <div class="label">Shipment Code</div>
-                    <mat-form-field  appearance="outline" required>
-                        <input matInput type="textarea" formControlName="shipmentCode">
-                    </mat-form-field>
-                </div>
-                <div class="custom-field-m">
-                    <div class="label">Status</div>
-                    <mat-form-field  appearance="outline" required>
-                        <mat-select formControlName="status">
-                            
-                            <mat-option *ngIf="shipmentForm.value.status === 'CANCEL'">
-                                CANCEL
-                            </mat-option>
-                            <mat-option *ngFor="let status of shipmentStatusList" [value]="status">
-                            {{status}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
         <div class="line"></div>
-        <div class="form-footer" *ngIf="shipmentForm.value.status !== 'DELIVERED' && shipmentForm.value.status !== 'CANCEL'">
+        <div class="form-footer" *ngIf="shipmentStatus !== 'DELIVERED' && shipmentStatus !== 'CANCEL'">
             <button class="red-custom-button" mat-button  (click)="onCancelShipment()" *ngIf="shipmentId !== ''">
                 <mat-icon>delete_outline</mat-icon> Cancel
             </button>

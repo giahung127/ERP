@@ -12,6 +12,7 @@ export class Order {
     customerId: string;
     customerName?: string;
     orderCode? : string;
+    invoiceId? : string;
 
     constructor(
         orderId: string,

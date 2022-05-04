@@ -30,6 +30,7 @@ import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { InvoiceDetailComponent } from './invoice-detail/invoice-detail.component';
 import { ScmModule } from '../scm/scm.module';
 import { NgxPrintModule } from 'ngx-print';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { NgxPrintModule } from 'ngx-print';
     MatSelectModule,
     SharedModule,
     ScmModule,
-    NgxPrintModule
+    NgxPrintModule,
+    MatTooltipModule
   ]
 })
 export class SalesModule { }

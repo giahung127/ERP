@@ -6,8 +6,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { Invoice } from '../../shared/models/invoice/invoice.model';
 import { Order } from '../../shared/models/order/order.model';
+import { TableListService } from '../../shared/services/table-list.service';
 import { CustomerService } from '../service/customer.service';
+import { InvoiceService } from '../service/invoice.service';
 import { OrderService } from '../service/order.service';
 
 @Component({
@@ -18,10 +21,14 @@ import { OrderService } from '../service/order.service';
 export class CustomerDetailComponent {
   
   viewModeCheck = false;
-  selectedEmployeeId = '';
+  selectedCustomerId = '';
   orderList: Order[] = [];
+  uninvoiceOrderList: Order[] = [];
+  invoiceId: string[] = [];
+  invoiceList: Invoice[] = [];
   addCustomerForm = new FormGroup({});
   destroy$: Subject<boolean> = new Subject<boolean>();
+  invoiceTotal = 0;
   constructor(
       private _location: Location,
       private dialog: MatDialog,
@@ -30,7 +37,9 @@ export class CustomerDetailComponent {
       private route: ActivatedRoute,
       private fb: FormBuilder,
       private router: Router,
-      private orderService: OrderService
+      private orderService: OrderService,
+      private invoiceService: InvoiceService,
+      private tableListService: TableListService
   ) {
       this.route.queryParams.subscribe((params) => {
         this.addCustomerForm = this.fb.group({
@@ -40,11 +49,11 @@ export class CustomerDetailComponent {
           email: new FormControl('', Validators.required),
           address: new FormControl('', Validators.required)
         })
-        if(params['employeeId']) {
+        if(params['customerId']) {
           this.viewModeCheck = true;
-          this.selectedEmployeeId = params['employeeId'];
-          this.getCustomer(params['employeeId']);
-          this.getCustomerOrder(params['employeeId']);
+          this.selectedCustomerId = params['customerId'];
+          this.getCustomer(params['customerId']);
+          this.getCustomerOrder(params['customerId']);
         }
       });
   }
@@ -62,12 +71,33 @@ export class CustomerDetailComponent {
     'Status': 'status'
   };
 
-  onViewClick: (id: string) => void = (id: string) => {
+  invoiceColumnName: string[] = [
+    'Invoice Code',
+    'Total',
+    'Date',
+    'Status'
+  ];
+  invoiceColumnToProperty = {
+    'Invoice Code': 'invoiceCode',
+    'Date': 'createdDate',
+    'Total': 'total',
+    'Status': 'status'
+  };
+
+  onOrderViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
     this.router.navigate(['/home/sales/order-detail'],
     {
       queryParams: { id: id }
   });
+  };
+
+  onInvoiceViewClick: (id: string) => void = (id: string) => {
+    // console.log("On View Click: ", id);
+    this.router.navigate(['/home/sales/invoice-detail'],
+    {
+      queryParams: { invoiceId: id }
+    });
   };
 
   getCustomer(customerId: string){
@@ -96,16 +126,47 @@ export class CustomerDetailComponent {
       data = res;
       if(data.data){
         data.data = data.data.map(data => {return data.order})
-        this.orderList = data.data.map(({ id, creatorName,code, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
+        this.orderList = data.data.map(({ id,invoiceId, creatorName,code, priceListId , totalIncludeTax, totalExcludeTax, createDate, orderStatus, customerName})=>{
+          if(invoiceId !== null && this.invoiceId.indexOf(invoiceId) === -1){
+            this.invoiceId.push(invoiceId)
+          }
           return {
             'orderId': id,
             'orderCode': code,
             'createdDate': createDate,
             'totalIncludeTax': totalIncludeTax,
+            'invoiceId': invoiceId,
             'status': orderStatus
           }
         })
+        this.getListInvoiceByIds(this.invoiceId);
+        this.uninvoiceOrderList = this.orderList.filter((order) => {return order.invoiceId === null && order.status !== 'CANCEL'})
       }
+    })
+  }
+
+  getListInvoiceByIds(ids: string[]){
+    this.invoiceService.getInvoiceByListIds(ids)
+    .subscribe((res)=> {
+      let temp;
+      temp = res
+      this.invoiceList = temp.data.map(({id, code, invoiceStatus, orderIds,totalTax, totalDiscount, totalPrice })=>{
+        if(invoiceStatus === 'UNPAID'){
+          this.invoiceTotal += totalPrice;
+        }
+        return {
+          'invoiceId': id,
+          'invoiceCode': code,
+          'totalTax': totalTax,
+          'totalDiscount': totalDiscount,
+          'total': totalPrice,
+          'orderIdList': orderIds,
+          'createdDate': new Date().toDateString(),
+          'status': invoiceStatus,
+          'creatorName': 'Gia Hung',
+          'customerName': this.orderList.find(order => {return order.orderId === orderIds[0]})?.customerName,
+        }
+      })
     })
   }
 
@@ -122,7 +183,7 @@ export class CustomerDetailComponent {
       .afterClosed()
       .subscribe((submit) => {
         if(submit){
-          if(this.selectedEmployeeId === ''){
+          if(this.selectedCustomerId === ''){
             const data = {
               'name': this.addCustomerForm.value.customerName,
               'code': this.addCustomerForm.value.customerCode,
@@ -139,7 +200,7 @@ export class CustomerDetailComponent {
             })
           } else {
             const data = {
-              'id' : this.selectedEmployeeId,
+              'id' : this.selectedCustomerId,
               'name': this.addCustomerForm.value.customerName,
               'code': this.addCustomerForm.value.customerCode,
               'gender': '',
@@ -156,5 +217,40 @@ export class CustomerDetailComponent {
           }
         }
       })
+  }
+
+  createInvoice(){
+    console.log(this.tableListService.getSelectedRows())
+    const listIds = this.tableListService.getSelectedRows().map((row) => {return row.orderId})
+    if(listIds.length === 0){
+      this.toastr.warning('There is no selected order !!!')
+    } else {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
+      dialogConfig.data = {
+        message: "Create a new invoice for these order",
+        title: "Create a new invoice"
+      };
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+      dialogRef.afterClosed()
+      .subscribe((submit) => {
+        if (submit) {
+          const data = {
+            'orderIdList': listIds
+          }
+          this.invoiceService.createNewInvoice(data)
+          .subscribe(
+            (res) => {
+              this.toastr.success('The new invoice is created');
+              this.getCustomerOrder(this.selectedCustomerId);
+            },
+            (error) => {
+              this.toastr.success(error.message);
+            }
+          )
+        }
+      });
+    }
   }
 }

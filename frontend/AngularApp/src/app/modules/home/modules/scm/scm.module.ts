@@ -27,9 +27,9 @@ import { SupplierListComponent } from './supplier-list/supplier-list.component';
 import { SupplierDetailComponent } from './supplier-detail/supplier-detail.component';
 import { ShippingListComponent } from './shipping-list/shipping-list.component';
 import { ShippingDetailComponent } from './shipping-detail/shipping-detail.component';
-import { UploadFileDialogComponent } from './upload-file-dialog/upload-file-dialog.component';
 import { SupplementListComponent } from './supplement-list/supplement-list.component';
 import { SupplementDetailComponent } from './supplement-detail/supplement-detail.component';
+import { UploadFileDialogComponent } from './upload-file-dialog/upload-file-dialog.component';
 
 
 @NgModule({

@@ -5,9 +5,18 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ProductService {
+  needItemList: {productId: string, amount: number}[] | undefined;
   headers = new HttpHeaders();
 
   constructor(public http: HttpClient) { }
+
+  setLocalNeedItem(needItemList: {productId: string, amount: number}[]){
+    this.needItemList = needItemList;
+  }
+
+  getLocalNeedItem(){
+    return this.needItemList
+  }
 
   getAllProduct (){
     return this.http.get('http://localhost:10003/scm/product/loadAll', { headers: this.headers })

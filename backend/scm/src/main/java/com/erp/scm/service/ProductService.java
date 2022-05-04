@@ -133,10 +133,12 @@ public class ProductService {
         if (temp.isEmpty()){
             return new NormalRes("404", "Not found related product", "");
         }
+        System.out.println(updateAfterOrderReq);
         if (Objects.equals(updateAfterOrderReq.type, "NEW_ORDER")){
             if (updateAfterOrderReq.amount > temp.get().getAmount()){
                 return new NormalRes("404", "Insufficient amount", temp.get().getCode());
             }
+            System.out.println(temp.get().getAmount() + ',' + updateAfterOrderReq.amount);
             temp.get().setAmount(temp.get().getAmount() - updateAfterOrderReq.amount);
             productRepository.save(temp.get());
         }

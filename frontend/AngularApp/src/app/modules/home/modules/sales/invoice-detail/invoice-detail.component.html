@@ -1,5 +1,5 @@
 <div class="main-container" >
-    <div class="left-content">
+    <div class="left-content" *ngIf="selectedInvoice">
         <div class="header">
             <div (click)="onBack()">
                 <mat-icon>arrow_back_ios</mat-icon>
@@ -13,15 +13,15 @@
                 <div class="row">
                     <div class="custom-field-s">
                         <div class="label">Code:</div>
-                        <!-- <div class="content">{{selectedOrder.orderCode}}</div> -->
+                        <div class="content">{{selectedInvoice.invoiceCode}}</div>
                     </div>
                     <div class="custom-field-s">
                         <div class="label">Created By:</div>
-                        <!-- <div class="content">{{selectedOrder.creatorName}}</div> -->
+                        <div class="content">{{selectedInvoice.creatorName}}</div>
                     </div>
                     <div class="custom-field-s">
                         <div class="label">Created Date:</div>
-                        <!-- <div class="content">{{selectedOrder.createdDate}}</div> -->
+                        <div class="content">{{selectedInvoice.createdDate}}</div>
                     </div>
                 </div>
                 <div class="row">
@@ -30,94 +30,53 @@
                         <!-- <div class="content">{{selectedOrder.customerName}}</div> -->
                     </div>
                     <div class="custom-field-s">
-                        <div class="label">Price List:</div>
-                        <!-- <div class="content">{{selectedOrder.priceListName}}</div> -->
-                    </div>
-                    <div class="custom-field-s">
                         <div class="label">Status:</div>
-                        <!-- <div class="content">{{selectedOrder.status}}</div> -->
+                        <div class="content">{{selectedInvoice.status}}</div>
                     </div>
                 </div>
             </div>
-            <!-- <div>
-                <div class="line"></div>
-                <div class="partial-container">
-                    <div class="title">Shipping information</div>
-                    <div class="row">
-                        <app-home-table-list
-                        *ngIf="shipmentList.length > 0"
-                        class="shipping-list"
-                        [title]="'Shipping List'"
-                        [data]="shipmentList"
-                        [columnName]="shipmentColumnName"
-                        [columnToProperty]="shipmentColumnToProperty"
-                        [checkbox]="false"
-                        [select]="onViewClick"
-                        [more]="false"
-                        [paginating]="false"
-                        [key]="'shipmentId'"
-                        [header]="false"
-                        >
-                        </app-home-table-list>
-                        <div *ngIf="shipmentList.length === 0">
-                            There is no shipment
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <div class="line"></div>
             <div class="partial-container"  id="test">
-                <div class="title">Product list</div>
+                <div class="title">Order list</div>
                 <div class="row">
-                    <div class="import-product-list custom-field-l">
-                        <div class="label">
-                            <div class="no">No.</div>
-                            <div class="code">Code</div>
-                            <div class="name">Product</div>
-                            <div class="amount">Amount</div>
-                            <div class="price">Price</div>
-                            <div class="total">Total</div>
-                            <!-- <div class="delete" *ngIf="viewModeCheck"></div> -->
-                        </div>
-                        <!-- <div class="import-item" *ngFor="let importProduct of orderProductList">
-                            <div class="no">{{importProduct.no}}</div>
-                            <div class="code">{{importProduct.productCode}}</div>
-                            <div class="name">{{importProduct.productName}}</div>
-                            <div class="amount">{{importProduct.amount}}</div>
-                            <div class="price">{{importProduct.price}}</div>
-                            <div class="total">{{importProduct.price * importProduct.amount}}</div>
-                        </div> -->
-                    </div>
+                    <app-home-table-list
+                    class="order-list"
+                    [title]="'Order List'"
+                    [data]="orderList"
+                    [columnName]="columnName"
+                    [columnToProperty]="columnToProperty"
+                    [checkbox]="false"
+                    [select]="onViewClick"
+                    [key]="'orderId'"
+                    [paginating]="false"
+                    [header]="false"
+                    [more]="false"
+                    [useDefaultStatusColumn]="false"
+                    >
+                    </app-home-table-list>
                 </div>
             </div>
             <div class="line"></div>
             <div class="partial-container">
                 <div class="order-footer">
                     <div class="row">
-                        <div class="footer-title"> Total (Exc. Tax):</div>
-                        <!-- <div class="footer-content"> {{selectedOrder.totalExcludeTax}}</div> -->
+                        <div class="footer-title"> Tax:</div>
+                        <div class="footer-content"> {{selectedInvoice.totalTax}}</div>
                     </div>
                     <div class="row">
-                        <div class="footer-title"> Tax rate (%):</div>
-                        <!-- <div class="footer-content"> {{selectedOrder.tax}}%</div> -->
+                        <div class="footer-title"> Total discount:</div>
+                        <div class="footer-content"> {{selectedInvoice.totalDiscount}}</div>
                     </div>
                     <div class="row">
-                        <div class="footer-title"> Total tax:</div>
-                        <!-- <div class="footer-content"> {{selectedOrder.tax * selectedOrder.totalExcludeTax}} </div> -->
-                    </div>
-                    <div class="row">
-                        <div class="footer-title"> Total (Inc. Tax):</div>
-                        <!-- <div class="footer-content"> {{selectedOrder.totalIncludeTax}}</div> -->
+                        <div class="footer-title"> Total :</div>
+                        <div class="footer-content"> {{selectedInvoice.total}} </div>
                     </div>
                 </div>
             </div>
 
             <div class="form-footer">
                 <button mat-button class="green-custom-button" >
-                    <mat-icon>check</mat-icon> Confirm
-                </button>
-                <button mat-button class="green-custom-button">
-                    <mat-icon>receipt</mat-icon> Invoice
+                    <mat-icon>attach_money</mat-icon> Pay
                 </button>
                 <button mat-button class="green-custom-button" >
                     <mat-icon>print</mat-icon> Print

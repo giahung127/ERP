@@ -9,6 +9,7 @@ import java.util.List;
 
 public class ShipmentWithItems {
     public String id;
+    public String code;
     public String transporterId;
     public String receiverName;
     public String contactNumber;
@@ -16,7 +17,6 @@ public class ShipmentWithItems {
     public String customerName;
     public String orderId;
     public float  totalPrice;
-    public String shipmentCode;
     public Date   createdDate;
     public String creatorName;
     public ShipmentStatus status;
@@ -26,6 +26,7 @@ public class ShipmentWithItems {
 
     public ShipmentWithItems(Shipment shipment, List<ShipmentItem> itemList){
         this.id = String.valueOf(shipment.getId());
+        this.code = shipment.getCode();
         this.transporterId = shipment.getTransporterId();
         this.receiverName = shipment.getReceiverName();
         this.contactNumber = shipment.getContactNumber();
@@ -33,7 +34,6 @@ public class ShipmentWithItems {
         this.customerName = shipment.getCustomerName();
         this.orderId = shipment.getOrderId();
         this.totalPrice = shipment.getTotalPrice();
-        this.shipmentCode = shipment.getCode();
         this.createdDate = shipment.getCreatedDate();
         this.creatorName = shipment.getCreatorName();
         this.status = shipment.getShipmentStatus();

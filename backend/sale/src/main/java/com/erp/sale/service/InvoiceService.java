@@ -1,10 +1,7 @@
 package com.erp.sale.service;
 
 import com.erp.sale.controller.request.NewInvoiceReq;
-import com.erp.sale.controller.response.InvoiceWithItem;
-import com.erp.sale.controller.response.InvoiceWithItemRes;
-import com.erp.sale.controller.response.InvoicesWithItemRes;
-import com.erp.sale.controller.response.NormalRes;
+import com.erp.sale.controller.response.*;
 import com.erp.sale.entity.*;
 import com.erp.sale.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +72,26 @@ public class InvoiceService {
             return new InvoiceWithItemRes("404", "found no items in Invoice Id: " + invoice.get().getId(), null);
         }
         return new InvoiceWithItemRes("200", "Found invoice", new InvoiceWithItem(invoice.get(), curItems));
+    }
+
+    public InvoicesWithItemRes getInvoicesByIds(List<String> listId) throws Error {
+
+        Collection<UUID> ids = new ArrayList<>();
+        listId.forEach((id) -> {
+            ids.add(UUID.fromString((id)));
+        });
+        List<Invoice> invoiceList = invoiceRepository.findByIdIn(ids);
+        if (invoiceList.isEmpty()){
+            return new InvoicesWithItemRes("404", "found no invoice", null);
+        }
+        List<InvoiceWithItem> result = new ArrayList<>();
+        for (Invoice invoice:invoiceList){
+            List<String> curItems = orderToInvoiceRepository.findOrderIdList(String.valueOf(invoice.getId()));
+            if (curItems.isEmpty()){
+                return new InvoicesWithItemRes("404", "found no items in Invoice Id: " + invoice.getId(), null);
+            }
+            result.add(new InvoiceWithItem(invoice, curItems));
+        }
+        return new InvoicesWithItemRes("200", "Found all invoices", result);
     }
 }

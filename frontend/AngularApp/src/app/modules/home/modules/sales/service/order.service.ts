@@ -32,6 +32,14 @@ export class OrderService {
     return this.http.get(`http://localhost:9004/sale/order/getById/${orderId}`, { headers: this.headers })
   }
 
+  getOrderByStatus(orderStatus: string){
+    return this.http.get(`http://localhost:9004/sale/order/getOrderByStatus`, { headers: this.headers, params: {orderStatus: orderStatus} })
+  }  
+  
+  cancelOrderById(orderId: string){
+    return this.http.get(`http://localhost:9004/sale/order/cancelOrder/${orderId}`, { headers: this.headers })
+  }
+
   createNewOrder(data){
     return this.http.post(`http://localhost:9004/sale/order/newOrder`,data, { headers: this.headers })
   }
@@ -42,5 +50,14 @@ export class OrderService {
 
   getOrderByCustomerId(customerId: string){
     return this.http.get(`http://localhost:9004/sale/order/getOrdersByCustomerId/${customerId}`, { headers: this.headers })
+  }
+
+  getOrderByListIds(ids: string[]){
+    return this.http.get(`http://localhost:9004/sale/order/getListOrderByIds`,{
+      headers: this.headers,
+      params: {
+        ids: ids
+      }
+    })
   }
 }

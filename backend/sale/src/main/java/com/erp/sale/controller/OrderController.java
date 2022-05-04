@@ -47,8 +47,14 @@ public class OrderController {
         return orderService.getOrderByCustomerId(customerId);
     }
 
-    @GetMapping("cancelOrder/{id}")
+    @GetMapping("/getOrderByStatus")
+    public GetOrdersRes getOrderByStatus(@RequestParam OrderStatus orderStatus){ return orderService.getOrderByStatus((orderStatus));}
+
+    @GetMapping("/cancelOrder/{id}")
     public NormalRes cancelOrder(@PathVariable String id){
         return orderService.cancelOrder(id);
     }
+
+    @GetMapping("/getListOrderByIds")
+    public GetOrdersRes getOrderByIds(@RequestParam List<String> ids){ return orderService.getOrderByIds((ids));}
 }

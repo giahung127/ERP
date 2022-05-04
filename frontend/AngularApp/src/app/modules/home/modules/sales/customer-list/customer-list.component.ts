@@ -54,12 +54,12 @@ export class CustomerListComponent  {
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
     this.router.navigate(['/home/sales/customer-detail'],{
-      queryParams: { employeeId: id }
+      queryParams: { customerId: id }
     });
   };
   onEditClick: (id: string) => void = (id: string) => {
       this.router.navigate(['/home/sales/customer-detail', id], {
-          queryParams: { employeeId: id }
+          queryParams: { customerId: id }
       });
   };
 

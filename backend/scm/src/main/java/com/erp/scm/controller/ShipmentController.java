@@ -49,7 +49,7 @@ public class ShipmentController {
     }
 
     @GetMapping("/getByOrderId/{orderId}")
-    public GetShipmentByIdRes getByOrderId(@PathVariable String orderId){
+    public GetListShipment getByOrderId(@PathVariable String orderId){
         return shipmentService.getByOrderId(orderId);
     }
 

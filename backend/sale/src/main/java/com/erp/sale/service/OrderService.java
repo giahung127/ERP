@@ -24,6 +24,8 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
+    private OrderToInvoiceRepository orderToInvoiceRepository;
+    @Autowired
     private OrderItemRepository orderItemRepository;
     @Autowired
     private ShipmentService shipmentService;
@@ -43,7 +45,13 @@ public class OrderService {
         }
         orderItemRepository.saveAll(ItemList);
         ItemList.parallelStream().map(
-                orderItem -> productService.updateAfterOrder(new UpdateAfterOrderReq("NEW_ORDER", orderItem.getAmount(), orderItem.getProductId()))
+            orderItem -> {
+                NormalRes res = productService.updateAfterOrder(new UpdateAfterOrderReq("NEW_ORDER", orderItem.getAmount(), orderItem.getProductId()));
+                if(!res.code.equals("400")){
+                    throw new Error(res.message);
+                }
+                return res;
+            }
         );
         return new NormalRes("200", "New Order Inserted",  newOrder.getId().toString());
     }
@@ -56,14 +64,51 @@ public class OrderService {
         if (result.isEmpty()){
             return new GetOrderRes("404", "Not Found", null);
         }
+        String invoiceId = orderToInvoiceRepository.findInvoiceId(result.get().getId().toString());
+        if(invoiceId != null){
+            result.get().setInvoiceId(invoiceId);
+        }
         List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(result.get().getId().toString());
         return new GetOrderRes("200", "Get Order By ID", new OrderWithItems(result.get(), orderItems) );
+    }
+
+    public GetOrdersRes getOrderByStatus(OrderStatus orderStatus) throws Error {
+        System.out.println(orderStatus);
+        List<Order> orders = orderRepository.findAllByOrderStatus(orderStatus);
+        if (orders.isEmpty()){
+            return new GetOrdersRes("404", "Not Found", null);
+        }
+//        String invoiceId = orderToInvoiceRepository.findInvoiceId(result.get().getId().toString());
+//        if(invoiceId != null){
+//            result.get().setInvoiceId(invoiceId);
+//        }
+        List<OrderWithItems> result = orders.parallelStream().map(
+            order -> {
+                Order temp = orderRepository.findById(order.getId()).get();
+                String invoiceId = orderToInvoiceRepository.findInvoiceId(order.getId().toString());
+                if(invoiceId != null){
+                    temp.setInvoiceId(invoiceId);
+                }
+                List<OrderItem> items = orderItemRepository.findAllByOrderId(String.valueOf(order.getId()));
+                return new OrderWithItems(temp, items);
+            }
+        ).collect(Collectors.toList());
+        return new GetOrdersRes("200", "Get Order By Status", result);
     }
 
     public NormalRes updateStatus(UpdateStatusReq updateStatusReq) throws Error{
         Optional<Order> item = orderRepository.findById(UUID.fromString(updateStatusReq.id));
         if (item.isEmpty()){
             return new  NormalRes("404", "Not found", "");
+        }
+        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(item.get().getId().toString());
+
+        if(updateStatusReq.orderStatus == OrderStatus.CONFIRMED){
+            orderItems.forEach(
+                orderItem -> {
+                    productService.updateAfterOrder(new UpdateAfterOrderReq("NEW_ORDER", orderItem.getAmount(), orderItem.getProductId()));
+                }
+            );
         }
         item.get().setOrderStatus(updateStatusReq.orderStatus);
         orderRepository.save(item.get());
@@ -76,11 +121,15 @@ public class OrderService {
             return new GetOrdersRes("404", "Not Found", null);
         }
         List<OrderWithItems> result = orders.parallelStream().map(
-                order -> {
-                    Order temp = orderRepository.findById(order.getId()).get();
-                    List<OrderItem> items = orderItemRepository.findAllByOrderId(String.valueOf(order.getId()));
-                    return new OrderWithItems(temp, items);
+            order -> {
+                Order temp = orderRepository.findById(order.getId()).get();
+                String invoiceId = orderToInvoiceRepository.findInvoiceId(order.getId().toString());
+                if(invoiceId != null){
+                    temp.setInvoiceId(invoiceId);
                 }
+                List<OrderItem> items = orderItemRepository.findAllByOrderId(String.valueOf(order.getId()));
+                return new OrderWithItems(temp, items);
+            }
         ).collect(Collectors.toList());
         return new GetOrdersRes("200", "Get Order By ID", result);
     }
@@ -96,11 +145,32 @@ public class OrderService {
 
         shipmentService.cancelShipmentByOrderId(id);
         List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(id);
-        orderItems.parallelStream().map(
-                orderItem -> productService.updateAfterOrder(new UpdateAfterOrderReq("CANCEL_ORDER", orderItem.getAmount(), orderItem.getProductId()))
+        orderItems.forEach(
+                orderItem -> {
+                    productService.updateAfterOrder(new UpdateAfterOrderReq("CANCEL_ORDER", orderItem.getAmount(), orderItem.getProductId()));
+                }
         );
         order.get().setOrderStatus(OrderStatus.CANCEL);
         orderRepository.save(order.get());
         return new NormalRes("200", "successfully cancel rder Id: " + id, "");
+    }
+
+    public GetOrdersRes getOrderByIds(List<String> listId) throws Error{
+        Collection<UUID> ids = new ArrayList<>();
+        listId.forEach((id) -> {
+            ids.add(UUID.fromString((id)));
+        });
+        List<Order> orders = orderRepository.findByIdIn(ids);
+        if (orders.isEmpty()){
+            return new GetOrdersRes("404", "Not Found", null);
+        }
+        List<OrderWithItems> result = orders.parallelStream().map(
+                order -> {
+                    Order temp = orderRepository.findById(order.getId()).get();
+                    List<OrderItem> items = orderItemRepository.findAllByOrderId(String.valueOf(order.getId()));
+                    return new OrderWithItems(temp, items);
+                }
+        ).collect(Collectors.toList());
+        return new GetOrdersRes("200", "Get Order By IDs", result);
     }
 }

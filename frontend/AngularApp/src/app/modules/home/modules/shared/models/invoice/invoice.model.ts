@@ -5,7 +5,7 @@ export class Invoice {
     totalDiscount: number;
     total: number;
     orderIdList: string[];
-    createdDate: Date;
+    createdDate?: Date;
     creatorName: string;
     status: string;
     customerName? : string;
@@ -17,7 +17,6 @@ export class Invoice {
         totalDiscount: number,
         total: number,
         orderIdList: string[],
-        createdDate: Date,
         status: string,
         creatorName: string
     ) {
@@ -27,7 +26,6 @@ export class Invoice {
         this.totalDiscount = totalDiscount;
         this.total = total;
         this.orderIdList = orderIdList;
-        this.createdDate = createdDate;
         this.status = status;
         this.creatorName = creatorName;
     }

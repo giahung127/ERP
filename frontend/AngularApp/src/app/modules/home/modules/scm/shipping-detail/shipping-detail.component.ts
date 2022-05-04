@@ -20,6 +20,8 @@ export class ShippingDetailComponent {
   viewModeCheck = false;
   editModeCheck = true;
   shipmentId = '';
+  shipmentStatus = '';
+  orderStatus = '';
   shipmentStatusList = Object.values(ShipmentStatus);
   shipmentForm = new FormGroup({});
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -64,15 +66,15 @@ export class ShippingDetailComponent {
         contactNumber: new FormControl(temp.items.contactNumber),
         contactAddress: new FormControl(temp.items.contactAddress),
         orderId: new FormControl(temp.items.orderId),
-        orderCode: new FormControl(),
+        orderCode: new FormControl(this.getOrderById(temp.items.orderId)),
         customerName: new FormControl(temp.items.customerName),
         totalPrice: new FormControl(temp.items.totalPrice),
-        shipmentCode: new FormControl(temp.items.shipmentCode, Validators.required),
+        shipmentCode: new FormControl(temp.items.code, Validators.required),
         createdDate: new FormControl(new Date(temp.items.createdDate).toDateString(), Validators.required),
         creator: new FormControl(temp.items.creatorName, Validators.required),
         status: new FormControl(temp.items.status, Validators.required)
       })
-      this.getOrderById(temp.items.orderId)
+      this.shipmentStatus = temp.items.status
     })
   }
 
@@ -152,6 +154,7 @@ export class ShippingDetailComponent {
   }
 
   getOrderById(orderId: string){
+    let code = ''
     if(this.orderService.getLocalById(orderId) === undefined){
       this.orderService.getAllOrdersList()
       .subscribe((res)=> {
@@ -167,10 +170,13 @@ export class ShippingDetailComponent {
           }
         })
         this.orderService.setLocalList(orderList)
-        this.shipmentForm.value.orderCode = orderList.find((order) => {return order.orderId === orderId})?.orderCode
+        this.shipmentForm.value.orderCode = <string>orderList.find((order) => {return order.orderId === orderId})?.orderCode
+        this.orderStatus = <string>orderList.find((order) => {return order.orderId === orderId})?.status
       })
     } else {
-      this.shipmentForm.value.orderCode = this.orderService.getLocalById(orderId);
+      code = <string>this.orderService.getLocalById(orderId)?.orderCode;
+      this.orderStatus = <string>this.orderService.getLocalById(orderId)?.status
     }
+    return code
   }
 }
