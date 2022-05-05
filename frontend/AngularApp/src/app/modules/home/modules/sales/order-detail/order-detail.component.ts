@@ -78,7 +78,7 @@ export class OrderDetailComponent {
     private shipmentService: ShippingService,
     private companyService: CompanyService,
     private invoiceService: InvoiceService
-  ) { 
+  ) {
     this.getCustomerList();
     this.getCompanyInfo();
   }
@@ -100,7 +100,7 @@ export class OrderDetailComponent {
           }
         })
         this.showProductList = this.productList;
-        
+
         this.confirmCheck = this.checkConfirm();
       })
   }
@@ -118,7 +118,7 @@ export class OrderDetailComponent {
             orderId: orderId,
             createdDate: new Date(createdDate).toDateString(),
             creatorName: 'Gia Hung',
-            contactName: receiverName, 
+            contactName: receiverName,
             contactAddress: contactAddress,
             contactNumber: contactNumber,
             status: shipmentStatus
@@ -142,7 +142,7 @@ export class OrderDetailComponent {
             'item': price_list_items !== null ? price_list_items: []
           }
         })
-        this.route.queryParams.subscribe((params) => {  
+        this.route.queryParams.subscribe((params) => {
           if (params['id']) {
             this.viewModeCheck = false;
             this.getSelectedOrder(params['id']);
@@ -165,9 +165,9 @@ export class OrderDetailComponent {
               customerId: "",
               customerName: "",
               shipping: false
-            } 
-          } 
-          this.getProductList(); 
+            }
+          }
+          this.getProductList();
         })
     })
   }
@@ -214,7 +214,7 @@ export class OrderDetailComponent {
   getCustomerList(){
     this.customerService.getAllCustomerList()
     .subscribe((res) => {
-      
+
       this.getPriceListList();
       let data;
       data = res
@@ -273,10 +273,10 @@ export class OrderDetailComponent {
     this.orderProductList.forEach((x)=> {
       this.totalPrice += x.amount*x.price;
     })
-    this.selectedOrder.totalExcludeTax = this.totalPrice 
+    this.selectedOrder.totalExcludeTax = this.totalPrice
     this.selectedOrder.totalIncludeTax = this.totalPrice * (1 + this.selectedOrder.tax/100)
   }
-  
+
   reIndexNo() {
     for (let i = 0; i < this.orderProductList.length; i++) {
         this.orderProductList[i].no = i + 1;
@@ -309,8 +309,8 @@ export class OrderDetailComponent {
               code: this.selectedOrder.orderCode,
               creator_name: "giahung",
               price_list_id: this.selectedOrder.priceListId,
-              total_include_tax: this.totalPrice,
-              total_exclude_tax: this.totalPrice,
+              total_include_tax: this.selectedOrder.totalIncludeTax,
+              total_exclude_tax: this.selectedOrder.totalExcludeTax,
               tax: this.selectedOrder.tax,
               discount: 0,
               shipping_fee: 0,
@@ -415,7 +415,7 @@ export class OrderDetailComponent {
         queryParams: { shipment: id }
       }
     );
-    
+
   };
 
   printPage(){
@@ -506,7 +506,7 @@ export class OrderDetailComponent {
             <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right; width:20%"><strong><span style="font-size:11px">Amount</span></strong></td>
             <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right"><strong><span style="font-size:11px">Total</span></strong></td>
           </tr>
-          ${ 
+          ${
             this.printProductList()
           }
         </tbody>
@@ -524,7 +524,7 @@ export class OrderDetailComponent {
           </tr>
           <tr>
             <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Total:</td>
-            <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.totalExcludeTax}</td>
+            <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.totalIncludeTax}</td>
           </tr>
         </tfoot>
       </table>
@@ -557,7 +557,7 @@ export class OrderDetailComponent {
         </tr>
         `
     });
-    return htmlString 
+    return htmlString
   }
 
   check(){
@@ -634,7 +634,7 @@ export class OrderDetailComponent {
       const temp = this.productList.find(y => {return y.productId === x.productId})
       if(temp && temp.amount < x.amount){
         check = false;
-        this.toolTip += temp.productCode + ', ' 
+        this.toolTip += temp.productCode + ', '
       }
     })
     return check;

@@ -77,7 +77,7 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/home/scm/product-detail'], {
       queryParams: { productId: id }
     });
-    
+
   };
   onEditClick: (id: string) => void = (id: string) => {
       this.router.navigate(['/home/scm/product-detail', id], {
@@ -94,7 +94,7 @@ export class ProductListComponent implements OnInit {
       this.showProductList = this.productList
     }
   }
-  
+
 
   uploadExcelFile() {
     const dialogConfig = new MatDialogConfig();
@@ -113,16 +113,25 @@ export class ProductListComponent implements OnInit {
     .subscribe((res) => {
       let temp;
       temp = res
-      temp.data = temp.data.map((x) => {return x.orderItems})
-      temp.data = [].concat(...temp.data)
-      temp.data.forEach((x) => {
-        if(this.needItemList.find(item => {return item.productId === x.productId})){
-          this.needItemList.filter(item => {return item.productId === x.productId})[0].amount += x.amount;
-        } else {
-          this.needItemList.push({productId: x.productId, amount: x.amount})
-        }
-      })
-      this.productService.setLocalNeedItem(this.needItemList);
+      if (temp.data != null)
+      {
+        temp.data = temp.data.map((x) => {
+          return x.orderItems
+        })
+        temp.data = [].concat(...temp.data)
+        temp.data.forEach((x) => {
+          if (this.needItemList.find(item => {
+            return item.productId === x.productId
+          })) {
+            this.needItemList.filter(item => {
+              return item.productId === x.productId
+            })[0].amount += x.amount;
+          } else {
+            this.needItemList.push({productId: x.productId, amount: x.amount})
+          }
+        })
+        this.productService.setLocalNeedItem(this.needItemList);
+      }
       this.initData()
     })
 
