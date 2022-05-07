@@ -104,7 +104,7 @@
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total tax:</div>
-                        <div class="footer-content"> {{selectedOrder.tax * selectedOrder.totalExcludeTax}} </div>
+                        <div class="footer-content"> {{(selectedOrder.tax * selectedOrder.totalExcludeTax)/100}} </div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total (Inc. Tax):</div>
@@ -114,14 +114,14 @@
             </div>
 
             <div class="form-footer">
-                <div 
+                <div
                 [matTooltip]="toolTip"
                 [matTooltipDisabled]="confirmCheck" >
-                <button 
-                    mat-button 
-                    *ngIf="selectedOrder.status === 'WAITING'" 
-                    class="green-custom-button" 
-                    (click)="onConfirm()" 
+                <button
+                    mat-button
+                    *ngIf="selectedOrder.status === 'WAITING'"
+                    class="green-custom-button"
+                    (click)="onConfirm()"
                     [disabled]="!confirmCheck"
                     >
                     <mat-icon>check</mat-icon> Confirm
@@ -137,7 +137,7 @@
                 <button mat-button class="green-custom-button" (click)="printPage()">
                     <mat-icon>print</mat-icon> Print
                 </button>
-                <button class="red-custom-button" mat-button  (click)="onCancel()"> 
+                <button class="red-custom-button" mat-button  (click)="onCancel()">
                     <mat-icon>delete_outline</mat-icon> Cancel
                 </button>
             </div>
@@ -259,7 +259,7 @@
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total tax:</div>
-                        <div class="footer-content">{{selectedOrder.tax * selectedOrder.totalExcludeTax}}</div>
+                        <div class="footer-content">{{(selectedOrder.tax * selectedOrder.totalExcludeTax)/100}}</div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total:</div>
@@ -272,10 +272,10 @@
                 <button mat-button class="green-custom-button" [disabled]="!saveCheck" (click)="onSave()" >
                     <mat-icon>save</mat-icon> Save
                 </button>
-                <button class="red-custom-button" mat-button  (click)="onBack()"> 
+                <button class="red-custom-button" mat-button  (click)="onBack()">
                     <mat-icon>delete_outline</mat-icon> Cancel
                 </button>
-                
+
             </div>
         </div>
     </div>

@@ -152,7 +152,7 @@ public class OrderService {
         );
         order.get().setOrderStatus(OrderStatus.CANCEL);
         orderRepository.save(order.get());
-        return new NormalRes("200", "successfully cancel rder Id: " + id, "");
+        return new NormalRes("200", "successfully cancel order Id: " + id, "");
     }
 
     public GetOrdersRes getOrderByIds(List<String> listId) throws Error{
