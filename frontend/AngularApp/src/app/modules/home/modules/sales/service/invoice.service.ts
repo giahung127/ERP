@@ -21,7 +21,7 @@ export class InvoiceService {
     return this.http.post(`http://localhost:9004/sale/invoice/newInvoice`,data, { headers: this.headers })
   }
   
-  updateOrderStatus(data){
+  updateInvoiceStatus(data){
     return this.http.post(`http://localhost:9004/sale/invoice/updateStatus`,data, { headers: this.headers })
   } 
 

@@ -1,12 +1,18 @@
 package com.erp.sale.service;
 
+import com.erp.sale.controller.OrderStatus;
 import com.erp.sale.controller.request.NewInvoiceReq;
+import com.erp.sale.controller.request.UpdateInvoiceStatusReq;
+import com.erp.sale.controller.request.UpdateStatusReq;
 import com.erp.sale.controller.response.*;
 import com.erp.sale.entity.*;
 import com.erp.sale.repository.*;
+import com.erp.sale.service.api.request.UpdateAfterOrderReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -37,7 +43,8 @@ public class InvoiceService {
             totalDiscount += order.get().getDiscount();
             totalTax += order.get().getTax();
         }
-        Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax, totalPrice, newInvCode));
+        Date date = new java.sql.Date(System.currentTimeMillis());
+        Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax,date ,  totalPrice, newInvCode));
         for (String orderId:newInvoiceReq.orderIdList){
             orderToInvoiceRepository.save(new OrderToInvoice(orderId, newInvoice.getId().toString()));
         }
@@ -93,5 +100,15 @@ public class InvoiceService {
             result.add(new InvoiceWithItem(invoice, curItems));
         }
         return new InvoicesWithItemRes("200", "Found all invoices", result);
+    }
+
+    public NormalRes updateStatus(UpdateInvoiceStatusReq updateStatusReq) throws Error{
+        Optional<Invoice> item = invoiceRepository.findById(UUID.fromString(updateStatusReq.id));
+        if (item.isEmpty()){
+            return new  NormalRes("404", "Not found", "");
+        }
+        item.get().setInvoiceStatus(updateStatusReq.invoiceStatus);
+        invoiceRepository.save(item.get());
+        return new NormalRes("200", "Updated", item.get().getInvoiceStatus().toString());
     }
 }

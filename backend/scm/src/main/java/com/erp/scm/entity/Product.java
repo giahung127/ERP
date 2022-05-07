@@ -22,6 +22,7 @@ public class Product {
     private Float       price;
     private String      description;
     private int         amount;
+    private  Boolean    is_expire;
 
     public Product(NewProductReq newProductReq) {
         this.code = newProductReq.code;
@@ -30,5 +31,6 @@ public class Product {
         this.price = newProductReq.price;
         this.description = newProductReq.description;
         this.amount = 0;
+        this.is_expire = newProductReq.is_expire;
     }
 }

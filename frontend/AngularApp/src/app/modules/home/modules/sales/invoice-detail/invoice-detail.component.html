@@ -74,14 +74,14 @@
                 </div>
             </div>
 
-            <div class="form-footer">
-                <button mat-button class="green-custom-button" >
+            <div class="form-footer" *ngIf="selectedInvoice.status !== 'CANCEL'">
+                <button mat-button class="green-custom-button"  *ngIf="selectedInvoice.status !== 'PAID'" (click)="onPay()">
                     <mat-icon>attach_money</mat-icon> Pay
                 </button>
-                <button mat-button class="green-custom-button" >
+                <button mat-button class="green-custom-button" (click)="printPage()" >
                     <mat-icon>print</mat-icon> Print
                 </button>
-                <button class="red-custom-button" mat-button> 
+                <button class="red-custom-button" mat-button *ngIf="selectedInvoice.status !== 'PAID'" (click)="onCancel()"> 
                     <mat-icon>delete_outline</mat-icon> Cancel
                 </button>
             </div>

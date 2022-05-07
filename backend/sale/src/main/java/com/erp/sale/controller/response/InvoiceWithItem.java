@@ -5,6 +5,7 @@ import com.erp.sale.entity.OrderToInvoice;
 import com.erp.sale.entity.enumType.InvoiceStatus;
 import lombok.AllArgsConstructor;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class InvoiceWithItem {
     public double totalPrice;
     public InvoiceStatus invoiceStatus;
     public List<String> orderIds;
+    public Date createdDate;
     public InvoiceWithItem(Invoice invoice, List<String> orderIds ){
         this.id = invoice.getId();
         this.code = invoice.getCode();
@@ -25,5 +27,6 @@ public class InvoiceWithItem {
         this.totalPrice = invoice.getTotalPrice();
         this.invoiceStatus = invoice.getInvoiceStatus();
         this.orderIds = orderIds;
+        this.createdDate = invoice.getCreateDate();
     }
 }

@@ -8,6 +8,7 @@ export class Product {
     categoryName: string;
     description: string;
     needAmount?: number;
+    isExpire?: boolean;
 
     constructor(productId: string, productCode: string, productName: string, price: number, amount: number, categoryId: string, categoryName: string, description: string){
         this.productId = productId;

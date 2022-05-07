@@ -2,6 +2,8 @@ package com.erp.sale.controller;
 
 
 import com.erp.sale.controller.request.NewInvoiceReq;
+import com.erp.sale.controller.request.UpdateInvoiceStatusReq;
+import com.erp.sale.controller.request.UpdateStatusReq;
 import com.erp.sale.controller.response.*;
 import com.erp.sale.entity.Invoice;
 import com.erp.sale.service.InvoiceService;
@@ -36,4 +38,9 @@ public class InvoiceController {
 
     @GetMapping("/getListInvoiceByIds")
     public InvoicesWithItemRes getInvoiceByIds(@RequestParam List<String> ids){ return invoiceService.getInvoicesByIds((ids));}
+
+    @PostMapping("/updateStatus")
+    public NormalRes updateByIdAndStatus(@RequestBody UpdateInvoiceStatusReq updateStatusReq){
+        return invoiceService.updateStatus(updateStatusReq);
+    }
 }

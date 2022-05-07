@@ -22,7 +22,7 @@ export class ProductDetailComponent implements OnInit {
   viewModeCheck = false;
   editModeCheck = true;
   newProductId = '';
-
+  selectedProductId = '';
   addProductForm = new FormGroup({});
   destroy$: Subject<boolean> = new Subject<boolean>();
   constructor(
@@ -63,10 +63,11 @@ export class ProductDetailComponent implements OnInit {
         productName: new FormControl('', Validators.required),
         category: new FormControl('', Validators.required),
         price: new FormControl(0, Validators.required),
-        description: new FormControl('')
+        description: new FormControl(''),
+        isExpire: new FormControl(false, Validators.required),
       })
       if(params.productId){
-        
+        this.selectedProductId = params.productId
         this.productService.getProductById(params.productId)
           .subscribe(res => {
             let data;
@@ -76,7 +77,8 @@ export class ProductDetailComponent implements OnInit {
               productName: new FormControl(data.name, Validators.required),
               category: new FormControl(data.category_id, Validators.required),
               price: new FormControl(data.price, Validators.required),
-              description: new FormControl(data.description)
+              description: new FormControl(data.description),
+              isExpire: new FormControl(data.is_expire)
             })
           })
        
@@ -101,18 +103,37 @@ export class ProductDetailComponent implements OnInit {
             .afterClosed()
             .subscribe((submit) => {
                 if (submit) {
+                  if(this.selectedProductId === ''){
                   const data = {
                     code: this.addProductForm.value.productCode,
                     name: this.addProductForm.value.productName,
                     category_id: this.addProductForm.value.category,
                     price: this.addProductForm.value.price,
-                    description:this.addProductForm.value.description
+                    description:this.addProductForm.value.description,
+                    is_expire: this.addProductForm.value.isExpire
                   }
                   this.productService.addNewProduct(data)
                     .subscribe((res) => {
                       this.toastr.success('New product is successfully added');
                       this.onBack()
                     })
+                  } else {
+                    const data = {
+                      id: this.selectedProductId,
+                      code: this.addProductForm.value.productCode,
+                      name: this.addProductForm.value.productName,
+                      category_id: this.addProductForm.value.category,
+                      price: this.addProductForm.value.price,
+                      description:this.addProductForm.value.description,
+                      is_expire: this.addProductForm.value.isExpire
+                    }
+                    this.productService.updateProductById(data)
+                      .subscribe((res) => {
+                        this.toastr.success('The product is successfully updated');
+                        this.onBack()
+                      })
+
+                  }
                 }
             });
   }

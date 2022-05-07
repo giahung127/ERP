@@ -28,6 +28,7 @@ export class OrderDetailComponent {
   viewModeCheck = true;
   saveCheck = false;
   confirmCheck = true;
+  newShipment = true;
   toolTip = 'Insufficient amount: '
   searchKeyword = '';
   company: Company | undefined;
@@ -112,6 +113,9 @@ export class OrderDetailComponent {
       temp = res;
       if(temp.data !== null){
         this.shipmentList = temp.data.map(({id, code, orderId, createdDate, receiverName, contactAddress, contactNumber, shipmentStatus}) => {
+          if(shipmentStatus !== 'CANCEL') {
+            this.newShipment = false;
+          }
           return {
             shipmentId: id,
             shipmentCode: code,
@@ -262,7 +266,7 @@ export class OrderDetailComponent {
       const product = this.productList.filter(x => {return x.productId === id})[0]
       const price = this.priceListList.find(x => {return x.id === this.selectedOrder.priceListId})?.item?.find(y => {return y.productId === product.productId})?.price
       console.log(this.priceListList.find(x => {return x.id === this.selectedOrder.priceListId})?.item)
-      this.orderProductList.push(new ImportProduct(this.orderProductList.length +1, product.productId, product.productCode, product.productName, 1, price? price : 0))
+      this.orderProductList.push(new ImportProduct(this.orderProductList.length +1, product.productId, product.productCode, product.productName, 1, price? price : 0, false))
     }
     this.reCalculateTotal();
     this.check();
@@ -359,6 +363,51 @@ export class OrderDetailComponent {
       });
   }
 
+  createNewShipment(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      message: "Do you want to create a new shipment for the order?",
+      title: "Create a new shipment"
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    dialogRef
+      .afterClosed()
+      .subscribe((submit) => {
+          if (submit) {
+            const shipmentData = {
+              'transporter_id': '',
+              'receiver_name': this.selectedOrder.customerName,
+              'contact_number': this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.phone,
+              'contact_address': this.customerList.find((x)=> {return x.customerId === this.selectedOrder.customerId})?.address,
+              'customer_name': this.selectedOrder.customerName,
+              'order_id': this.selectedOrder.orderId,
+              'total_price': this.selectedOrder.totalIncludeTax,
+              'code': '',
+              'created_date': new Date(),
+              'creator_name': 'Gia Hung',
+              'shipment_status': 'IN_STOCK',
+              'shipmen_item_list':this.orderProductList.map(({productId, amount}) => {
+                return {
+                  'product_id': productId,
+                  'amount': amount
+                }
+              })
+            }
+            this.shipmentService.addNewShipment(shipmentData)
+            .subscribe((res) => {
+              this.toastr.success('New shipment is successfully created');
+              this.getShipmentList(this.selectedOrder.orderId)
+            },
+            (err) => {
+              this.toastr.error(err);
+            })
+          }
+      })
+
+  }
+
   getProductPriceList(id: string){
     if(this.priceListList.filter(x=> {return x.id === id})[0].item === undefined){
       this.priceListService.getPriceListById(id)
@@ -402,6 +451,14 @@ export class OrderDetailComponent {
     this.orderService.cancelOrderById(this.selectedOrder.orderId)
     .subscribe((res) => {
       this.toastr.success('The order is cancelled');
+      this.invoiceService.updateInvoiceStatus({id: this.selectedOrder?.invoiceId, invoiceStatus: 'CANCEL'})
+        .subscribe((res) => {
+          this.toastr.success('The invoice of the order is cancelled');
+          this.onBack();
+        },
+        (err) => {
+          this.toastr.error(err.message);
+        })
       this.onBack();
     },
     (err) => {

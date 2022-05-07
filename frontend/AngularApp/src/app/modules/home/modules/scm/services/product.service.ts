@@ -30,4 +30,7 @@ export class ProductService {
   addNewProduct(data){
     return this.http.post('http://localhost:10003/scm/product/addProduct',data, { headers: this.headers })
   }
+
+  updateProductById(data){
+    return this.http.post('http://localhost:10003/scm/product/updateById',data, { headers: this.headers })}
 }

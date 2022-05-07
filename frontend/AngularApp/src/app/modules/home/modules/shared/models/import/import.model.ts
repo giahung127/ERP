@@ -1,18 +1,24 @@
 export class Import {
     importId: string;
+    importCode: string;
+    createdBy: string;
     createdDate: string;
-    supplier: string;
-    status: string;
-
+    supplierId: string;
+    supplierName?: string;
+    total: number;
     constructor(
         importId: string,
+        importCode: string,
+        createdBy: string,
         createdDate: string,
-        supplier: string,
-        status: string
+        supplierId: string,
+        total: number
     ) {
         this.importId = importId;
         this.createdDate = createdDate;
-        this.supplier = supplier;
-        this.status = status;
+        this.importCode = importCode;
+        this.createdBy = createdBy;
+        this.supplierId = supplierId;
+        this.total = total;
     }
 }

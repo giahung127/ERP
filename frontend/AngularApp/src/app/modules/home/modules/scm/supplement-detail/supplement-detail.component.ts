@@ -18,11 +18,12 @@ import { SupplierService } from '../services/supplier.service';
   styleUrls: ['./supplement-detail.component.scss']
 })
 export class SupplementDetailComponent {
-
+  selectedSupplement
   viewModeCheck = true;
   searchKeyword = '';
   totalPrice = 0;
   tax = 0;
+  selectedSupplier = '';
   productList: Product[] = [];
   supplierList: Supplier[] = [];
   showProductList: Product[] = [];
@@ -37,6 +38,7 @@ export class SupplementDetailComponent {
     'Category': 'categoryName',
   };
   importProductList: ImportProduct[] = [];
+  orderProductList: ImportProduct[] = [];
 
   constructor(
     private _location: Location,
@@ -47,19 +49,43 @@ export class SupplementDetailComponent {
     private dialog: MatDialog,
     private toastr: ToastrService
   ) { 
-    this.getProductList();
     this.getListSupplier();
-    this.route.queryParams.subscribe((params) => {
-      if (params['id'] && params['id'] == 'i001') {
-        this.viewModeCheck = false;
-      } else {
-        this.viewModeCheck = true;
-      }     
-    })
+    this.getProductList(); 
   }
 
   onBack() {
     this._location.back();
+  }
+
+  getSelectedSupplement(supplementId: string){
+    this.supplementService.getSupplementById(supplementId)
+    .subscribe((res)=> {
+      let temp;
+      temp = res
+      this.selectedSupplement = {
+        supplementId: supplementId,
+        supplementCode: temp.data.supplement.code,
+        createdDate: new Date(temp.data.supplement.date).toDateString(),
+        createdBy: temp.data.supplement.createdBy,
+        supplierId: temp.data.supplement.supplierId,
+        supplierName: this.supplierList.find(x => {return x.supplierId === temp.data.supplement.supplierId})?.name,
+        total: temp.data.supplement.total
+      }
+      this.importProductList = temp.data.supplementItems.map(({ noNum, productId, amount, expiryDate, price, manufacturedDate})=>{
+        return {
+          'no': noNum,
+          'productId': productId,
+          'productCode': this.productList.find(x => {return x.productId === productId})?.productCode,
+          'productName': this.productList.find(x => {return x.productId === productId})?.productName,
+          'amount': amount,
+          'price': price,
+          'isExpire':this.productList.find(x => {return x.productId === productId})?.isExpire,
+          'expiryDate':new Date(expiryDate).toDateString(),
+          'manufacturedDate': new Date(manufacturedDate).toDateString(),
+        }
+      })
+      this.reIndexNo();
+    })
   }
 
   getProductList() {
@@ -67,14 +93,15 @@ export class SupplementDetailComponent {
       .subscribe(res => {
         let data;
         data = res;
-        this.productList = data.map(({ id, code, name, price, category, description})=>{
+        this.productList = data.map(({ id, code, name, price, categoryName, description, is_expire})=>{
           return {
             'productId': id,
             'productCode': code,
             'productName': name,
-            'categoryName': category,
+            'categoryName': categoryName,
             'price': price,
-            'description': description
+            'description': description,
+            'isExpire': is_expire
           }
         })
         this.showProductList = this.productList;
@@ -96,6 +123,23 @@ export class SupplementDetailComponent {
           'code': ''
         }
       })
+      this.route.queryParams.subscribe((params) => {  
+        if (params['supplementId']) {
+          this.viewModeCheck = false;
+          this.getSelectedSupplement(params['supplementId']);
+        } else {
+          this.viewModeCheck = true;
+          this.selectedSupplement = {
+            supplementId: "",
+            supplementCode: "",
+            createdDate: "",
+            createdBy: "Gia Hung",
+            supplierId: "",
+            supplierName: "",
+            total: 0
+          } 
+        } 
+      })
     })
   }
 
@@ -114,10 +158,16 @@ export class SupplementDetailComponent {
       data.amount += 1;
     } else {
       const product = this.productList.filter(x => {return x.productId === id})[0]
-      this.importProductList.push(new ImportProduct(this.importProductList.length +1, product.productId, product.productCode, product.productName, 1, 0))
+      if(<boolean>product.isExpire){
+        const newData = new ImportProduct(this.importProductList.length +1, product.productId, product.productCode, product.productName, 1, 0, <boolean>product.isExpire)
+        newData.expiryDate = new Date();
+        newData.manufacturedDate = new Date();
+        this.importProductList.push(newData)
+      } else {
+        this.importProductList.push(new ImportProduct(this.importProductList.length +1, product.productId, product.productCode, product.productName, 1, 0, <boolean>product.isExpire))
+      }
     }
     this.reCalculateTotal();
-    console.log(this.totalPrice)
   }
 
   reIndexNo() {
@@ -153,8 +203,27 @@ export class SupplementDetailComponent {
       .afterClosed()
       .subscribe((submit) => {
           if (submit) {
-            this.toastr.success('New import is successfully created');
-            this.onBack();
+            const data = {
+              supplier_id: this.selectedSupplier,
+              created_by: "Gia Hung",
+              date: new Date(),
+              total: this.totalPrice,
+              code:'',
+              supplement_item_list: this.importProductList.map(x => {
+                return {
+                  product_id: x.productId,
+                  price: x.price,
+                  amount: x.amount,
+                  manufactured_date: x.manufacturedDate,
+                  expiry_date: x.expiryDate
+                }
+              }),
+            }
+            this.supplementService.addNewSupplement(data)
+              .subscribe((res) => {
+                this.toastr.success('New import is successfully created');
+                this.onBack();
+              })
           }
       });
   }

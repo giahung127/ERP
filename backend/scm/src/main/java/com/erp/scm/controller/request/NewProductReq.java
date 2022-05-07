@@ -6,4 +6,5 @@ public class NewProductReq {
     public String category_id;
     public Float  price;
     public String description;
+    public Boolean is_expire;
 }

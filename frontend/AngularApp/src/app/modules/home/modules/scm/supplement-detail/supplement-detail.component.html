@@ -1,5 +1,5 @@
 <div class="main-container">
-    <div class="left-content">
+    <div class="left-content" *ngIf="selectedSupplement">
         <div class="header">
             <div (click)="onBack()">
                 <mat-icon>arrow_back_ios</mat-icon>
@@ -8,25 +8,96 @@
             <p class="content-left" *ngIf="!viewModeCheck" >Import Detail</p>
         </div>
         <div class="line"></div>
+        <div *ngIf="!viewModeCheck">
+            <div class="partial-container">
+                <div class="title">General information</div>
+                <div class="row">
+                    <div class="custom-field-s">
+                        <div class="label">Code:</div>
+                        <div class="content">{{selectedSupplement.supplementCode}}</div>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Created By:</div>
+                        <div class="content">{{selectedSupplement.createdBy}}</div>
+                    </div>
+                    <div class="custom-field-s">
+                        <div class="label">Created Date:</div>
+                        <div class="content">{{selectedSupplement.createdDate}}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="custom-field-s">
+                        <div class="label">Supplier Name:</div>
+                        <div class="content">{{selectedSupplement.supplierName}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="partial-container"  id="test">
+                <div class="title">Product list</div>
+                <div class="row">
+                    <div class="import-product-list custom-field-l">
+                        <div class="label">
+                            <div class="no">No.</div>
+                            <div class="code">Code</div>
+                            <div class="name">Product</div>
+                            <div class="amount">Amount</div>
+                            <div class="price">Price</div>
+                            <div class="total">Total</div>
+                        </div>
+                        <div class="import-list" *ngFor="let importProduct of importProductList">
+                            <div class="import-item">
+                                <div class="no">{{importProduct.no}}</div>
+                                <div class="code">{{importProduct.productCode}}</div>
+                                <div class="name">{{importProduct.productName}}</div>
+                                <div class="amount">{{importProduct.amount}}</div>
+                                <div class="price">{{importProduct.price}}</div>
+                                <div class="total">{{importProduct.price * importProduct.amount}}</div>
+                            </div>
+                            <div class="expire-item" *ngIf="importProduct.isExpire">
+                                <div class="date"  appearance="outline" required>
+                                    <label>Manufactured Date:</label>
+                                    {{importProduct.manufacturedDate}}
+                                </div>
+                                <div class="date"  appearance="outline" required>
+                                    <label>Expiry Date:</label>
+                                    {{importProduct.expiryDate}}
+                                </div>
+                                <div class="delete"></div>
+                            </div>
+                            <div class="line"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="partial-container">
+                <div class="order-footer">
+                    <div class="row">
+                        <div class="footer-title"> Total:</div>
+                        <div class="footer-content"> {{selectedSupplement.total}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <button mat-button class="green-custom-button" >
+                    <mat-icon>print</mat-icon> Print
+                </button>
+                <button class="red-custom-button" mat-button > 
+                    <mat-icon>delete_outline</mat-icon> Cancel
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="viewModeCheck">
         <div class="partial-container">
             <div class="title">General Information</div>
             <div class="row">
             <div class="custom-field-s">
-                <div class="label">Created By:</div>
-                <mat-form-field  appearance="outline" required>
-                    <input disabled matInput type="text" value="Gia Hung">
-                </mat-form-field>
-            </div>
-            <div class="custom-field-s">
-                <div class="label">Created Date:</div>
-                <mat-form-field  appearance="outline" required>
-                    <input matInput type="date">
-                </mat-form-field>
-            </div>
-            <div class="custom-field-s">
                 <div class="label">Supplier:</div>
                 <mat-form-field  appearance="outline" required>
-                    <mat-select>
+                    <mat-select [(ngModel)]="selectedSupplier">
                         <mat-option *ngFor="let supplier of supplierList" [value]="supplier.supplierId">
                             {{supplier.name}}
                         </mat-option>
@@ -46,15 +117,31 @@
                         <div class="name">Product</div>
                         <div class="amount">Amount</div>
                         <div class="price">Price</div>
+                        <div class="total">Total</div>
                         <div class="delete" *ngIf="viewModeCheck"></div>
                     </div>
-                    <div class="import-item" *ngFor="let importProduct of importProductList">
-                        <div class="no">{{importProduct.no}}</div>
-                        <div class="code">{{importProduct.productCode}}</div>
-                        <div class="name">{{importProduct.productName}}</div>
-                        <mat-form-field class="amount" appearance="outline"><input [(ngModel)]=importProduct.amount (ngModelChange)="reCalculateTotal()" matInput type="number"></mat-form-field>
-                        <mat-form-field class="price" appearance="outline"><input [(ngModel)]=importProduct.price (ngModelChange)="reCalculateTotal()" matInput type="number"></mat-form-field>
-                        <button *ngIf="viewModeCheck" class="delete" mat-icon-button (click)="delete(importProduct.productId)"><mat-icon>close</mat-icon></button>
+                    <div class="import-list"  *ngFor="let importProduct of importProductList">
+                        <div class="import-item">
+                            <div class="no">{{importProduct.no}}</div>
+                            <div class="code">{{importProduct.productCode}}</div>
+                            <div class="name">{{importProduct.productName}}</div>
+                            <mat-form-field class="amount" appearance="outline"><input [(ngModel)]=importProduct.amount (ngModelChange)="reCalculateTotal()" matInput type="number"></mat-form-field>
+                            <mat-form-field class="price" appearance="outline"><input [(ngModel)]=importProduct.price (ngModelChange)="reCalculateTotal()" matInput type="number"></mat-form-field>
+                            <div class="total">{{importProduct.price * importProduct.amount}}</div>
+                            <button *ngIf="viewModeCheck" class="delete" mat-icon-button (click)="delete(importProduct.productId)"><mat-icon>close</mat-icon></button>
+                        </div>
+                        <div class="expire-item" *ngIf="importProduct.isExpire">
+                            <mat-form-field class="date"  appearance="outline" required>
+                                <mat-label>Manufactured Date:</mat-label>
+                                <input matInput type="date" [(ngModel)]=importProduct.manufacturedDate>
+                            </mat-form-field>
+                            <mat-form-field class="date"  appearance="outline" required>
+                                <mat-label>Expiry Date:</mat-label>
+                                <input matInput type="date" [(ngModel)]=importProduct.expiryDate>
+                            </mat-form-field>
+                            <div class="delete"></div>
+                        </div>
+                        <div class="line"></div>
                     </div>
                 </div>
             </div>
@@ -63,20 +150,8 @@
         <div class="partial-container">
             <div class="order-footer">
                 <div class="row">
-                    <div class="footer-title"> Subtotal:</div>
-                    <div class="footer-content"> {{totalPrice}}</div>
-                </div>
-                <div class="row">
-                    <div class="footer-title"> Tax rate:</div>
-                    <div class="footer-content"> 0</div>
-                </div>
-                <div class="row">
-                    <div class="footer-title"> Total tax:</div>
-                    <div class="footer-content">0</div>
-                </div>
-                <div class="row">
                     <div class="footer-title"> Total:</div>
-                    <div class="footer-content">{{totalPrice}}</div>
+                    <div class="footer-content"> {{selectedSupplement.total.toFixed(2)}} </div>
                 </div>
             </div>
         </div>
@@ -87,6 +162,7 @@
             <button class="red-custom-button" mat-button  (click)="onBack()"> 
                 <mat-icon>delete_outline</mat-icon> Cancel
             </button>
+        </div>
         </div>
     </div>
     <div class="right-content"  *ngIf="viewModeCheck">

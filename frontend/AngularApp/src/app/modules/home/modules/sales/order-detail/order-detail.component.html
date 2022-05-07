@@ -130,6 +130,10 @@
                 <button mat-button class="green-custom-button" (click)="toInvoice()">
                     <mat-icon>receipt</mat-icon> Invoice
                 </button>
+                <button mat-button class="green-custom-button" *ngIf="newShipment"  (click)="createNewShipment()">
+                    <mat-icon>local_shipping</mat-icon> New shipment
+                </button>
+
                 <button mat-button class="green-custom-button" (click)="printPage()">
                     <mat-icon>print</mat-icon> Print
                 </button>

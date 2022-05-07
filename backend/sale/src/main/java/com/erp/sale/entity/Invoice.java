@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Date;
 import java.util.UUID;
 
 @Getter
@@ -27,11 +28,13 @@ public class Invoice {
     private double totalTax;
     private double totalDiscount;
     private double totalPrice;
+    private Date createDate;
     private InvoiceStatus invoiceStatus;
 
-    public Invoice(double totalDiscount, double totalTax, double totalPrice, String code){
+    public Invoice(double totalDiscount, double totalTax,Date createDate, double totalPrice, String code){
         this.totalDiscount = totalDiscount;
         this.totalTax = totalTax;
+        this.createDate = createDate;
         this.totalPrice = totalPrice;
         this.invoiceStatus = InvoiceStatus.UNPAID;
         this.code = code;

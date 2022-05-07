@@ -13,6 +13,7 @@ public class ProductWithCategoryName {
     public String      description;
     public String      categoryName;
     public Integer     amount;
+    public Boolean     is_expire;
     public ProductWithCategoryName(Product product, String categoryName){
         this.id = product.getId().toString();
         this.code = product.getCode();
@@ -22,6 +23,7 @@ public class ProductWithCategoryName {
         this.description = product.getDescription();
         this.categoryName = categoryName;
         this.amount = product.getAmount();
+        this.is_expire = product.getIs_expire();
     }
 
     public ProductWithCategoryName(Optional<Product> product, String categoryName){
@@ -32,5 +34,6 @@ public class ProductWithCategoryName {
         this.price = product.get().getPrice();
         this.description = product.get().getDescription();
         this.categoryName = categoryName;
+        this.is_expire = product.get().getIs_expire();
     }
 }
