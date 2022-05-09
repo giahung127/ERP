@@ -1,16 +1,17 @@
 package com.erp.scm.service;
 
 import com.erp.scm.controller.request.NewProductReq;
+import com.erp.scm.controller.request.SupplementItemReq;
 import com.erp.scm.controller.request.UpdateAfterOrderReq;
 import com.erp.scm.controller.response.NewProductRes;
 import com.erp.scm.controller.response.NormalRes;
 import com.erp.scm.controller.response.ProductNameAndCodeRes;
 import com.erp.scm.controller.response.ProductWithCategoryName;
-import com.erp.scm.entity.Category;
-import com.erp.scm.entity.Product;
-import com.erp.scm.entity.Shipment;
+import com.erp.scm.entity.*;
 import com.erp.scm.repository.CategoryRepository;
+import com.erp.scm.repository.ExportHistoryRepository;
 import com.erp.scm.repository.ProductRepository;
+import com.erp.scm.repository.SupplementItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +30,12 @@ public class ProductService {
     private ProductRepository productRepository;
     @Autowired
     private CategoryRepository categoryRepository;
-
+    @Autowired
+    private SupplementItemRepository supplementItemRepository;
+    @Autowired
+    private ExportHistoryRepository exportHistoryRepository;
+    @Autowired
+    private ExportHistoryService exportHistoryService;
     public NewProductRes newProduct(NewProductReq newProductReq) {
         if(Objects.equals(newProductReq.code, "")) {
             List<Product> productList = productRepository.findAll();
@@ -130,23 +136,53 @@ public class ProductService {
 
 
     public NormalRes updateAfterOrder(UpdateAfterOrderReq updateAfterOrderReq) throws Error {
-        Optional<Product> temp = productRepository.findById(UUID.fromString(updateAfterOrderReq.product_id));
-        if (temp.isEmpty()){
-            return new NormalRes("404", "Not found related product", "");
-        }
-        System.out.println(updateAfterOrderReq);
+
         if (Objects.equals(updateAfterOrderReq.type, "NEW_ORDER")){
+            Optional<Product> temp = productRepository.findById(UUID.fromString(updateAfterOrderReq.product_id));
+            if (temp.isEmpty()){
+                return new NormalRes("404", "Not found related product", "");
+            }
             if (updateAfterOrderReq.amount > temp.get().getAmount()){
                 return new NormalRes("404", "Insufficient amount", temp.get().getCode());
             }
-            System.out.println(temp.get().getAmount() + ',' + updateAfterOrderReq.amount);
             temp.get().setAmount(temp.get().getAmount() - updateAfterOrderReq.amount);
             productRepository.save(temp.get());
+            System.out.println("ok here ---- " + updateAfterOrderReq.amount);
+            List<SupplementItem> supplementItemList
+                    = supplementItemRepository
+                    .findAllByProductId(updateAfterOrderReq.product_id);
+            if (temp.get().getIs_expire() != null && temp.get().getIs_expire() != Boolean.FALSE){
+                supplementItemList = supplementItemList.stream().sorted(Comparator.comparing(SupplementItem::getExpiryDate)).collect(Collectors.toList());
+            }
+            int updateAmount = updateAfterOrderReq.amount;
+            for (SupplementItem supplementItem : supplementItemList) {
+                if (supplementItem.getAmount() >= updateAmount){
+                    supplementItem.setRemaining(supplementItem.getRemaining() - updateAmount);
+                    supplementItemRepository.save(supplementItem);
+                    exportHistoryRepository
+                            .save(new ExportHistory(
+                                    temp.get().getId().toString(),
+                                    supplementItem.getSupplementId(),
+                                    updateAfterOrderReq.order_id,
+                                    updateAmount));
+                    break;
+                }
+                else{
+                    exportHistoryRepository
+                            .save(new ExportHistory(
+                                    temp.get().getId().toString(),
+                                    supplementItem.getSupplementId(),
+                                    updateAfterOrderReq.order_id,
+                                    supplementItem.getAmount()));
+                    updateAmount = updateAmount - supplementItem.getAmount();
+                    supplementItem.setRemaining(0);
+                    supplementItemRepository.save(supplementItem);
+                }
+            }
         }
         if (Objects.equals(updateAfterOrderReq.type, "CANCEL_ORDER")){
-            temp.get().setAmount(temp.get().getAmount() + updateAfterOrderReq.amount);
-            productRepository.save(temp.get());
+            exportHistoryService.updateAfterCancelOrder(updateAfterOrderReq.order_id);
         }
-        return new NormalRes("200", "Updated amount of Product", "" + temp.get().getAmount());
+        return new NormalRes("200", "Updated amount of Product", "");
     }
 }

@@ -44,15 +44,6 @@ public class OrderService {
             ItemList.add(new OrderItem(newOrder.getId().toString(),newOrderReq.product_item_list.get(i)));
         }
         orderItemRepository.saveAll(ItemList);
-        ItemList.parallelStream().map(
-            orderItem -> {
-                NormalRes res = productService.updateAfterOrder(new UpdateAfterOrderReq("NEW_ORDER", orderItem.getAmount(), orderItem.getProductId()));
-                if(!res.code.equals("400")){
-                    throw new Error(res.message);
-                }
-                return res;
-            }
-        );
         return new NormalRes("200", "New Order Inserted",  newOrder.getId().toString());
     }
     public List<Order> loadAllOrder(){
@@ -106,7 +97,10 @@ public class OrderService {
         if(updateStatusReq.orderStatus == OrderStatus.CONFIRMED){
             orderItems.forEach(
                 orderItem -> {
-                    productService.updateAfterOrder(new UpdateAfterOrderReq("NEW_ORDER", orderItem.getAmount(), orderItem.getProductId()));
+                    productService
+                            .updateAfterOrder(new UpdateAfterOrderReq(
+                                    "NEW_ORDER", orderItem.getAmount(),
+                                    orderItem.getProductId(), updateStatusReq.id));
                 }
             );
         }
@@ -144,12 +138,9 @@ public class OrderService {
         }
 
         shipmentService.cancelShipmentByOrderId(id);
-        List<OrderItem> orderItems = orderItemRepository.findAllByOrderId(id);
-        orderItems.forEach(
-                orderItem -> {
-                    productService.updateAfterOrder(new UpdateAfterOrderReq("CANCEL_ORDER", orderItem.getAmount(), orderItem.getProductId()));
-                }
-        );
+
+        productService.updateAfterOrder(new UpdateAfterOrderReq("CANCEL_ORDER", 0, null, id));
+
         order.get().setOrderStatus(OrderStatus.CANCEL);
         orderRepository.save(order.get());
         return new NormalRes("200", "successfully cancel order Id: " + id, "");

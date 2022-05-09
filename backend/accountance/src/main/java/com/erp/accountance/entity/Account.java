@@ -25,16 +25,12 @@ public class Account {
     @Column(unique=true, nullable = false)
     private String username;
     private String password;
-    private Role   role;
     private String employeeId;
-    private String employeeName;
     public Account(NewAccountReq req){
         this.username = req.username;
         this.password = Hashing.sha256()
                 .hashString(req.password, StandardCharsets.UTF_8)
                 .toString();
         this.employeeId = req.employee_id;
-        this.employeeName = req.employee_name;
-        this.role = Role.SALE;
     }
 }

@@ -35,7 +35,7 @@ public class ProductService {
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost("http://localhost:10003/scm/product/updateAfterOrder");
 
-        String json = "{" + "\"type\": \"" + updateAfterOrderReq.type  + "\"," + "\"amount\": \"" + updateAfterOrderReq.amount + "\","  + "\"product_id\": \"" + updateAfterOrderReq.product_id + "\""  + "}";
+        String json = "{" + "\"type\": \"" + updateAfterOrderReq.type  + "\"," + "\"amount\": \"" + updateAfterOrderReq.amount + "\","  + "\"product_id\": \"" + updateAfterOrderReq.product_id + "\"," + "\"order_id\": \"" + updateAfterOrderReq.order_id + "\""  + "}";
         StringEntity entity = new StringEntity(json);
         httpPost.setEntity(entity);
         httpPost.setHeader("Accept", "application/json");
