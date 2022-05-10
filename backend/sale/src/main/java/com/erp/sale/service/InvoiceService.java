@@ -41,7 +41,7 @@ public class InvoiceService {
             }
             totalPrice += order.get().getTotalExcludeTax();
             totalDiscount += order.get().getDiscount();
-            totalTax += order.get().getTax();
+            totalTax += order.get().getTax()*totalPrice;
         }
         Date date = new java.sql.Date(System.currentTimeMillis());
         Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax,date ,  totalPrice, newInvCode));
