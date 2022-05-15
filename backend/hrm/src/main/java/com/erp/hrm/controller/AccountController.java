@@ -2,6 +2,7 @@ package com.erp.hrm.controller;
 
 
 import com.erp.hrm.controller.request.ChangePasswordReq;
+import com.erp.hrm.controller.request.LoginReq;
 import com.erp.hrm.controller.response.NormalRes;
 import com.erp.hrm.entity.Account;
 import com.erp.hrm.service.AccountService;
@@ -32,5 +33,10 @@ public class AccountController {
     @PostMapping("deactivate")
     public NormalRes deactivate(@RequestParam String accountId){
         return accountService.deactivate(accountId);
+    }
+
+    @PostMapping("/login")
+    public NormalRes loginAccount(@RequestBody LoginReq loginInfo){
+        return accountService.loginAccount(loginInfo);
     }
 }

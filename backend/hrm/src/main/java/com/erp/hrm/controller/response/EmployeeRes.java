@@ -9,6 +9,6 @@ public class EmployeeRes {
     public UUID employeeId;
     public String  name;
     public String  position;
-    public Long    phone;
+    public String    phone;
     public String  department;
 }

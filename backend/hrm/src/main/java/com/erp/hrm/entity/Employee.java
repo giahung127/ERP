@@ -28,7 +28,7 @@ public class Employee {
     private Date    birthday;
     private String  role;
     private String  contact_address;
-    private Long    phone;
+    private String   phone;
     private String  company_email;
 
     public Employee(EmployeeReq employeeReq){
