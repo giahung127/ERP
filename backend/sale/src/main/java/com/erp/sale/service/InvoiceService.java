@@ -103,6 +103,9 @@ public class InvoiceService {
     }
 
     public NormalRes updateStatus(UpdateInvoiceStatusReq updateStatusReq) throws Error{
+        if (updateStatusReq.id == null){
+            return new  NormalRes("404", "No invoice found", "");
+        }
         Optional<Invoice> item = invoiceRepository.findById(UUID.fromString(updateStatusReq.id));
         if (item.isEmpty()){
             return new  NormalRes("404", "Not found", "");

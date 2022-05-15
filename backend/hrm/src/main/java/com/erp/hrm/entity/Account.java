@@ -1,10 +1,11 @@
-package com.erp.accountance.entity;
+package com.erp.hrm.entity;
 
-import com.erp.accountance.controller.request.NewAccountReq;
-import com.erp.accountance.entity.related.Role;
+import com.erp.hrm.entity.related.AccountStatus;
 import com.google.common.hash.Hashing;
-import jdk.jfr.DataAmount;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -16,7 +17,6 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,12 +25,14 @@ public class Account {
     @Column(unique=true, nullable = false)
     private String username;
     private String password;
+    private AccountStatus accountStatus;
     private String employeeId;
-    public Account(NewAccountReq req){
-        this.username = req.username;
+    public Account(String username, String password, String employee_id){
+        this.username = username;
         this.password = Hashing.sha256()
-                .hashString(req.password, StandardCharsets.UTF_8)
+                .hashString(password, StandardCharsets.UTF_8)
                 .toString();
-        this.employeeId = req.employee_id;
+        this.employeeId = employee_id;
+        this.accountStatus = AccountStatus.PENDING;
     }
 }

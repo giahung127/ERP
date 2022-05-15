@@ -1,7 +1,10 @@
 package com.erp.hrm.service;
 
 import com.erp.hrm.controller.request.EmployeeReq;
+import com.erp.hrm.controller.response.NormalRes;
+import com.erp.hrm.entity.Account;
 import com.erp.hrm.entity.Employee;
+import com.erp.hrm.repository.AccountRepository;
 import com.erp.hrm.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,16 +19,15 @@ import java.util.List;
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
-    public ResponseEntity<String> newEmployee(EmployeeReq employeeReq) {
-        try {
-            employeeRepository.save(new Employee(employeeReq));
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD_REQUEST");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body("Inserted new employee");
+    public NormalRes newEmployee(EmployeeReq employeeReq) throws Error {
+        Employee employee = employeeRepository.save(new Employee(employeeReq));
+        accountRepository.save(new Account(employee.getCompany_email(), "abc123", employee.getId().toString()));
+        return new NormalRes("200", "Inserted new employee", employee.getId().toString());
     }
-    public List<Employee> loadAllEmployee(){
+    public List<Employee> loadAllEmployee() throws Error{
         return (List<Employee>) employeeRepository.findAll();
     }
 
@@ -33,7 +35,4 @@ public class EmployeeService {
         Page<Employee> resultt =  employeeRepository.findAll(sort);
         return resultt;
     }
-
-
-
 }
