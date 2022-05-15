@@ -1,6 +1,7 @@
 package com.erp.scm.controller;
 
 import com.erp.scm.controller.request.NewSupplementReq;
+import com.erp.scm.controller.response.GetListSupplementItemRes;
 import com.erp.scm.controller.response.GetListSupplementRes;
 import com.erp.scm.controller.response.GetSupplementRes;
 import com.erp.scm.controller.response.NormalRes;
@@ -35,4 +36,13 @@ public class SupplementController {
         return supplementService.getSupplementById(id);
     }
 
+    @GetMapping("/getBySupplierId/{supplierId}")
+    public GetListSupplementRes getSupplementBySupplierId(@PathVariable String supplierId){
+        return supplementService.getSupplementBySupplierId(supplierId);
+    }
+
+    @GetMapping("/getSupplementItemByProductId/{productId}")
+    public GetListSupplementItemRes getSupplementListByProductId(@PathVariable String productId){
+        return supplementService.getSupplementListByProductId(productId);
+    }
 }

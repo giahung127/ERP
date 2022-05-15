@@ -17,7 +17,15 @@ export class SupplementService {
     return this.http.get('http://localhost:10003/scm/supplement/loadAll', { headers: this.headers })
   }
 
-  getSupplementById(supplementId){
+  getSupplementById(supplementId: string){
     return this.http.get(`http://localhost:10003/scm/supplement/getById/${supplementId}`, { headers: this.headers })
+  }
+
+  getSupplementBySupplierId(supplierId: string){
+    return this.http.get(`http://localhost:10003/scm/supplement/getBySupplierId/${supplierId}`, { headers: this.headers })
+  }
+
+  getSupplementItemByProductId(productId: string){
+    return this.http.get(`http://localhost:10003/scm/supplement/getSupplementItemByProductId/${productId}`, { headers: this.headers })
   }
 }

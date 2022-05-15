@@ -2,6 +2,7 @@ package com.erp.sale.controller;
 
 
 import com.erp.sale.controller.request.NewInvoiceReq;
+import com.erp.sale.controller.request.UpdateInvoiceStatusReq;
 import com.erp.sale.controller.response.InvoiceWithItem;
 import com.erp.sale.controller.response.InvoiceWithItemRes;
 import com.erp.sale.controller.response.InvoicesWithItemRes;

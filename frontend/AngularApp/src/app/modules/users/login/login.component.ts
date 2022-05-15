@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 // import { AuthenticationService } from '../../../core/authentication/authentication.service';
 
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
     username = '';
     password = '';
     error = { check: false, message: '' };
@@ -16,11 +16,6 @@ export class LoginComponent implements OnInit {
 
     constructor( private router: Router, public http: HttpClient) {}
 
-    ngOnInit() {
-        // if (this.authService.isLoggedIn()) {
-        //     this.router.navigateByUrl('/home');
-        // }
-    }
 
     login() {
         this.http.post('http://localhost:9001/account/login', { username: this.username, password: this.password }, { headers: this.headers })

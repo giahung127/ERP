@@ -84,8 +84,8 @@
             <div class="table-header">
                 <div class="content-left"></div>
                 <div class="content-right">
-                    <div>Total unpaid: {{invoiceTotal}}</div>
-                    <div>Total invoice: {{invoiceTotal}}</div>
+                    <div>Total unpaid: {{invoiceTotal | number:'2.'}}</div>
+                    <div>Total sales: {{totalPrice | number:'2.'}}</div>
                 </div>
             </div>
             <app-home-table-list

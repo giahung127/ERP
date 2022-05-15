@@ -39,9 +39,9 @@ public class InvoiceService {
             if (order.isEmpty()){
                 return new NormalRes("404", "Found no record while transfer to invoice", "");
             }
-            totalPrice += order.get().getTotalExcludeTax();
+            totalPrice += order.get().getTotalIncludeTax();
             totalDiscount += order.get().getDiscount();
-            totalTax += order.get().getTax();
+            totalTax += order.get().getTotalIncludeTax()*order.get().getTax()/100;
         }
         Date date = new java.sql.Date(System.currentTimeMillis());
         Invoice newInvoice = invoiceRepository.save(new Invoice(totalDiscount,totalTax,date ,  totalPrice, newInvCode));

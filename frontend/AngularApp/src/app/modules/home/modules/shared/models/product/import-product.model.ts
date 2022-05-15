@@ -6,6 +6,10 @@ export class ImportProduct {
     amount: number;
     price:number;
     isExpire: boolean;
+    supplierName?: string;
+    supplementCode?: string;
+    createdDate?: Date;
+    remaining? : number;
     manufacturedDate?: Date;
     expiryDate?: Date;
 

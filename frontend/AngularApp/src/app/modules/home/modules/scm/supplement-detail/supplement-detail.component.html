@@ -51,8 +51,8 @@
                                 <div class="code">{{importProduct.productCode}}</div>
                                 <div class="name">{{importProduct.productName}}</div>
                                 <div class="amount">{{importProduct.amount}}</div>
-                                <div class="price">{{importProduct.price}}</div>
-                                <div class="total">{{importProduct.price * importProduct.amount}}</div>
+                                <div class="price">{{importProduct.price | number: '2.'}}</div>
+                                <div class="total">{{importProduct.price * importProduct.amount | number: '2.'}}</div>
                             </div>
                             <div class="expire-item" *ngIf="importProduct.isExpire">
                                 <div class="date"  appearance="outline" required>
@@ -75,7 +75,7 @@
                 <div class="order-footer">
                     <div class="row">
                         <div class="footer-title"> Total:</div>
-                        <div class="footer-content"> {{selectedSupplement.total}}</div>
+                        <div class="footer-content"> {{selectedSupplement.total | number: '2.'}}</div>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                             <div class="name">{{importProduct.productName}}</div>
                             <mat-form-field class="amount" appearance="outline"><input [(ngModel)]=importProduct.amount (ngModelChange)="reCalculateTotal()" matInput type="number"></mat-form-field>
                             <mat-form-field class="price" appearance="outline"><input [(ngModel)]=importProduct.price (ngModelChange)="reCalculateTotal()" matInput type="number"></mat-form-field>
-                            <div class="total">{{importProduct.price * importProduct.amount}}</div>
+                            <div class="total">{{importProduct.price * importProduct.amount| number: '2.'}}</div>
                             <button *ngIf="viewModeCheck" class="delete" mat-icon-button (click)="delete(importProduct.productId)"><mat-icon>close</mat-icon></button>
                         </div>
                         <div class="expire-item" *ngIf="importProduct.isExpire">
@@ -151,7 +151,7 @@
             <div class="order-footer">
                 <div class="row">
                     <div class="footer-title"> Total:</div>
-                    <div class="footer-content"> {{selectedSupplement.total.toFixed(2)}} </div>
+                    <div class="footer-content"> {{totalPrice.toFixed(2)| number: '2.'}} </div>
                 </div>
             </div>
         </div>

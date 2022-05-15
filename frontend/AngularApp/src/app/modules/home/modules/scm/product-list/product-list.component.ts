@@ -75,6 +75,7 @@ export class ProductListComponent implements OnInit {
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
     this.router.navigate(['/home/scm/product-detail'], {
+      state: {isExprie: this.productList.find(x => {return x.productId === id})?.isExpire},
       queryParams: { productId: id }
     });
 

@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="custom-field-s">
                         <div class="label">Customer:</div>
-                        <!-- <div class="content">{{selectedOrder.customerName}}</div> -->
+                        <div class="content">{{orderList[0].customerName}}</div>
                     </div>
                     <div class="custom-field-s">
                         <div class="label">Status:</div>
@@ -61,15 +61,15 @@
                 <div class="order-footer">
                     <div class="row">
                         <div class="footer-title"> Tax:</div>
-                        <div class="footer-content"> {{selectedInvoice.totalTax}}</div>
+                        <div class="footer-content"> {{selectedInvoice.totalTax | number: '2.'}}</div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total discount:</div>
-                        <div class="footer-content"> {{selectedInvoice.totalDiscount}}</div>
+                        <div class="footer-content"> {{selectedInvoice.totalDiscount| number: '2.'}}</div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total :</div>
-                        <div class="footer-content"> {{selectedInvoice.total}} </div>
+                        <div class="footer-content"> {{selectedInvoice.total| number: '2.'}} </div>
                     </div>
                 </div>
             </div>

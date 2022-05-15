@@ -446,11 +446,21 @@ export class OrderDetailComponent {
       this.toastr.error(err.message);
     })
   }
-
+  onFinish(){
+    this.orderService.updateOrderStatus({id: this.selectedOrder.orderId, orderStatus: 'FINISHED'})
+    .subscribe((res) => {
+      this.toastr.success('The order is finished');
+      this.onBack();
+    },
+    (err) => {
+      this.toastr.error(err.message);
+    })
+  }
   onCancel(){
     this.orderService.cancelOrderById(this.selectedOrder.orderId)
     .subscribe((res) => {
       this.toastr.success('The order is cancelled');
+      if(this.selectedOrder?.invoiceId !== null){
       this.invoiceService.updateInvoiceStatus({id: this.selectedOrder?.invoiceId, invoiceStatus: 'CANCEL'})
         .subscribe((res) => {
           this.toastr.success('The invoice of the order is cancelled');
@@ -459,6 +469,7 @@ export class OrderDetailComponent {
         (err) => {
           this.toastr.error(err.message);
         })
+      }
       this.onBack();
     },
     (err) => {
@@ -559,8 +570,8 @@ export class OrderDetailComponent {
         <tbody>
           <tr>
             <td style="border-bottom:1px solid black; border-top:1px solid black; width:30%"><strong><span style="font-size:11px">Product</span></strong></td>
-            <td style="border-bottom:1px solid black; border-top:1px solid black; width:20%"><strong><span style="font-size:11px">Price</span></strong></td>
-            <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right; width:20%"><strong><span style="font-size:11px">Amount</span></strong></td>
+            <td style="border-bottom:1px solid black; border-top:1px solid black; width:20%"><strong><span style="font-size:11px">Amount</span></strong></td>
+            <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right; width:20%"><strong><span style="font-size:11px">Price</span></strong></td>
             <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right"><strong><span style="font-size:11px">Total</span></strong></td>
           </tr>
           ${
@@ -573,7 +584,7 @@ export class OrderDetailComponent {
         <tfoot>
           <tr>
             <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Subtotal</td>
-            <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.totalExcludeTax}</td>
+            <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.totalExcludeTax.toLocaleString('en-US')}</td>
           </tr>
           <tr>
             <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Tax rate(%):</td>
@@ -581,7 +592,7 @@ export class OrderDetailComponent {
           </tr>
           <tr>
             <td style="font-size:11px; font-weight:bold; text-align:right; white-space:nowrap">Total:</td>
-            <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.totalIncludeTax}</td>
+            <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedOrder.totalIncludeTax.toLocaleString('en-US')}</td>
           </tr>
         </tfoot>
       </table>
@@ -608,9 +619,9 @@ export class OrderDetailComponent {
       htmlString +=`
         <tr>
           <td style="border-bottom:1px dashed black"><span style="font-size:12px">${x.productName}</span></td>
-          <td style="border-bottom:1px dashed black"><span style="font-size:11px">${x.price}</span></td>
-          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${x.amount}</span></td>
-          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${x.amount*x.price}</span></td>
+          <td style="border-bottom:1px dashed black"><span style="font-size:11px">${x.amount.toLocaleString('en-US')}</span></td>
+          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${x.price.toLocaleString('en-US')}</span></td>
+          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${(x.amount*x.price).toLocaleString('en-US')}</span></td>
         </tr>
         `
     });

@@ -21,13 +21,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SharedModule } from '../shared/shared.module';
 import { CompanySettingComponent } from './company-setting/company-setting.component';
+import { AccountListComponent } from './account-list/account-list.component';
 
 
 @NgModule({
   declarations: [
     SystemSettingComponent,
     CompanyInformationComponent,
-    CompanySettingComponent
+    CompanySettingComponent,
+    AccountListComponent
   ],
   imports: [
     CommonModule,

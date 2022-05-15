@@ -17,7 +17,11 @@ export class EmployeeDetailComponent {
   viewModeCheck = false;
   editModeCheck = true;
   newEmployeeId = '';
-
+  roleList = [
+    'Manager',
+    'Sale Employee',
+    'SCM Employee'
+  ]
   addEmployeeForm = new FormGroup({});
   destroy$: Subject<boolean> = new Subject<boolean>();
   constructor(
@@ -28,22 +32,14 @@ export class EmployeeDetailComponent {
   ) {
       this.route.queryParams.subscribe((params) => {
         this.addEmployeeForm = this.fb.group({
-          firstName: new FormControl('', Validators.required),
-          lastName: new FormControl(''),
+          fullName: new FormControl('', Validators.required),
           sex: new FormControl(''),
-          departmentId: new FormControl('', Validators.required),
-          positionId: new FormControl('', Validators.required),
-          changeDate: new FormControl('', Validators.required),
+          role: new FormControl('', Validators.required),
           joinDate: new FormControl('', Validators.required),
           birthday: new FormControl('', Validators.required),
-          birthPlace: new FormControl('', Validators.required),
-          maritalStatus: new FormControl('', Validators.required),
-          contactAddress: new FormControl('', Validators.required),
+          address: new FormControl('', Validators.required),
           phone: new FormControl('', Validators.required),
-          companyEmail: new FormControl('', Validators.required),
-          personalEmail: new FormControl('', Validators.required),
-          bankName: new FormControl('', Validators.required),
-          accountNo: new FormControl('', Validators.required)
+          email: new FormControl('', Validators.required)
         })
       });
   }

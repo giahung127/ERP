@@ -26,6 +26,7 @@
     
     form {
         width: 100%;
+        padding-top: 16px;
     }
     
     .partial-container{
@@ -38,7 +39,6 @@
         width: 100%;
         height: auto;
     }
-    
     .partial-container .title {
         display: flex;
         flex-direction: row;
@@ -56,9 +56,9 @@
         gap: 5%;
         width: 100%;
     }
-
-    .partial-container .mat-tab-group{
+    mat-tab-group{
         flex-grow: 1;
+        width: 100%;
     }
     
     .line {
@@ -164,5 +164,22 @@
         margin: 6px;
         gap: 12px;
     }
+    .partial-container .mat-tab-group{
+        flex-grow: 1;
+    }
 }
+:host ::ng-deep app-home-table-list.product-list{
 
+
+    table {
+        tbody {
+            tr {
+                &:hover,
+                &.active {
+                    background-color: #a8b2e685;
+                }
+                cursor: pointer;
+            }
+        }
+    }
+}

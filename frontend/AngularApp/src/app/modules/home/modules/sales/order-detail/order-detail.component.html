@@ -85,8 +85,8 @@
                             <div class="code">{{importProduct.productCode}}</div>
                             <div class="name">{{importProduct.productName}}</div>
                             <div class="amount">{{importProduct.amount}}</div>
-                            <div class="price">{{importProduct.price}}</div>
-                            <div class="total">{{importProduct.price * importProduct.amount}}</div>
+                            <div class="price">{{importProduct.price  | number: '2.'}}</div>
+                            <div class="total">{{importProduct.price * importProduct.amount  | number: '2.'}}</div>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                 <div class="order-footer">
                     <div class="row">
                         <div class="footer-title"> Total (Exc. Tax):</div>
-                        <div class="footer-content"> {{selectedOrder.totalExcludeTax}}</div>
+                        <div class="footer-content"> {{selectedOrder.totalExcludeTax  | number: '2.'}}</div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Tax rate (%):</div>
@@ -104,11 +104,11 @@
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total tax:</div>
-                        <div class="footer-content"> {{(selectedOrder.tax * selectedOrder.totalExcludeTax)/100}} </div>
+                        <div class="footer-content"> {{(selectedOrder.tax * selectedOrder.totalExcludeTax)/100  | number: '2.'}} </div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total (Inc. Tax):</div>
-                        <div class="footer-content"> {{selectedOrder.totalIncludeTax}}</div>
+                        <div class="footer-content"> {{selectedOrder.totalIncludeTax | number: '2.'}}</div>
                     </div>
                 </div>
             </div>
@@ -127,6 +127,9 @@
                     <mat-icon>check</mat-icon> Confirm
                 </button>
                 </div>
+                <button mat-button class="green-custom-button" *ngIf="selectedOrder.status === 'CONFIRMED'"  (click)="onFinish()">
+                    <mat-icon>check</mat-icon> Finish
+                </button>
                 <button mat-button class="green-custom-button" (click)="toInvoice()">
                     <mat-icon>receipt</mat-icon> Invoice
                 </button>
@@ -232,8 +235,8 @@
                             <div class="code">{{importProduct.productCode}}</div>
                             <div class="name">{{importProduct.productName}}</div>
                             <mat-form-field class="amount" appearance="outline"><input [(ngModel)]=importProduct.amount (ngModelChange)="reCalculateTotal()" matInput type="number"></mat-form-field>
-                            <div class="price">{{importProduct.price}}</div>
-                            <div class="total">{{importProduct.price * importProduct.amount}}</div>
+                            <div class="price">{{importProduct.price | number: '2.'}}</div>
+                            <div class="total">{{importProduct.price * importProduct.amount| number: '2.'}}</div>
                             <button *ngIf="viewModeCheck" class="delete" mat-icon-button (click)="delete(importProduct.productId)"><mat-icon>close</mat-icon></button>
                         </div>
                     </div>
@@ -244,7 +247,7 @@
                 <div class="order-footer">
                     <div class="row">
                         <div class="footer-title"> Subtotal:</div>
-                        <div class="footer-content"> {{selectedOrder.totalExcludeTax}}</div>
+                        <div class="footer-content"> {{selectedOrder.totalExcludeTax | number: '2.'}}</div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Tax rate(%):</div>
@@ -259,11 +262,11 @@
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total tax:</div>
-                        <div class="footer-content">{{(selectedOrder.tax * selectedOrder.totalExcludeTax)/100}}</div>
+                        <div class="footer-content">{{(selectedOrder.tax * selectedOrder.totalExcludeTax)/100 | number: '2.'}}</div>
                     </div>
                     <div class="row">
                         <div class="footer-title"> Total:</div>
-                        <div class="footer-content"> {{selectedOrder.totalIncludeTax.toFixed(2)}} </div>
+                        <div class="footer-content"> {{selectedOrder.totalIncludeTax.toFixed(2) | number: '2.'}} </div>
                     </div>
                 </div>
             </div>

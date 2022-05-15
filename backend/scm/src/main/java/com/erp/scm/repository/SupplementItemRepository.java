@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface SupplementItemRepository extends JpaRepository<SupplementItem, Long> {
     List<SupplementItem> findAllBySupplementId(String id);
+    List<SupplementItem> findAllByProductId(String id);
+
 }

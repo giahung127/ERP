@@ -29,15 +29,15 @@ export class InvoiceListComponent implements OnInit {
     .subscribe((res)=> {
       let temp;
       temp = res
-      this.invoiceList = temp.data.map(({id, code, invoiceStatus, orderIds,totalTax, totalDiscount, totalPrice })=>{
+      this.invoiceList = temp.data.map(({id, code, invoiceStatus, orderIds,totalTax, totalDiscount, totalPrice, createdDate })=>{
         return {
           'invoiceId': id,
           'invoiceCode': code,
           'totalTax': totalTax,
           'totalDiscount': totalDiscount,
-          'total': totalPrice,
+          'total': totalPrice.toLocaleString('en-US'),
           'orderIdList': orderIds,
-          'createdDate': new Date().toDateString(),
+          'createdDate': new Date(createdDate).toDateString(),
           'status': invoiceStatus,
           'creatorName': 'Gia Hung',
           'customerName': this.orderList.find(order => {return order.orderId === orderIds[0]})?.customerName,

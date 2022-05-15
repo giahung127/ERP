@@ -162,7 +162,7 @@ export class InvoiceDetailComponent {
           'customerId': customerId,
           'priceListId': priceListId,
           'customerName':customerName,
-          'totalIncludeTax': totalIncludeTax,
+          'totalIncludeTax': totalIncludeTax.toLocaleString('en-US'),
           'status': orderStatus
         }
       })
@@ -275,19 +275,23 @@ export class InvoiceDetailComponent {
       </tbody>
     </table>
     
-    <table border="0" cellpadding="3" cellspacing="0" style="border-collapse:collapse; border-top:1px dashed; width:98%">
+    <table border="0" cellpadding="3" cellspacing="0" style="border-collapse:collapse; margin-top:20px; width:98%">
       <tfoot>
         <tr>
           <td style="font-size:11px; font-weight:bold; white-space:nowrap">Total:</td>
-          <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedInvoice?.total}</td>
+          <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedInvoice?.total.toLocaleString('en-US')}</td>
         </tr>
         <tr>
-          <td style="font-size:11px; font-weight:bold; white-space:nowrap">Total discount:</td>
-          <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedInvoice?.totalDiscount}</td>
+          <td style="font-size:11px; font-weight:bold; white-space:nowrap">Total Discount:</td>
+          <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedInvoice?.totalDiscount.toLocaleString('en-US')}</td>
+        </tr>
+        <tr>
+          <td style="font-size:11px; font-weight:bold; white-space:nowrap">Total tax:</td>
+          <td style="font-size:11px; font-weight:bold; text-align:right">${this.selectedInvoice?.totalTax.toLocaleString('en-US')}</td>
         </tr>
         <tr>
           <td style="font-size:11px; font-weight:bold; white-space:nowrap"><span style="font-size:11px">Total Payment:</span></td>
-          <td style="font-size:11px; font-weight:bold; text-align:right"><span style="font-size:11px">${<number>this.selectedInvoice?.total - <number>this.selectedInvoice?.totalDiscount}</span></td>
+          <td style="font-size:11px; font-weight:bold; text-align:right"><span style="font-size:11px">${(<number>this.selectedInvoice?.total - <number>this.selectedInvoice?.totalDiscount).toLocaleString('en-US')}</span></td>
         </tr>
         <tr>
           <td style="font-size:11px; font-weight:bold; height:5px; white-space:nowrap">&nbsp;</td>
@@ -329,7 +333,7 @@ export class InvoiceDetailComponent {
       <tbody>
         <tr>
           <td style="text-align:center">
-          <p><span style="font-size:10px">Trân trọng cảm ơn Quý Khách đã đến mua hàng tại LK&nbsp; &nbsp; Hẹn gặp lại.</span></p>
+          <p><span style="font-size:10px">Thank you and see you again !!!</span></p>
           </td>
         </tr>
       </tbody>
@@ -358,8 +362,8 @@ export class InvoiceDetailComponent {
           <tbody>
             <tr>
               <td style="border-bottom:1px solid black; border-top:1px solid black; width:30%"><strong><span style="font-size:11px">Product</span></strong></td>
-              <td style="border-bottom:1px solid black; border-top:1px solid black; width:20%"><strong><span style="font-size:11px">Price</span></strong></td>
-              <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right; width:20%"><strong><span style="font-size:11px">Amount</span></strong></td>
+              <td style="border-bottom:1px solid black; border-top:1px solid black; width:20%"><strong><span style="font-size:11px">Amount</span></strong></td>
+              <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right; width:20%"><strong><span style="font-size:11px">Price</span></strong></td>
               <td style="border-bottom:1px solid black; border-top:1px solid black; text-align:right"><strong><span style="font-size:11px">Total</span></strong></td>
             </tr>
             ${ 
@@ -381,9 +385,9 @@ export class InvoiceDetailComponent {
       htmlString +=`
         <tr>
           <td style="border-bottom:1px dashed black"><span style="font-size:12px">${x.productName}</span></td>
-          <td style="border-bottom:1px dashed black"><span style="font-size:11px">${x.price}</span></td>
-          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${x.amount}</span></td>
-          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${x.amount*x.price}</span></td>
+          <td style="border-bottom:1px dashed black"><span style="font-size:11px">${x.amount.toLocaleString('en-US')}</span></td>
+          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${x.price.toLocaleString('en-US')}</span></td>
+          <td style="border-bottom:1px dashed black; text-align:right"><span style="font-size:11px">${(x.amount*x.price).toLocaleString('en-US')}</span></td>
         </tr>
         `
     });

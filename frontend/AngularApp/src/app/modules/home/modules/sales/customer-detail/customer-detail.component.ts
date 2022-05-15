@@ -29,6 +29,7 @@ export class CustomerDetailComponent {
   addCustomerForm = new FormGroup({});
   destroy$: Subject<boolean> = new Subject<boolean>();
   invoiceTotal = 0;
+  totalPrice = 0;
   constructor(
       private _location: Location,
       private dialog: MatDialog,
@@ -134,7 +135,7 @@ export class CustomerDetailComponent {
             'orderId': id,
             'orderCode': code,
             'createdDate': createDate,
-            'totalIncludeTax': totalIncludeTax,
+            'totalIncludeTax': totalIncludeTax.toLocaleString('en-US'),
             'invoiceId': invoiceId,
             'status': orderStatus
           }
@@ -154,12 +155,13 @@ export class CustomerDetailComponent {
         if(invoiceStatus === 'UNPAID'){
           this.invoiceTotal += totalPrice;
         }
+        this.totalPrice += totalPrice
         return {
           'invoiceId': id,
           'invoiceCode': code,
           'totalTax': totalTax,
           'totalDiscount': totalDiscount,
-          'total': totalPrice,
+          'total': totalPrice.toLocaleString('en-US'),
           'orderIdList': orderIds,
           'createdDate': new Date().toDateString(),
           'status': invoiceStatus,

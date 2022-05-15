@@ -26,6 +26,13 @@ import { DepartmentDetailComponent } from './department-detail/department-detail
     EmployeeDetailComponent,
     DepartmentDetailComponent
   ],
+  exports: [
+    HrmComponent,
+    EmployeeListComponent,
+    DepartmentListComponent,
+    EmployeeDetailComponent,
+    DepartmentDetailComponent
+  ],
   imports: [
     CommonModule,
     HRMRoutingModule,

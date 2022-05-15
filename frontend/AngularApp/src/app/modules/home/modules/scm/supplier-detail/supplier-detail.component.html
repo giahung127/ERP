@@ -63,21 +63,20 @@
         </mat-tab>
         
         <mat-tab [label]="'Supplement history'"  *ngIf="viewModeCheck">
-            <!-- <app-home-table-list
-            class="order-list"
-            [title]="'Order List'"
-            [header]="false"
-            [data]="orderList"
-            [columnName]="orderColumnName"
-            [columnToProperty]="orderColumnToProperty"
+            <app-home-table-list
+            class="import-list"
+            [title]="'Supplement'"
+            [data]="supplementList"
+            [columnName]="columnName"
+            [columnToProperty]="columnToProperty"
             [checkbox]="false"
-            [filter]="false"
+            [filter]="true"
             [select]="onViewClick"
-            [key]="'orderId'"
-            [add]="false"
+            [key]="'importId'"
+            [add]="true"
             [more]="false"
-            >
-            </app-home-table-list> -->
+            [header]="false"
+            ></app-home-table-list>
         </mat-tab>
 
     </mat-tab-group>

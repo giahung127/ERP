@@ -33,11 +33,6 @@ export class NavBarComponent {
                 name: 'Employee',
                 href: '/home/hrm/employee-list',
                 icon: 'groups'
-            },
-            {
-              name: 'Department',
-              href: '/home/hrm/department-list',
-              icon: 'apartment'
             }
         ]
     },

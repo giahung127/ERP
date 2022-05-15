@@ -25,7 +25,6 @@ export class AddProductToPriceListModalComponent {
     this.priceListList = data.priceListList
     this.productList = data.productList
     this.selectPriceList = data.currentPriceListId
-      console.log(this.productList)
   }
 
   onSave() {

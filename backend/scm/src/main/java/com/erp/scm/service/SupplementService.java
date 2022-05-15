@@ -2,10 +2,7 @@ package com.erp.scm.service;
 
 import com.erp.scm.controller.request.NewSupplementReq;
 import com.erp.scm.controller.request.SupplementItemReq;
-import com.erp.scm.controller.response.GetListSupplementRes;
-import com.erp.scm.controller.response.GetSupplementRes;
-import com.erp.scm.controller.response.NormalRes;
-import com.erp.scm.controller.response.SupplementWithItems;
+import com.erp.scm.controller.response.*;
 import com.erp.scm.entity.Product;
 import com.erp.scm.entity.Supplement;
 import com.erp.scm.entity.SupplementItem;
@@ -77,5 +74,30 @@ public class SupplementService {
         }
         List<SupplementItem> supplementItems = supplementItemRepository.findAllBySupplementId(result.get().getId().toString());
         return new GetSupplementRes("200", "Get Order By ID", new SupplementWithItems(result.get(), supplementItems) );
+    }
+
+    public GetListSupplementRes getSupplementBySupplierId(String supplierId) throws Error {
+        List<Supplement> supplements = supplementRepository.findAllBySupplierId(supplierId);
+        if (supplements.isEmpty()){
+            return new GetListSupplementRes("404", "Not Found", null);
+        }
+
+        List<SupplementWithItems> result = supplements.parallelStream().map(
+                supplement -> {
+                    Supplement temp = supplementRepository.findById(supplement.getId()).get();
+                    List<SupplementItem> items = supplementItemRepository.findAllBySupplementId(String.valueOf(supplement.getId()));
+                    return new SupplementWithItems(temp, items);
+                }
+        ).collect(Collectors.toList());
+        return new GetListSupplementRes("200", "Get All Supplement", result);
+    }
+
+    public GetListSupplementItemRes getSupplementListByProductId(String productId) throws Error {
+        List<SupplementItem> supplementItem = supplementItemRepository.findAllByProductId(productId);
+        if (supplementItem.isEmpty()){
+            return new GetListSupplementItemRes("404", "Not Found", null);
+        }
+
+        return new GetListSupplementItemRes("200", "Get All Supplement", supplementItem);
     }
 }
