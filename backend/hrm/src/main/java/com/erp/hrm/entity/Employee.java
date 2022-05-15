@@ -26,6 +26,7 @@ public class Employee {
     private Integer sex;
     private Date    join_date;
     private Date    birthday;
+    private String  role;
     private String  contact_address;
     private Long    phone;
     private String  company_email;
@@ -35,6 +36,7 @@ public class Employee {
         this.sex                = employeeReq.sex;
         this.join_date          = employeeReq.join_date;
         this.birthday           = employeeReq.birthday;
+        this.role               = employeeReq.role;
         this.contact_address    = employeeReq.contact_address;
         this.phone              = employeeReq.phone;
         this.company_email      = employeeReq.company_email;

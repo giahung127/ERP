@@ -3,6 +3,7 @@ package com.erp.hrm.controller;
 
 import com.erp.hrm.controller.request.EmployeeReq;
 import com.erp.hrm.controller.response.EmployeeRes;
+import com.erp.hrm.controller.response.GetEmployeeListRes;
 import com.erp.hrm.controller.response.NormalRes;
 import com.erp.hrm.entity.Employee;
 import com.erp.hrm.service.EmployeeService;
@@ -29,26 +30,8 @@ public class EmployeeController {
         return employeeService.newEmployee(employeeReq);
     }
     @GetMapping("/getAll")
-    public List<EmployeeRes> getAll(){
-        List<Employee> empList = (List<Employee>) employeeService.loadAllEmployee();
-        if (empList.isEmpty()){
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        List<EmployeeRes> empReslst = empList.parallelStream()
-                .map(empp ->{
-                    final EmployeeRes emRes = new EmployeeRes();
-                    emRes.setEmployeeId(empp.getId());
-                    emRes.setName(empp.getName());
-                    emRes.setPosition(empp.getPosition());
-                    emRes.setDepartment(empp.getDepartment());
-                    emRes.setPhone(empp.getPhone());
-                    return emRes;
-                }).collect(Collectors.toList());
-        return empReslst;
+    public GetEmployeeListRes getAll(){
+        return employeeService.getAllEmployee();
     }
 
     @GetMapping("/getPage")
@@ -69,8 +52,6 @@ public class EmployeeController {
                     final EmployeeRes emRes = new EmployeeRes();
                     emRes.setEmployeeId(empp.getId());
                     emRes.setName(empp.getName());
-                    emRes.setPosition(empp.getPosition());
-                    emRes.setDepartment(empp.getDepartment());
                     emRes.setPhone(empp.getPhone());
                     return emRes;
                 }).collect(Collectors.toList());

@@ -18,4 +18,5 @@ public class EmployeeReq {
     public String  personal_email;
     public String  bank_name;
     public Long    account_no;
+    public String role;
 }
