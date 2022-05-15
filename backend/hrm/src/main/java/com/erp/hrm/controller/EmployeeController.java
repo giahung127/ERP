@@ -43,8 +43,6 @@ public class EmployeeController {
                     final EmployeeRes emRes = new EmployeeRes();
                     emRes.setEmployeeId(empp.getId());
                     emRes.setName(empp.getName());
-                    emRes.setPosition(empp.getPosition());
-                    emRes.setDepartment(empp.getDepartment());
                     emRes.setPhone(empp.getPhone());
                     return emRes;
                 }).collect(Collectors.toList());
@@ -69,8 +67,7 @@ public class EmployeeController {
                     final EmployeeRes emRes = new EmployeeRes();
                     emRes.setEmployeeId(empp.getId());
                     emRes.setName(empp.getName());
-                    emRes.setPosition(empp.getPosition());
-                    emRes.setDepartment(empp.getDepartment());
+
                     emRes.setPhone(empp.getPhone());
                     return emRes;
                 }).collect(Collectors.toList());

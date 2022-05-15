@@ -1,6 +1,7 @@
 package com.erp.hrm.service;
 
 import com.erp.hrm.controller.request.ChangePasswordReq;
+import com.erp.hrm.controller.request.LoginReq;
 import com.erp.hrm.controller.response.NormalRes;
 import com.erp.hrm.entity.Account;
 import com.erp.hrm.entity.related.AccountStatus;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,4 +48,17 @@ public class AccountService {
         accountRepository.save(account.get());
         return new NormalRes("200", "Deactivate account successfully", "");
     }
+
+
+    public NormalRes loginAccount(LoginReq loginInfo) throws Error{
+        Optional<Account> result = accountRepository.findByUsername(loginInfo.username);
+        if (result.isEmpty()){
+            return new NormalRes("404", "Wrong user name or password", "");
+        }
+        else if (Objects.equals(result.get().getPassword(), Hashing.sha256().hashString(loginInfo.password, StandardCharsets.UTF_8).toString())){
+            return new NormalRes("200", "Success", result.get().getEmployeeId());
+        }
+        return new NormalRes("404", "Illegal input", "");
+    }
+
 }
