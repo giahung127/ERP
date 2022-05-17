@@ -1,6 +1,6 @@
-<div class="sidebar">
+<div class="sidebar" *ngIf="currentUser && showNavBar">
     <div class="line"></div>
-        <div *ngFor="let i of data" class="content">
+        <div *ngFor="let i of showNavBar" class="content">
             <div class="title">{{i.title}}</div>
             <div *ngFor="let j of i.content" class="button-group">
                 <a [routerLink]="j.href" class="custom-button" >

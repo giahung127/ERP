@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ProductService } from '../../scm/services/product.service';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { PriceList } from '../../shared/models/price-list/price-list.model';
 import { AddPriceListModalComponent } from '../add-price-list-modal/add-price-list-modal.component';
 import { AddProductToPriceListModalComponent } from '../add-product-to-price-list-modal/add-product-to-price-list-modal.component';
@@ -210,6 +211,29 @@ export class PriceListComponent implements OnInit {
   }
 
   onSave(){
-    
+    console.log(this.priceListList.find((x) => {return x.id === this.currentPriceListId})?.item?.map(({productId, price}) => {return {productId: productId, price: price}}));
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      message: "Save all change",
+      title: "Update price list item"
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    dialogRef
+    .afterClosed()
+    .subscribe((submit) => {
+        if (submit) {
+          const data = {
+            'price_list_id': this.currentPriceListId,
+            'price_list_item_list': this.priceListList.find((x) => {return x.id === this.currentPriceListId})?.item?.map(({productId, price}) => {return {productId: productId, price: price}})
+          }
+          this.priceListService.updatePriceListItem(data)
+          .subscribe((res) => {
+            this.toastr.success('All changes are saved ')
+          })
+        }
+    })
   }
 }

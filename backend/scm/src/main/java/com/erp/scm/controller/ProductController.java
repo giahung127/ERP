@@ -2,12 +2,10 @@ package com.erp.scm.controller;
 
 
 import com.erp.scm.controller.request.GetInforReq;
+import com.erp.scm.controller.request.NewListProductReq;
 import com.erp.scm.controller.request.NewProductReq;
 import com.erp.scm.controller.request.UpdateAfterOrderReq;
-import com.erp.scm.controller.response.NewProductRes;
-import com.erp.scm.controller.response.NormalRes;
-import com.erp.scm.controller.response.ProductNameAndCodeRes;
-import com.erp.scm.controller.response.ProductWithCategoryName;
+import com.erp.scm.controller.response.*;
 import com.erp.scm.entity.Product;
 import com.erp.scm.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -72,5 +70,8 @@ public class ProductController {
         return productService.updateAfterOrder(updateAfterOrderReq);
     }
 
-
+    @PostMapping("/addListProduct")
+    public NewListProductRes addProduct(@RequestBody NewListProductReq newListProductReq){
+        return productService.newListProduct(newListProductReq);
+    }
 }

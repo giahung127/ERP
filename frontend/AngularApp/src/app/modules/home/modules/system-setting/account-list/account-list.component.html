@@ -1,16 +1,50 @@
 <div class="main-container">
     <mat-tab-group mat-align-tabs="left" dynamicHeight>
         <mat-tab [label]="'Pending'">
-            
-            
+            <div class="main-container">
+                <app-home-table-list
+                  [data]="pendingAccountList"
+                  [columnName]="columnName"
+                  [columnToProperty]="columnToProperty"
+                  [checkbox]="false"
+                  [more]="true"
+                  [key]="'accountid'"
+                  [header]="false"
+                >
+                </app-home-table-list>
+            </div>
         </mat-tab>
         
         <mat-tab [label]="'Activated'" >
-           
+            <div class="main-container">
+                <app-home-table-list
+                  [data]="activateAccountList"
+                  [columnName]="columnName"
+                  [columnToProperty]="columnToProperty"
+                  [customActions]="customActionsDeactivated"
+                  [checkbox]="false"
+                  [more]="false"
+                  [key]="'accountid'"
+                  [header]="false"
+                >
+                </app-home-table-list>
+            </div>
         </mat-tab>
 
         <mat-tab [label]="'Deactivied'" >
-            
+            <div class="main-container">
+                <app-home-table-list
+                  [data]="deactivateAccountList"
+                  [columnName]="columnName"
+                  [columnToProperty]="columnToProperty"
+                  [customActions]="customActionsActivated"
+                  [checkbox]="false"
+                  [more]="false"
+                  [key]="'accountid'"
+                  [header]="false"
+                >
+                </app-home-table-list>
+            </div>
         </mat-tab>
 
         

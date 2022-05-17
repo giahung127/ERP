@@ -80,7 +80,7 @@
             <button class="red-custom-button" mat-button  (click)="onBack()">
                 <mat-icon>delete_outline</mat-icon> Cancel
             </button>
-            <button mat-button class="green-custom-button" [disabled]="!addEmployeeForm.valid">
+            <button mat-button class="green-custom-button" (click)="onCreate()" [disabled]="!addEmployeeForm.valid">
                 <mat-icon>save</mat-icon> Save
             </button>
         </div>

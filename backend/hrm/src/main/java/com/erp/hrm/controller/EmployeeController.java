@@ -3,6 +3,7 @@ package com.erp.hrm.controller;
 
 import com.erp.hrm.controller.request.EmployeeReq;
 import com.erp.hrm.controller.response.EmployeeRes;
+import com.erp.hrm.controller.response.GetEmployeeByIdRes;
 import com.erp.hrm.controller.response.GetEmployeeListRes;
 import com.erp.hrm.controller.response.NormalRes;
 import com.erp.hrm.entity.Employee;
@@ -34,30 +35,15 @@ public class EmployeeController {
         return employeeService.getAllEmployee();
     }
 
-    @GetMapping("/getPage")
-    public List<EmployeeRes> getPage(@RequestBody GetInforReq getInforReq){
-        Integer pageNum = getInforReq.pageNum;
-        Integer size = getInforReq.size;
-        PageRequest sort = PageRequest.of(pageNum, size);
-        Page<Employee> empList = employeeService.loadPageEmployee(sort);
-        if (empList.isEmpty()){
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        List<EmployeeRes> empReslst = empList.getContent().parallelStream()
-                .map(empp ->{
-                    final EmployeeRes emRes = new EmployeeRes();
-                    emRes.setEmployeeId(empp.getId());
-                    emRes.setName(empp.getName());
-                    emRes.setPhone(empp.getPhone());
-                    return emRes;
-                }).collect(Collectors.toList());
-        return empReslst;
-    }
+    @GetMapping("/getEmployeeById/{id}")
+    public GetEmployeeByIdRes getPage(@PathVariable String id){
+        return employeeService.getEmployeeById(id);
 
+    }
+    @PostMapping("/updateById/{id}")
+    public NormalRes updateByID(@RequestBody EmployeeReq updateData, @PathVariable String id){
+        return employeeService.updateById(updateData, id);
+    }
 
 //    @PostMapping("/updateById")
 //    public ResponseEntity<String> upDateByID(@RequestBody Employee updateData){

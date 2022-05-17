@@ -23,6 +23,7 @@ public class Employee {
     private UUID id;
 
     private String  name;
+    private String  code;
     private Integer sex;
     private Date    join_date;
     private Date    birthday;
@@ -31,8 +32,9 @@ public class Employee {
     private String   phone;
     private String  company_email;
 
-    public Employee(EmployeeReq employeeReq){
+    public Employee(EmployeeReq employeeReq, String code){
         this.name              = employeeReq.name;
+        this.code               = code;
         this.sex                = employeeReq.sex;
         this.join_date          = employeeReq.join_date;
         this.birthday           = employeeReq.birthday;

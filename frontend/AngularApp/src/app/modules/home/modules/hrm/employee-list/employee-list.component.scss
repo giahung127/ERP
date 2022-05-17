@@ -4,3 +4,18 @@
     height: fit-content;
     border-radius: 8px;
 }
+
+
+:host ::ng-deep app-home-table-list.employee-list{
+    table {
+        tbody {
+            tr {
+                &:hover,
+                &.active {
+                    background-color: #a8b2e685;
+                }
+                cursor: pointer;
+            }
+        }
+    }
+}

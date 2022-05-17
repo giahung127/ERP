@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../service/user.service';
 // import { AuthenticationService } from '../../../core/authentication/authentication.service';
 
 @Component({
@@ -14,27 +15,45 @@ export class LoginComponent {
     error = { check: false, message: '' };
     headers = new HttpHeaders();
 
-    constructor( private router: Router, public http: HttpClient) {}
-
+    constructor( 
+        private router: Router, 
+        public http: HttpClient,
+        private userService: UserService
+        ) {}
 
     login() {
-        this.http.post('http://localhost:9001/account/login', { username: this.username, password: this.password }, { headers: this.headers })
+        this.userService.login(this.username, this.password)
             .subscribe(
             (res) => {
-                if (res === 'ok') {
-                    this.router.navigateByUrl('/home');
+                let temp;
+                temp = res;
+                if (temp.code === '200') {
+                    localStorage.setItem('accountId', temp.data.id);
+                    this.userService.setLocalAccount(temp.data)
+                    if(temp.data.accountStatus === 'PENDING'){
+                        this.router.navigateByUrl('/users/activate');
+                    }
+                    else {
+                        this.router.navigateByUrl('/home');
+                    }
+                    this.error.check = false;
+                }
+                else if(temp.code === '404') {
+                    this.error.message = temp.message;
+                    this.error.check = true;
                 }
             },
             (err: HttpErrorResponse) => {
-                this.error.message = err.error['message'];
-                this.error.check = true;
             },
             () => {
                 // Finalize here
             }
         );
     }
-    onChangeEvent() {
+    onChangeEvent(e) {
+        if (e.keyCode === 13) {
+            this.login();
+        }
         this.error.check = false;
     }
     onButtonClick(): void {}

@@ -1,0 +1,29 @@
+<div class="contain">
+    <div class="main-content">
+        <div class="content">
+            <div class="header">
+                <p class="welcome">Acivate your account now! </p>
+                <h3> Change password to continue </h3>
+            </div>
+            <div class="body-content">
+                <div class="body">
+                    <form [formGroup]="changePasswordForm">
+                    <div class="title">New password</div>
+                    <mat-form-field appearance="outline" class="input">
+                        <input matInput type="password" placeholder="Enter new password" formControlName="newPassword">
+                    </mat-form-field>
+                    <div class="title">Confirm password</div>
+                    <mat-form-field appearance="outline" class="input">
+                        <input matInput type="password" placeholder="Confirm new password" formControlName="confirmPassword">
+                    </mat-form-field>
+                    </form>
+                </div>
+                <div class="button-content">
+                    <button mat-flat-button color="primary" (click)="onSave()"> Sign In </button>
+                </div>
+                <div class="error" *ngIf="changePasswordForm.errors && changePasswordForm.errors['notSame']">Confirm password is incorrect</div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

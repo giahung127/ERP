@@ -53,5 +53,6 @@ public class PriceListController {
     public NormalRes updatePriceList(@RequestBody UpdatePriceListReq req){
         return priceListService.updatePriceList(req);
     }
+
 }
 

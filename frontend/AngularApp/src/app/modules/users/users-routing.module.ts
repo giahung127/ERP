@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './users.component';
 import { LoginComponent } from './login/login.component';
+import { ActivateAccountComponent } from './activate-account/activate-account.component';
 
 const routes: Routes = [
     {
@@ -16,7 +17,11 @@ const routes: Routes = [
                 path: '',
                 redirectTo: '/users/login',
                 pathMatch: 'full'
-            }
+            },
+            {
+                path: 'activate',
+                component: ActivateAccountComponent
+            },
         ]
     }
 ];

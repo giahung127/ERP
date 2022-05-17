@@ -1,12 +1,10 @@
 package com.erp.scm.service;
 
+import com.erp.scm.controller.request.NewListProductReq;
 import com.erp.scm.controller.request.NewProductReq;
 import com.erp.scm.controller.request.SupplementItemReq;
 import com.erp.scm.controller.request.UpdateAfterOrderReq;
-import com.erp.scm.controller.response.NewProductRes;
-import com.erp.scm.controller.response.NormalRes;
-import com.erp.scm.controller.response.ProductNameAndCodeRes;
-import com.erp.scm.controller.response.ProductWithCategoryName;
+import com.erp.scm.controller.response.*;
 import com.erp.scm.entity.*;
 import com.erp.scm.repository.CategoryRepository;
 import com.erp.scm.repository.ExportHistoryRepository;
@@ -184,5 +182,15 @@ public class ProductService {
             exportHistoryService.updateAfterCancelOrder(updateAfterOrderReq.order_id);
         }
         return new NormalRes("200", "Updated amount of Product", "");
+    }
+
+    public NewListProductRes newListProduct(NewListProductReq newListProductReq){
+        List<NewProductItemRes> result = new ArrayList<>() ;
+        newListProductReq.list_new_products.forEach((newProduct) -> {
+            NewProductRes res = this.newProduct(newProduct);
+            result.add(new NewProductItemRes(res.data, newProduct.price));
+        });
+
+        return new NewListProductRes("200", "Import by excel successfully", result);
     }
 }

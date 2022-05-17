@@ -27,6 +27,7 @@ public class Account {
     private String password;
     private AccountStatus accountStatus;
     private String employeeId;
+    private String employeeName;
     public Account(String username, String password, String employee_id){
         this.username = username;
         this.password = Hashing.sha256()

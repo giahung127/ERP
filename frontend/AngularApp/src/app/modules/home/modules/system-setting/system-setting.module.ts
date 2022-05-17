@@ -22,6 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SharedModule } from '../shared/shared.module';
 import { CompanySettingComponent } from './company-setting/company-setting.component';
 import { AccountListComponent } from './account-list/account-list.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { AccountListComponent } from './account-list/account-list.component';
     SystemSettingComponent,
     CompanyInformationComponent,
     CompanySettingComponent,
-    AccountListComponent
+    AccountListComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,

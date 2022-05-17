@@ -1,21 +1,21 @@
 export class Employee {
     employeeId: string;
+    code: string;
     name: string;
     phone: string;
-    department: string;
-    position: string;
+    role: string;
 
-    constructor(
+    constructor(    
         id: string,
+        code: string,
         name: string,
         phone: string,
-        department: string,
-        position: string
+        role: string
     ) {
         this.employeeId = id;
+        this.code = code;
         this.name = name;
         this.phone = phone;
-        this.department = department;
-        this.position = position;
+        this.role = role;
     }
 }

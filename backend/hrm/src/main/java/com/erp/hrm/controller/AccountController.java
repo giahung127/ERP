@@ -3,6 +3,9 @@ package com.erp.hrm.controller;
 
 import com.erp.hrm.controller.request.ChangePasswordReq;
 import com.erp.hrm.controller.request.LoginReq;
+import com.erp.hrm.controller.response.GetAccountByIdRes;
+import com.erp.hrm.controller.response.GetEmployeeByIdRes;
+import com.erp.hrm.controller.response.LoginRes;
 import com.erp.hrm.controller.response.NormalRes;
 import com.erp.hrm.entity.Account;
 import com.erp.hrm.service.AccountService;
@@ -30,13 +33,24 @@ public class AccountController {
         return accountService.loadAll();
     }
 
-    @PostMapping("deactivate")
-    public NormalRes deactivate(@RequestParam String accountId){
+    @GetMapping("/getAccountById/{id}")
+    public GetAccountByIdRes getPage(@PathVariable String id){
+        return accountService.getAccountById(id);
+
+    }
+
+    @PostMapping("deactivate/{accountId}")
+    public NormalRes deactivate(@PathVariable String accountId){
         return accountService.deactivate(accountId);
     }
 
+    @PostMapping("activate/{accountId}")
+    public NormalRes activate(@PathVariable String accountId){
+        return accountService.activate(accountId);
+    }
+
     @PostMapping("/login")
-    public NormalRes loginAccount(@RequestBody LoginReq loginInfo){
+    public LoginRes loginAccount(@RequestBody LoginReq loginInfo){
         return accountService.loginAccount(loginInfo);
     }
 }

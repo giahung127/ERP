@@ -33,4 +33,8 @@ export class ProductService {
 
   updateProductById(data){
     return this.http.post('http://localhost:10003/scm/product/updateById',data, { headers: this.headers })}
+
+  addNewListProduct(data){
+    return this.http.post('http://localhost:10003/scm/product/addListProduct',data, { headers: this.headers })
+  }
 }

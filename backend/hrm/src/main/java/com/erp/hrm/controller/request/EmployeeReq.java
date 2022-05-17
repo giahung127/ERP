@@ -7,7 +7,8 @@ public class EmployeeReq {
     public Integer sex;
     public Date    join_date;
     public Date    birthday;
+    public String  role;
     public String  contact_address;
-    public String    phone;
+    public String  phone;
     public String  company_email;
 }

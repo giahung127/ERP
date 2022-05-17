@@ -28,4 +28,8 @@ export class PriceListService {
   updatePriceList(data){
     return this.http.post('http://localhost:9004/sale/price_list/updatePriceList', data, { headers: this.headers })
   }
+
+  updatePriceListItem(data){
+    return this.http.post('http://localhost:9004/sale/price_list/updatePriceListItem', data, { headers: this.headers })
+  }
 }

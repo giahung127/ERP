@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from 'src/app/core/services/auth-guard.service';
 import { HomeComponent } from './home.component';
-// import { AuthGuard } from '../../core/services';
 
 const routes: Routes = [
     {
@@ -12,7 +12,7 @@ const routes: Routes = [
                 return m.DashboardModule;
             });
         },
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
     },
     {
         path: 'hrm',
@@ -22,7 +22,7 @@ const routes: Routes = [
                 return m.HrmModule;
             });
         },
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
     },
     {
         path: 'scm',
@@ -32,7 +32,7 @@ const routes: Routes = [
                 return m.ScmModule;
             });
         },
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
     },
     {
         path: 'sales',
@@ -42,7 +42,7 @@ const routes: Routes = [
                 return m.SalesModule;
             });
         },
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
     },
     {
         path: '',
@@ -51,7 +51,8 @@ const routes: Routes = [
             return import('./modules/dashboard/dashboard.module').then((m) => {
                 return m.DashboardModule;
             });
-        }
+        },
+        canActivate: [AuthGuard]
     },
     {
         path: 'setting',
@@ -60,7 +61,9 @@ const routes: Routes = [
             return import('./modules/system-setting/system-setting.module').then((m) => {
                 return m.SystemSettingModule;
             });
-        }
+        },
+        
+        canActivate: [AuthGuard]
     }
 ];
 

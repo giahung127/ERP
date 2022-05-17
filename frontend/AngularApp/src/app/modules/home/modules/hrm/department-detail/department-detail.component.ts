@@ -19,11 +19,7 @@ export class DepartmentDetailComponent {
 
   addDepartmentForm = new FormGroup({});
   destroy$: Subject<boolean> = new Subject<boolean>();
-  employeeList: Employee[] = [
-    new Employee('p001','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p002','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-    new Employee('p003','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  ];
+  
   columnName: string[] = [
     'EmployeeId',
     'Name',

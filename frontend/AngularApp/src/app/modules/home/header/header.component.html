@@ -5,10 +5,7 @@
           <div class="title">ERP</div>
         </div>
         <div class="content-right">
-            <button  mat-icon-button>
-                <mat-icon class="custom-mat-icon">notifications</mat-icon>
-            </button>
-            <button mat-icon-button [matMenuTriggerFor]="menu">
+            <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="isManager">
                 <mat-icon class="custom-mat-icon">settings</mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before">
@@ -16,21 +13,25 @@
                 <mat-icon>room_preferences</mat-icon>
                 <span>Company Setting</span>
               </button>
-              <button mat-menu-item>
+              </mat-menu>
+            <div class="profile" *ngIf="currentUser !== undefined"  [matMenuTriggerFor]="usermenu">
+                <mat-icon>person</mat-icon>
+                <div class="info">
+                  <div class="name">{{currentUser.employeeName}}</div>
+                </div>
+            </div>
+
+            
+            <mat-menu #usermenu="matMenu" xPosition="before">
+              <button mat-menu-item (click)="changePassword()">
                 <mat-icon>autorenew</mat-icon>
                 <span>Change Password</span>
               </button>
-              <button mat-menu-item>
+              <button mat-menu-item (click)="logOut()">
                 <mat-icon>person</mat-icon>
                 <span>Logout</span>
               </button>
               </mat-menu>
-            <div class="profile">
-                <mat-icon>person</mat-icon>
-                <div class="info">
-                  <div class="name">Gia Hung</div>
-                </div>
-            </div>
         </div>
     </div>
   </div>

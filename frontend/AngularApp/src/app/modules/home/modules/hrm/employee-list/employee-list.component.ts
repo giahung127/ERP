@@ -14,53 +14,35 @@ export class EmployeeListComponent {
     private router: Router,
     private employeeService: EmployeeService
   ) {
+    this.getListEmployee()
+  } 
+
+  getListEmployee(){
     let data;
     this.employeeService.getAllEmployee().subscribe(res => {
       data = res
-      this.employeeList = data.map(({ employeeId, name, position, phone, department})=>{
+      this.employeeList = data.data.map(({ id, code, name, role, phone})=>{
       return {
-        'employeeId': employeeId,
+        'employeeId': id,
+        'code': code,
         'name': name,
-        'position': position,
+        'role': role,
         'phone': phone,
-        'department': department
       }
     })
-  })
+    })
   }
-  // employeeList: Employee[] = [
-  //   new Employee('p001','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p002','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p003','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p004','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p005','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p006','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p007','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p008','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p009','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p010','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p011','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p012','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p013','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p014','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p015','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p016','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p017','Nguyen Van A', '012346789', 'Software Enginering', 'Intership'),
-  //   new Employee('p018','Nguyen Van A', '012346789', 'Software Enginering', 'Intership')
-  // ];
   columnName: string[] = [
-    'EmployeeId',
+    'Code',
     'Name',
-    'Position',
-    'Phone',
-    'Department'
+    'Role',
+    'Phone'
   ];
   columnToProperty = {
-    'EmployeeId': 'employeeId',
+    'Code': 'code',
     'Name': 'name',
-    'Position': 'position',
-    'Phone': 'phone',
-    'Department': 'department'
+    'Role': 'role',
+    'Phone': 'phone'
   };
   onAddEmployee: () => void = () => {
     // console.log("On View Click: ", id);
@@ -68,7 +50,9 @@ export class EmployeeListComponent {
   };
   onViewClick: (id: string) => void = (id: string) => {
     // console.log("On View Click: ", id);
-    this.router.navigate(['/home/hrm/employee-detail', id]);
+    this.router.navigate(['/home/hrm/employee-detail'],{
+      queryParams: { employeeId: id }
+    });
   };
   onEditClick: (id: string) => void = (id: string) => {
       this.router.navigate(['/home/hrm/employee-detail', id], {

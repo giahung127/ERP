@@ -84,12 +84,19 @@ public class PriceListService {
 
 
     public NormalRes updatePriceListItem(UpdatePriceListItemReq itemReq) throws Error {
-        Optional<PriceListItem> temp = priceListItemRepository.findPriceListItemByPriceListIdAndProductId(itemReq.price_list_id, itemReq.product_id);
-        if (temp.isEmpty()){
-            return new NormalRes("404", "Not found priceListItem", "");
-        }
-        temp.get().setPrice(itemReq.price);
-        priceListItemRepository.save(temp.get());
+
+        itemReq.price_list_item_list.forEach((item) -> {
+            Optional<PriceListItem> temp = priceListItemRepository.findPriceListItemByPriceListIdAndProductId(itemReq.price_list_id, item.productId);
+            if (!temp.isEmpty()){
+                temp.get().setPrice(item.price);
+                priceListItemRepository.save(temp.get());
+            } else {
+                System.out.println("a");
+                this.addNewProductToPriceList(new AddProductToPriceListReq( item.productId, itemReq.price_list_id,item.price));
+            }
+
+        });
+
         return new NormalRes("200", "Updated priceListItem", "");
     }
 
